@@ -1,5 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { createPostAction } from "./actions";
+import PostForm from "./components/PostForm";
 
 export default async function Home() {
 
@@ -11,7 +13,8 @@ export default async function Home() {
   console.log(session);
   return (
     <div>
-      <p>Post page</p>
+
+      <PostForm action={createPostAction} />
     </div>
   );
 }

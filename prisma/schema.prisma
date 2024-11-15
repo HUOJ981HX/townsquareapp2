@@ -23,6 +23,18 @@ model User {
   messages  Message[]
   userConversations UserConversation[]
   lastOnline  DateTime @default(now())
+  posts     Post[]  
+}
+
+model Post {
+    id                  Int                    @id @default(autoincrement())
+    userId              Int                    
+    user                User                   @relation(fields: [userId], references: [id])
+    title               String
+    description         String?
+    image               String?
+    createdAt           DateTime               @default(now())
+    mood                String?
 }
 
 model Conversation {

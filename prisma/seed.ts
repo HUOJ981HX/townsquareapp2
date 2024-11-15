@@ -1,3 +1,4 @@
+import { Mood } from "@/types";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -86,6 +87,43 @@ async function main() {
       conversationId: conversation2.id,
     },
   });
+
+
+  await prisma.post.createMany({
+    data: [
+      {
+        userId: 1,
+        title: 'tech opportunities',
+        description: "Exploring new opportunities in tech.",
+      },
+      {
+        userId: 1,
+        title: 'Web3 projects',
+        description: "Excited about Web3 projects.",
+      },
+    ],
+  });
+  await prisma.post.createMany({
+    data: [
+      {
+        userId: 2,
+        title: 'teach programming',
+        mood: Mood.Happy,
+      },
+    ],
+  });
+
+  await prisma.post.createMany({
+    data: [
+      {
+        userId: 3,
+        title: 'founder',
+        description: "Sharing my journey as a startup founder.",
+        mood: Mood.Surprised
+      },
+    ],
+  });
+
 }
 
 main()
