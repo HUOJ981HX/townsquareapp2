@@ -18,12 +18,13 @@ model User {
   publicId  String
   username  String
   email     String   @unique
-  password  String
+  password  String?
   createdAt DateTime @default(now())
   messages  Message[]
   userConversations UserConversation[]
   lastOnline  DateTime @default(now())
-  posts     Post[]  
+  posts     Post[]
+  accountType String
 }
 
 model Post {

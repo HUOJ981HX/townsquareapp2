@@ -1,4 +1,4 @@
-import { Mood } from "@/types";
+import { AccountType, Mood } from "@/types";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -6,15 +6,15 @@ const prisma = new PrismaClient();
 async function main() {
 
   const user1 = await prisma.user.create({
-    data: { publicId: '4653f404-a121-11ef-b864-0242ac120002', username: 'Alice', email: 'alice@alice.alice', password: 'alice@alice.alice' }
+    data: { publicId: '4653f404-a121-11ef-b864-0242ac120002', username: 'Alice', email: 'alice@alice.alice', password: 'alice@alice.alice', accountType: AccountType.Email }
   });
 
   const user2 = await prisma.user.create({
-    data: { publicId: '2ff449e8-a121-11ef-b864-0242ac120002', username: 'Bob', email: 'bob@bob.bob', password: 'bob@bob.bob' },
+    data: { publicId: '2ff449e8-a121-11ef-b864-0242ac120002', username: 'Bob', email: 'bob@bob.bob', password: 'bob@bob.bob', accountType: AccountType.Email },
   });
 
   const user3 = await prisma.user.create({
-    data: { publicId: '599080aa-a121-11ef-b864-0242ac120002', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy' },
+    data: { publicId: '599080aa-a121-11ef-b864-0242ac120002', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Google },
   });
 
   // Create some conversations

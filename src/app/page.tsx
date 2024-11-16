@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { createPostAction } from "./actions";
+import { createPostAction } from "../actions/post";
 import PostForm from "./components/PostForm";
 
 export default async function Home() {

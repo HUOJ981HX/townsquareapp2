@@ -1,7 +1,6 @@
 export enum AccountType {
     Google = "Google",
     Email = "Email",
-    New = "New"
 }
 
 export enum Mood {

@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { redirect, RedirectType } from "next/navigation";
 
 export const doCredentialLogin = async (formData: FormData) => {
@@ -16,16 +16,26 @@ export const doCredentialLogin = async (formData: FormData) => {
   
         console.log("vvvvvvvvvv");
         console.log('sean_log response: ' + response);
-        redirect('/users', RedirectType.replace);
   
     } catch (err) {
         console.log("serverMethods_errorrrrrr");
+        console.log(err);
   
         throw err;
     }
+
+    redirect('/users', RedirectType.replace);
+
 };
   
 
 export async function doGoogleLogin() {
     await signIn("google", { redirectTo: "/users" });
+}
+
+
+export async function signOutAction() {
+    console.log('88888888888888888888');
+    await signOut({ redirectTo: "/authenticate", redirect: true })
+
 }
