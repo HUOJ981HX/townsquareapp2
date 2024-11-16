@@ -3,6 +3,7 @@
 import { useActionState } from 'react';
 import FormSubmit from './FormSubmit';
 import { Mood } from '@/types';
+import ImagePicker from '../ImagePicker';
 
 
 export default function PostForm({ action } : any) {
@@ -15,12 +16,13 @@ export default function PostForm({ action } : any) {
           <label htmlFor="title">Title</label>
           <input type="text" id="title" name="title" />
           <label htmlFor="image">Image</label>
-          <input
+          {/* <input
             type="file"
             accept="image/png, image/jpeg"
             id="image"
             name="image"
-          />
+          /> */}
+          <ImagePicker label="Your image" name="image" />
           <label htmlFor="description">Content</label>
           <textarea id="description" name="description" rows={5} />
 

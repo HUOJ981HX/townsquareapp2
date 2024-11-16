@@ -6,24 +6,11 @@ import { redirect } from 'next/navigation';
 // import { storePost } from '@/lib/posts';
 import { auth } from "@/auth";
 import { savePost } from '@/libs/prisma/posts';
+import { revalidatePath } from 'next/cache';
 
 export const createPostAction = async (prevState: any,formData: FormData) => {
 
     const session = await auth();
-  
-    const postDto: PostDto = {
-        userId: parseInt(session?.user?.id as string),
-        title: formData.get('title')?.toString(),
-        description: formData.get('description')?.toString(),
-        // image: formData.get('image') as any,
-        mood: formData.get('mood')?.toString(),
-    }
-
-    const result = await savePost(postDto);
-
-    console.log('vvvvvvvvvvvvvv');
-
-    console.log('sean_log result: ' + JSON.stringify(result));
 
     // let errors = [];
     // if (!title || title.trim().length === 0) {
@@ -39,18 +26,33 @@ export const createPostAction = async (prevState: any,formData: FormData) => {
     //     return { errors };
     // }
 
-    // let imageUrl;
+    let imageUrl;
 
-    // try {
-    //     console.log('zzzzzzzzzzzzzzzzzzzzzzz');
-    //     console.log('zzzzzzzzzzzzzzzzzzzzzzz');
-    //     imageUrl = await uploadImage(image);
-    //     console.log('sean_log: ' + imageUrl);
+    try {
+        imageUrl = await uploadImage(formData.get('image'));
 
-    // } catch (error) {
-    //     throw new Error(
-    //         'Image upload failed, post was not created. Please try again later.'
-    //     );
-    // }
+        const postDto: PostDto = {
+            userId: parseInt(session?.user?.id as string),
+            title: formData.get('title')?.toString(),
+            description: formData.get('description')?.toString(),
+            image: imageUrl,
+            mood: formData.get('mood')?.toString(),
+        }
+    
+        const result = await savePost(postDto);
+
+        console.log('666666666666666666');
+        console.log('666666666666666666');
+        console.log('sean_log result: ' + result);
+
+        revalidatePath('/');
+
+        return { status: 'success' };
+
+    } catch (error) {
+        throw new Error(
+            'Image upload failed, post was not created. Please try again later.'
+        );
+    }
 
 };
