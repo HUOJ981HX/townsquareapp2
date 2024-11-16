@@ -12,11 +12,8 @@ export default function PostForm({ action } : any) {
     <>
       <h1>Create a new post</h1>
       <form action={formAction}>
-        <p className="form-control">
           <label htmlFor="title">Title</label>
           <input type="text" id="title" name="title" />
-        </p>
-        <p className="form-control">
           <label htmlFor="image">Image</label>
           <input
             type="file"
@@ -24,11 +21,8 @@ export default function PostForm({ action } : any) {
             id="image"
             name="image"
           />
-        </p>
-        <p className="form-control">
           <label htmlFor="description">Content</label>
           <textarea id="description" name="description" rows={5} />
-        </p>
 
         <label htmlFor="mood">Mood</label>
         <select id="mood" name="mood">
@@ -39,16 +33,14 @@ export default function PostForm({ action } : any) {
             <option value={Mood.Sad}>{Mood.Sad}</option>
             <option value={Mood.Desperate}>{Mood.Desperate}</option>
         </select>
-        <p className="form-actions">
           <FormSubmit />
-        </p>
-        {state.errors && (
+        {/* {state.errors && (
           <ul className="form-errors">
             {state.errors.map((error: any) => (
               <li key={error}>{error}</li>
             ))}
           </ul>
-        )}
+        )} */}
       </form>
     </>
   );

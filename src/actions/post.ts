@@ -5,32 +5,41 @@ import { PostDto } from '@/types';
 import { redirect } from 'next/navigation';
 // import { storePost } from '@/lib/posts';
 import { auth } from "@/auth";
+import { savePost } from '@/libs/prisma/posts';
 
 export const createPostAction = async (prevState: any,formData: FormData) => {
 
-    const title = formData.get('title')?.toString();
-    const image = formData.get('image') as any;
-    const content = formData.get('content')?.toString();
-
-    let errors = [];
-
-    if (!title || title.trim().length === 0) {
-        errors.push('Title is required.');
+    const session = await auth();
+  
+    const postDto: PostDto = {
+        userId: parseInt(session?.user?.id as string),
+        title: formData.get('title')?.toString(),
+        description: formData.get('description')?.toString(),
+        // image: formData.get('image') as any,
+        mood: formData.get('mood')?.toString(),
     }
 
-    if (!content || content.trim().length === 0) {
-        errors.push('Content is required.');
-    }
+    const result = await savePost(postDto);
 
-    if (!image || image.size === 0) {
-        errors.push('Image is required.');
-    }
+    console.log('vvvvvvvvvvvvvv');
 
-    if (errors.length > 0) {
-        return { errors };
-    }
+    console.log('sean_log result: ' + JSON.stringify(result));
 
-    let imageUrl;
+    // let errors = [];
+    // if (!title || title.trim().length === 0) {
+    //     errors.push('Title is required.');
+    // }
+    // if (!content || content.trim().length === 0) {
+    //     errors.push('Content is required.');
+    // }
+    // if (!image || image.size === 0) {
+    //     errors.push('Image is required.');
+    // }
+    // if (errors.length > 0) {
+    //     return { errors };
+    // }
+
+    // let imageUrl;
 
     // try {
     //     console.log('zzzzzzzzzzzzzzzzzzzzzzz');
@@ -44,18 +53,4 @@ export const createPostAction = async (prevState: any,formData: FormData) => {
     //     );
     // }
 
-    const session = await auth();
-
-    // const postDto: PostDto = {
-
-    // }
-
-    // await storePost({
-    //   imageUrl: imageUrl,
-    //   title,
-    //   content,
-    //   userId: 1,
-    // });
-
-    redirect('/');
 };

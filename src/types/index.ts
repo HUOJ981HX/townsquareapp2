@@ -13,9 +13,9 @@ export enum Mood {
 }
 
 export interface PostDto {
-    userId: string;
-    title: string;
-    description?: string;
-    image?: string;
-    mood: string;
+    userId: number;
+    title: string | undefined;
+    description?: string | undefined;
+    image?: string | undefined;
+    mood: string | undefined;
 }
