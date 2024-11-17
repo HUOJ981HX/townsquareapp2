@@ -1,4 +1,4 @@
-import prisma from '@/libs/prisma';
+import prisma from '@/lib/prisma';
 import UserList from './components/UserList';
 
 async function Users() {

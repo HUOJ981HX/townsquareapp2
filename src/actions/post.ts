@@ -1,12 +1,13 @@
 'use server';
 
-import { uploadImage } from '@/libs/cloudinary';
+import { uploadImage } from '@/lib/cloudinary';
 import { PostDto } from '@/types';
 import { redirect } from 'next/navigation';
 // import { storePost } from '@/lib/posts';
 import { auth } from "@/auth";
-import { savePost } from '@/libs/prisma/posts';
+import { savePost } from '@/lib/prisma/posts';
 import { revalidatePath } from 'next/cache';
+import {  } from '@/lib/exceptions';
 
 export const createPostAction = async (prevState: any,formData: FormData) => {
 
@@ -27,6 +28,8 @@ export const createPostAction = async (prevState: any,formData: FormData) => {
     // }
 
     let imageUrl;
+
+    throw new Error('Username already taken');
 
     try {
         imageUrl = await uploadImage(formData.get('image'));

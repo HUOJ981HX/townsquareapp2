@@ -3,7 +3,8 @@ import { redirect } from "next/navigation";
 import { createPostAction } from "../actions/post";
 import PostForm from "./components/post/PostForm";
 import Posts from "./components/post/Posts";
-import prisma from "@/libs/prisma"
+import prisma from "@/lib/prisma"
+import ClientErrorButton from "./components/Button";
 
 export default async function Home() {
 
@@ -11,8 +12,6 @@ export default async function Home() {
 
   if (!session?.user) redirect("/authenticate");
 
-  console.log('1111111111111111111111');
-  console.log(session);
   const posts = await prisma.post.findMany({
     select: {
       id: true,
@@ -26,6 +25,7 @@ export default async function Home() {
 
   return (
     <div>
+      <ClientErrorButton />
       <PostForm action={createPostAction} />
       <Posts posts={posts} />
     </div>

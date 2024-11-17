@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SignOutButton from "./components/SignOutButton";
+import { ErrorProvider } from '@/context/ErrorContext';
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SignOutButton />
-        {children}
+        <ErrorProvider>
+          <SignOutButton />
+          {children}
+          <Toaster />
+        </ErrorProvider>
       </body>
     </html>
   );
