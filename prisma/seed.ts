@@ -88,6 +88,35 @@ async function main() {
     },
   });
 
+  const userAttributes = [
+    {
+      userId: 1,
+      description: 'Enthusiastic software engineer',
+      age: 25,
+      gender: 'Male',
+      help: 'need with with coding issue'
+    },
+    {
+      userId: 2,
+      description: 'Creative graphic designer',
+      age: 29,
+      gender: 'Female',
+      collaboration: 'work on a project together'
+    },
+    {
+      userId: 3,
+      description: 'Passionate data scientist',
+      age: 32,
+      gender: 'Non-binary',
+      relashionship: 'looking for someone'
+    },
+  ];
+
+  for (const attributes of userAttributes) {
+    await prisma.userAttributes.create({
+      data: attributes,
+    });
+  }
 
   await prisma.post.createMany({
     data: [
