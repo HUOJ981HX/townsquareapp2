@@ -19,3 +19,34 @@ export interface PostDto {
     image?: string | undefined;
     mood: string | undefined;
 }
+
+// interface UserAttributesFilter {
+//     gender?: string;
+//     age?: number;
+//     friendship?: { not: null; notEmpty?: true };
+//     collaboration?: { not: null; notEmpty?: true };
+// }
+
+// export interface UserFilter {
+//     username: string;
+//     accountType: string;
+//     userAttributes?: UserAttributesFilter;
+// }
+
+interface UserAttributesFilter {
+    gender?: string;
+    age?: number;
+    friendship?: { not: null; };
+    collaboration?: { not: null; };
+    relationship?: { not: null; };
+  }
+  
+ export interface UserFilter {
+    username?: string | { not: null; };
+    accountType?: string;
+    publicId?: string;
+    userAttributes?: {
+      is: UserAttributesFilter;
+    };
+  }
+  

@@ -1,8 +1,8 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { createPostAction } from "../actions/post";
-import PostForm from "./components/post/PostForm";
-import Posts from "./components/post/Posts";
+import PostForm from "./components/posts/PostForm";
+import Posts from "./components/posts/Posts";
 import prisma from "@/lib/prisma"
 import ClientErrorButton from "./components/Button";
 

@@ -17,7 +17,7 @@ model User {
   id        Int      @id @default(autoincrement())
   publicId  String
   username  String
-  email     String   @unique
+  email     String
   password  String?
   createdAt DateTime @default(now())
   messages  Message[]
@@ -29,17 +29,17 @@ model User {
 }
 
 model UserAttributes {
-    id          Int     @id @default(autoincrement())
-    age         Int?
-    gender      String?
-    description String?
-    friendship  String?
-    relashionship String?
-    job         String?
-    collaboration String?
-    help        String?
-    userId      Int     @unique
-    user        User    @relation("UserToUserAttributes", fields: [userId], references: [id])
+  id          Int     @id @default(autoincrement())
+  age         Int?
+  gender      String?
+  description String?
+  friendship  String?
+  relationship String?
+  job         String?
+  collaboration String?
+  help        String?
+  userId      Int     @unique
+  user        User    @relation("UserToUserAttributes", fields: [userId], references: [id])
 }
 
 model Post {

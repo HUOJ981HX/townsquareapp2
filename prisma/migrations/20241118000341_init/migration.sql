@@ -5,7 +5,7 @@ CREATE TABLE `UserAttributes` (
     `gender` VARCHAR(191) NULL,
     `description` VARCHAR(191) NULL,
     `friendship` VARCHAR(191) NULL,
-    `relashionship` VARCHAR(191) NULL,
+    `relationship` VARCHAR(191) NULL,
     `job` VARCHAR(191) NULL,
     `collaboration` VARCHAR(191) NULL,
     `help` VARCHAR(191) NULL,

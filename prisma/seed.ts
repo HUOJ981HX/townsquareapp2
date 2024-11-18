@@ -108,7 +108,7 @@ async function main() {
       description: 'Passionate data scientist',
       age: 32,
       gender: 'Non-binary',
-      relashionship: 'looking for someone'
+      relationship: 'looking for someone'
     },
   ];
 
