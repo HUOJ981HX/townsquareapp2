@@ -14,40 +14,40 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  publicId  String
-  username  String
-  email     String
-  password  String?
-  createdAt DateTime @default(now())
-  messages  Message[]
-  userConversations UserConversation[]
-  lastOnline  DateTime @default(now())
-  posts     Post[]
-  accountType String
-  userAttributes UserAttributes? @relation("UserToUserAttributes")
+    id              Int      @id @default(autoincrement())
+    publicId        String
+    username        String
+    email           String
+    password        String?
+    createdAt       DateTime @default(now())
+    messages        Message[]
+    userConversations UserConversation[]
+    lastOnline      DateTime @default(now())
+    posts           Post[]
+    accountType     String
+    userAttributes  UserAttributes?
 }
 
 model UserAttributes {
-  id          Int     @id @default(autoincrement())
-  age         Int?
-  gender      String?
-  description String?
-  friendship  String?
-  job         String?
-  collaboration String?
-  help        String?
-  userId      Int     @unique
-  user        User    @relation("UserToUserAttributes", fields: [userId], references: [id])
-  relationship Relationship? @relation("UserAttributesToRelationship")
+    id              Int     @id @default(autoincrement())
+    age             Int?
+    gender          String?
+    description     String?
+    friendship      String?
+    job             String?
+    collaboration   String?
+    help            String?
+    userId          Int     @unique
+    user            User    @relation(fields: [userId], references: [id])
+    relationship    Relationship?
 }
 
 model Relationship {
-  id          Int     @id @default(autoincrement())
-  userAttributesId  Int   @unique
-  userAttributes  UserAttributes  @relation("UserAttributesToRelationship", fields: [userAttributesId], references: [id])
-  description String
-  openTo      String
+    id                  Int     @id @default(autoincrement())
+    userAttributesId    Int     @unique
+    userAttributes      UserAttributes @relation(fields: [userAttributesId], references: [id])
+    description         String
+    openTo              String
 }
 
 model Post {

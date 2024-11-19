@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import Users from '../../components/users/Users';
+import { IUser } from '@/types';
 
 async function UsersPage() {
     // const users = await prisma.user.findMany({
@@ -16,15 +17,55 @@ async function UsersPage() {
     //     },
     //   });
 
+    let queryObj: IUser = {
+        username: "Alice",
+        accountType: "Email",
+        userAttributes: {
+            AND: [
+                {
+                    gender: "Male",
+                },
+                {
+                    age: 25,
+                },
+                {
+                    relationship: {
+                        AND: [
+                            {
+                                description: "looking for someone",
+                            },
+                            {
+                                openTo: "female, non-binary",
+                            },
+                        ],
+                    },
+                },
+            ],
+        },
+        posts: {
+            some: {
+                AND: [
+                    {
+                        title: "tech opportunities"
+                    },
+                    {
+                        description: "Exploring new opportunities in tech."
+                    }
+                ]
+            }
+        }
+    };
+
     const users = await prisma.user.findMany({
+        where: queryObj,
         include: {
             userAttributes: {
-              include: {
-                relationship: true, // Include the related relationship data
-              },
+                include: {
+                    relationship: true, // Include the related relationship data
+                },
             },
-          },
-      });
+        },
+    });
 
     return (
         <div className="p-6">

@@ -1,5 +1,4 @@
 import prisma from '@/lib/prisma'
-import { UserFilter } from '@/types';
 import Link from 'next/link';
 import React from 'react'
 

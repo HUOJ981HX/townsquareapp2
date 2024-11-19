@@ -33,20 +33,33 @@ export interface PostDto {
 //     userAttributes?: UserAttributesFilter;
 // }
 
-interface UserAttributesFilter {
-    gender?: string;
-    age?: number;
-    friendship?: { not: null; };
-    collaboration?: { not: null; };
-    relationship?: { not: null; };
-  }
-  
- export interface UserFilter {
-    username?: string | { not: null; };
-    accountType?: string;
-    publicId?: string;
-    userAttributes?: {
-      is: UserAttributesFilter;
+export interface IRelationship {
+    AND: {
+        description?: string;
+        openTo?: string;
+    }[];
+}
+
+export interface IUserAttribute {
+    AND: {
+        gender?: string;
+        age?: number;
+        relationship?: IRelationship;
+    }[];
+}
+
+export interface IPost {
+    some: {
+        AND: {
+            title?: string;
+            description?: string;
+        }[];
     };
-  }
-  
+}
+
+export interface IUser {
+    username: string;
+    accountType: string;
+    userAttributes: IUserAttribute;
+    posts: IPost;
+}

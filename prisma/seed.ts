@@ -132,6 +132,7 @@ async function main() {
         userId: 1,
         title: 'tech opportunities',
         description: "Exploring new opportunities in tech.",
+        mood: Mood.Angry,
       },
       {
         userId: 1,
