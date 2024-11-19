@@ -1,5 +1,5 @@
+import { doCredentialLogin } from '@/actions/authenticate'
 import React from 'react'
-import { doCredentialLogin } from '../../../actions/authenticate'
 
 function Login() {
   return (

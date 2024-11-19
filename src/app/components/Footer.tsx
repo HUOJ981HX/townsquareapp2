@@ -3,7 +3,7 @@ import React from 'react'
 
 function Footer() {
   return (
-    <div>
+    <div className='flex'>
         <Link href="/">Posts</Link>
         <Link href="/users">Users</Link>
         <Link href="/chat">Chat</Link>

@@ -83,9 +83,10 @@ export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
                     console.log("222_credentials");
                     console.log(JSON.stringify(credentials));
 
-                    const user = await prisma.user.findUnique({
+                    const user = await prisma.user.findFirst({
                         where: {
                             email: credentials.email,
+                            accountType: AccountType.Email
                         },
                     });
 

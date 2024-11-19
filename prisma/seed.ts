@@ -108,7 +108,6 @@ async function main() {
       description: 'Passionate data scientist',
       age: 32,
       gender: 'Non-binary',
-      relationship: 'looking for someone'
     },
   ];
 
@@ -117,6 +116,15 @@ async function main() {
       data: attributes,
     });
   }
+
+  await prisma.relationship.create({
+    data:
+    {
+      userAttributesId: 1,
+      description: 'looking for someone',
+      openTo: 'female, non-binary'
+    }
+  });
 
   await prisma.post.createMany({
     data: [

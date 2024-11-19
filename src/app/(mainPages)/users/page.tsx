@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import Users from '../components/users/Users';
+import Users from '../../components/users/Users';
 
 async function UsersPage() {
     // const users = await prisma.user.findMany({
@@ -10,10 +10,20 @@ async function UsersPage() {
     //     },
     // });
 
+    // const users = await prisma.user.findMany({
+    //     include: {
+    //       userAttributes: true, // Include the related UserAttributes data
+    //     },
+    //   });
+
     const users = await prisma.user.findMany({
         include: {
-          userAttributes: true, // Include the related UserAttributes data
-        },
+            userAttributes: {
+              include: {
+                relationship: true, // Include the related relationship data
+              },
+            },
+          },
       });
 
     return (

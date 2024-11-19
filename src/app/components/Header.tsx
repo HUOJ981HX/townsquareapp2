@@ -1,12 +1,14 @@
+import Link from 'next/link'
 import React from 'react'
 
 function Header() {
   return (
-    <div>
+    <div className='flex'>
         <p>Terms</p>
 
         {/* post and users page */}
-        <p>Filter</p>
+        <Link href={"/filter"}>Filter</Link>
+        {/* <p>Filter</p> */}
         {/* post page */}
         <p>Post</p> 
 

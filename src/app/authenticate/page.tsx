@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Login from './components/Login';
 import Register from './components/Register';
-import { doGoogleLogin } from '../../actions/authenticate';
+import { doGoogleLogin } from '@/actions/authenticate';
 
 function AuthenticatePage() {
 
