@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { postCriteriaIntentType } from '@/constants/filter'
+import { postCriteriaIntentType } from '@/helper/post'
 import Link from 'next/link'
 import React from 'react'
 

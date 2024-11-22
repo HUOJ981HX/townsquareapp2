@@ -5,23 +5,32 @@ import BaseModal from '@/app/components/BaseModal';
 import PostCriteria from '@/app/components/PostCriteria';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider'
-import { work } from '@/constants/filter';
-import React, { useState } from 'react'
+import { work } from '@/helper/post';
+import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 
 function Filter({params} : any) {
     const [sliderValue, setSliderValue] = useState(33);
     const [isOpen, setIsOpen] = useState(false);
-    const [postFilterValue, setPostFilterValue] = useState< null | { postFilterDisplayString: string, queryRole: string }>(null);
-
-    console.log('vvvvvvvvvvvvvvvvvvv');
-    console.log('vvvvvvvvvvvvvvvvvvv');
-
-    console.log('sean_log ___: ' + JSON.stringify(useSearchParams().get('purpose')));
+    const [postFilter, setPostFilter] = useState< { postFilterDisplay: string, postFilterQueryRole: string }>({
+        postFilterDisplay: '',  // Initialize with empty string instead of null
+        postFilterQueryRole: ''
+      });
+    
     const handleSliderChange = (value: any) => {
         setSliderValue(value);
     };
+
+
+    // useEffect(() => {
+      
+    //     console.log('cccccccccccccccccccc');
+    //     console.log('cccccccccccccccccccc');
+    //     console.log('cccccccccccccccccccc');
+    //     console.log('sean_log postFilter: ' + JSON.stringify(postFilter));
+    // }, [postFilter])
+    
 
     return (
         <>
@@ -56,11 +65,11 @@ function Filter({params} : any) {
                                 <label htmlFor="UserAttributesNonBinary">Non binary</label>
                             </div>
 
-                            {/* <input type="hidden" id="postFilterValue" name="postFilterValue" value={`${useSearchParams().get('purpose')}:${postFilterValue?.postFilterDisplayString}`} /> */}
+                            {/* <input type="hidden" id="postFilter" name="postFilter" value={`${useSearchParams().get('purpose')}:${postFilter?.postFilterDisplay}`} /> */}
 
-                            <input type="hidden" id="postFilterValue" name="postFilterValue" value={postFilterValue?.postFilterDisplayString} />
+                            <input type="hidden" id="postFilter" name="postFilter" value={postFilter?.postFilterDisplay} />
 
-                            <input type="hidden" id="postFilterValueRole" name="postFilterValueRole" value={postFilterValue?.queryRole} />
+                            <input type="hidden" id="postFilterQueryRole" name="postFilterQueryRole" value={postFilter?.postFilterQueryRole} />
 
                             {/* <div>
                             <h2>Is this for a relationship?</h2>
@@ -70,7 +79,7 @@ function Filter({params} : any) {
                             <label htmlFor="genderForRelationship">Yes</label>
                         </div> */}
                             <div>
-                                {postFilterValue && <p>{postFilterValue?.postFilterDisplayString}</p>}
+                                {postFilter && <p>{postFilter?.postFilterDisplay}</p>}
                                 <Button onClick={() => {
                                     setIsOpen(prevState => {
                                         return !prevState
@@ -90,7 +99,7 @@ function Filter({params} : any) {
                         <h2>Post attributes</h2>
                         <p>?</p>
                     </div>
-                    <PostCriteria setPostFilterValue={setPostFilterValue} purpose={useSearchParams().get('purpose')} setIsOpen={setIsOpen} isOpen={isOpen} />
+                    <PostCriteria setPostFilter={setPostFilter} purpose={useSearchParams().get('purpose')} setIsOpen={setIsOpen} isOpen={isOpen} />
                 </div>
             </div>
             {/* <PostCriteria questions={work} /> */}

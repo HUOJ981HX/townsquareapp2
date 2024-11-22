@@ -19,17 +19,26 @@ export const filterPostRoles = {
     BOTH: 'both'
 }
 
-export const getFilterOrPostRole = ({category, purpose, chosenRole} : any) => {
+export const getFilterQueryRole = ({category, purpose, role} : any) => {
+    // category: work, relationship, etc.
+    // purpose: filter or post
+    // role: provider, seeker or both
+
+    console.log('ggggggggggggggggggggggg');
+    console.log('ggggggggggggggggggggggg');
+    console.log('sean_log category: ' + category);
+    console.log('sean_log purpose: ' + purpose);
+    console.log('sean_log chosenRole: ' + role);
     if (purpose === postCriteriaIntentType.FILTER) {
         if (filterPostMatcher.opposite.includes(category)) { 
-            if (chosenRole === filterPostRoles.SEEKER) {
+            if (role === filterPostRoles.SEEKER) {
                 return filterPostRoles.PROVIDER;
             }
             return filterPostRoles.SEEKER
         }
         return filterPostRoles.BOTH;
     }
-    return chosenRole;
+    return role;
 }
 
 export const filterPostMatcher = {

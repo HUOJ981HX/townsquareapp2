@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+"use client"
+
+import React, { useState, useCallback, useEffect } from 'react';
 
 import {
     Dialog,
@@ -11,17 +13,17 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { filterCategories, filterCategoriesArray, filterPostRoles, getFilterOrPostRole, personals, work } from '@/constants/filter';
+import { filterCategories, filterCategoriesArray, filterPostRoles, getFilterQueryRole, personals, work } from '@/helper/post';
 import { concatenatePostFilterArray } from '@/helper/index';
 
-const PostCriteria = ({ setPostFilterValue, purpose, setIsOpen, isOpen }: any) => {
+const PostCriteria = ({ setPostFilter, purpose, setIsOpen, isOpen }: any) => {
     // const [isOpen, setIsOpen] = useState(false);
     const [currentStep, setCurrentStep] = useState(0);
     const [responses, setResponses] = useState([] as any);
     const [currentResponse, setCurrentResponse] = useState(null as any);
     const [questions, setQuestions] = useState([] as any);
     const [showSequence, setShowSequence] = useState(false);
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState(filterPostRoles.BOTH);
     const [category, setCategory] = useState("");
 
     const handleOptionSelect = (value: any) => {
@@ -38,6 +40,12 @@ const PostCriteria = ({ setPostFilterValue, purpose, setIsOpen, isOpen }: any) =
         }
     };
 
+    useEffect(() => {
+      console.log('eeeeeeeeeeeeeeeeeeeeee');
+      console.log('eeeeeeeeeeeeeeeeeeeeee');
+      console.log('sean_log responses: ' + responses);
+    }, [responses])
+    
 
     const handleNext = () => {
         setResponses([...responses, currentResponse]);
@@ -61,20 +69,32 @@ const PostCriteria = ({ setPostFilterValue, purpose, setIsOpen, isOpen }: any) =
         }
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = useCallback(() => {
         const finalResponses = [...responses, currentResponse];
         const postFilterArrayString = concatenatePostFilterArray(finalResponses);
-        const queryRole = getFilterOrPostRole({category, purpose, role})
-        console.log("Final responses queryRolequeryRolequeryRole:", queryRole);
+        const postFilterQueryRole = getFilterQueryRole({ category, purpose, role });
         setIsOpen(false);
         setCurrentStep(0);
         setResponses([]);
         setCurrentResponse(null);
-        setPostFilterValue({
-            postFilterDisplayString: postFilterArrayString,
-            queryRole
+        setPostFilter({
+            postFilterDisplay: postFilterArrayString,
+            postFilterQueryRole: postFilterQueryRole
         });
-    };
+    }, [
+        responses,
+        currentResponse,
+        concatenatePostFilterArray,
+        getFilterQueryRole,
+        category,
+        purpose,
+        role,
+        setIsOpen,
+        setCurrentStep,
+        setResponses,
+        setCurrentResponse,
+        setPostFilter
+    ]);
 
     const handleModalClose = () => {
         setIsOpen(false);
@@ -99,7 +119,7 @@ const PostCriteria = ({ setPostFilterValue, purpose, setIsOpen, isOpen }: any) =
                     {options.map((option: any) => {
 
                         const optionText = option.title ? option.title : option;
-                
+
                         return (
                             <div key={optionText} className="flex items-center space-x-2">
                                 <Checkbox
@@ -107,13 +127,16 @@ const PostCriteria = ({ setPostFilterValue, purpose, setIsOpen, isOpen }: any) =
                                     checked={Array.isArray(currentResponse) && currentResponse.includes(optionText)}
                                     onCheckedChange={() => {
                                         if (option.title) {
+                                            console.log('1111111111111111111111');
+                                            console.log('sean_log option.value: ' + option.value);
                                             setRole(option.value);
                                         }
-                                        else {
-                                            setRole(filterPostRoles.BOTH)
-                                        }
+                                        // else {
+                                        //     console.log('2222222222222222');
+                                        //     setRole(filterPostRoles.BOTH)
+                                        // }
 
-                                        handleOptionSelect(optionText)
+                                        handleOptionSelect(optionText);
                                     }}
                                 />
                                 <Label htmlFor={optionText}>{optionText}</Label>
@@ -127,15 +150,35 @@ const PostCriteria = ({ setPostFilterValue, purpose, setIsOpen, isOpen }: any) =
         return (
             <RadioGroup
                 value={currentResponse}
-                onValueChange={handleOptionSelect}
+                onValueChange={(optionText) => {
+                    const selectedOption = options.find(
+                        (option: any) => (option.title ? option.title : option) === optionText
+                    );
+
+                    if (selectedOption?.title) {
+                        console.log('3333333333333333');
+                        console.log('sean_log selectedOption.value: ' + selectedOption.value);
+                        setRole(selectedOption.value);
+                    }              
+                    // else {
+                    //     console.log('444444444444444444');
+                    //     setRole(filterPostRoles.BOTH);
+                    // }
+
+                    handleOptionSelect(optionText);
+                }}
                 className="space-y-4"
             >
-                {options.map((option: any) => (
-                    <div key={option} className="flex items-center space-x-2">
-                        <RadioGroupItem value={option} id={option} />
-                        <Label htmlFor={option}>{option}</Label>
-                    </div>
-                ))}
+                {options.map((option: any) => {
+                    const optionText = option.title ? option.title : option;
+
+                    return (
+                        <div key={optionText} className="flex items-center space-x-2">
+                            <RadioGroupItem value={optionText} id={optionText} />
+                            <Label htmlFor={optionText}>{optionText}</Label>
+                        </div>
+                    );
+                })}
             </RadioGroup>
         );
     };
@@ -184,7 +227,7 @@ const PostCriteria = ({ setPostFilterValue, purpose, setIsOpen, isOpen }: any) =
                                         onClick={handleSubmit}
                                         disabled={!isResponseValid()}
                                     >
-                                        Submit
+                                        Submit modal
                                     </Button>
                                 )}
                             </div>
@@ -219,7 +262,7 @@ const PostCriteria = ({ setPostFilterValue, purpose, setIsOpen, isOpen }: any) =
                             }}
                             disabled={!questions.length}
                         >
-                            Submit
+                            Submit criteria
                         </Button>
                     </div>
                 }
