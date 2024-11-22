@@ -53,6 +53,7 @@ export interface IPost {
         AND: {
             title?: string;
             description?: string;
+            postFilter?: string;
         }[];
     };
 }

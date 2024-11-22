@@ -5,19 +5,21 @@ import BaseModal from '@/app/components/BaseModal';
 import PostCriteria from '@/app/components/PostCriteria';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider'
+import { work } from '@/constants/filter';
 import React, { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
-function Filter() {
+
+function Filter({params} : any) {
     const [sliderValue, setSliderValue] = useState(33);
-    const [postCriteria, setPostCriteria] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [postFilterValue, setPostFilterValue] = useState< null | { postFilterDisplayString: string, queryRole: string }>(null);
 
+    console.log('vvvvvvvvvvvvvvvvvvv');
+    console.log('vvvvvvvvvvvvvvvvvvv');
+
+    console.log('sean_log ___: ' + JSON.stringify(useSearchParams().get('purpose')));
     const handleSliderChange = (value: any) => {
-
-        console.log('vvvvvvvvvvvvvvvvvvv');
-        console.log('vvvvvvvvvvvvvvvvvvv');
-        console.log('sean_log value: ' + value);
-        console.log('sean_log ___: ' + JSON.stringify(value));
         setSliderValue(value);
     };
 
@@ -54,6 +56,12 @@ function Filter() {
                                 <label htmlFor="UserAttributesNonBinary">Non binary</label>
                             </div>
 
+                            {/* <input type="hidden" id="postFilterValue" name="postFilterValue" value={`${useSearchParams().get('purpose')}:${postFilterValue?.postFilterDisplayString}`} /> */}
+
+                            <input type="hidden" id="postFilterValue" name="postFilterValue" value={postFilterValue?.postFilterDisplayString} />
+
+                            <input type="hidden" id="postFilterValueRole" name="postFilterValueRole" value={postFilterValue?.queryRole} />
+
                             {/* <div>
                             <h2>Is this for a relationship?</h2>
                             <input type="radio" id="genderForGeneral" name="genderIsRelationship" value="noRelationship" />
@@ -61,13 +69,15 @@ function Filter() {
                             <input type="radio" id="genderForRelationship" name="genderIsRelationship" value="yesRelationship" />
                             <label htmlFor="genderForRelationship">Yes</label>
                         </div> */}
-                            <Button onClick={() => {
-                                setIsOpen(prevState => {
-                                    return !prevState
-                                })
-                            }}>Add criteria</Button>
+                            <div>
+                                {postFilterValue && <p>{postFilterValue?.postFilterDisplayString}</p>}
+                                <Button onClick={() => {
+                                    setIsOpen(prevState => {
+                                        return !prevState
+                                    })
+                                }}>Add criteria</Button>
+                            </div>
                         </div>
-
                         <div>
 
                         </div>
@@ -80,14 +90,10 @@ function Filter() {
                         <h2>Post attributes</h2>
                         <p>?</p>
                     </div>
-                    <form>
-
-                    </form>
+                    <PostCriteria setPostFilterValue={setPostFilterValue} purpose={useSearchParams().get('purpose')} setIsOpen={setIsOpen} isOpen={isOpen} />
                 </div>
             </div>
-            <BaseModal isOpen={isOpen} setIsOpen={setIsOpen}>
-                <PostCriteria setPostCriteria={setPostCriteria} />
-            </BaseModal>
+            {/* <PostCriteria questions={work} /> */}
         </>
     )
 }

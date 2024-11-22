@@ -26,6 +26,7 @@ model User {
     posts           Post[]
     accountType     String
     userAttributes  UserAttributes?
+    mood            String?
 }
 
 model UserAttributes {
@@ -58,7 +59,8 @@ model Post {
     description         String?
     image               String?
     createdAt           DateTime               @default(now())
-    mood                String?
+    postFilter          String?
+    role                String?
 }
 
 model Conversation {

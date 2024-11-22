@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import React from 'react'
 
 function BaseModal({children, isOpen, setIsOpen} : any) {
@@ -7,7 +8,8 @@ function BaseModal({children, isOpen, setIsOpen} : any) {
   }
   return (
     <div>
-      <h1>Modal</h1>
+      <h1>BaseModal</h1>
+      <Button onClick={() => {setIsOpen(false)}}>Close</Button>
       { children }
     </div>
   )
