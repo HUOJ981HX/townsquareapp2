@@ -134,30 +134,30 @@ async function main() {
         title: 'tech opportunities',
         description: "Exploring new opportunities in tech.",
         mood: Mood.Angry,
-        postFilterDisplay: filterPostRoles.PROVIDER,
-        postFilterQueryRole: 'work > looking > Service, Manufacturing > 50-75k'
+        postFilterQueryRole: filterPostRoles.PROVIDER,
+        postFilterDisplay: 'work > looking > Service, Manufacturing > 50-75k'
       },
       {
         userId: 1,
         title: 'Web3 projects',
         description: "Excited about Web3 projects.",
-        postFilterDisplay: filterPostRoles.BOTH,
-        postFilterQueryRole: 'personals > Friends > Female'
+        postFilterQueryRole: filterPostRoles.BOTH,
+        postFilterDisplay: 'personals > Friends > Female'
       },
       {
         userId: 2,
         title: 'teach programming',
         mood: Mood.Happy,
-        postFilterDisplay: filterPostRoles.BOTH,
-        postFilterQueryRole: 'personals > Relationship, Friends, Casual > Male, Female, nonBinary'
+        postFilterQueryRole: filterPostRoles.BOTH,
+        postFilterDisplay: 'personals > Relationship, Friends, Casual > Male, Female, nonBinary'
       },
       {
         userId: 3,
         title: 'founder',
         description: "Sharing my journey as a startup founder.",
         mood: Mood.Surprised,
-        postFilterDisplay: filterPostRoles.SEEKER,
-        postFilterQueryRole: 'work > looking > Manufacturing, Accounting, Service, Tech > over 100k'
+        postFilterQueryRole: filterPostRoles.SEEKER,
+        postFilterDisplay: 'work > looking > Manufacturing, Accounting, Service, Tech > over 100k'
       },
     ],
   });

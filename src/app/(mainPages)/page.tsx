@@ -12,16 +12,35 @@ export default async function Home() {
 
   if (!session?.user) redirect("/authenticate");
 
+  let queryObj = {
+    description: "Exploring new opportunities in tech.",
+    postFilterDisplay: {
+      contains: "work > looking > Service, Manufacturing > ",
+    },
+    user: {
+      username: "Alice",
+      accountType: "Email",
+      userAttributes: {
+        gender: "Male",
+        age: 25,
+      },
+    },
+  };
+
   const posts = await prisma.post.findMany({
-    select: {
-      id: true,
-      title: true,
-      userId: true,
-      image: true,
-      createdAt: true,
-      mood: true,
-    }
-  })
+      where: queryObj,
+  });
+
+  // const posts = await prisma.post.findMany({
+  //   select: {
+  //     id: true,
+  //     title: true,
+  //     userId: true,
+  //     image: true,
+  //     createdAt: true,
+  //     mood: true,
+  //   }
+  // })
 
   return (
     <div>

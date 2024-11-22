@@ -10,18 +10,17 @@ import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 
-function Filter({params} : any) {
+function Filter() {
     const [sliderValue, setSliderValue] = useState(33);
     const [isOpen, setIsOpen] = useState(false);
     const [postFilter, setPostFilter] = useState< { postFilterDisplay: string, postFilterQueryRole: string }>({
         postFilterDisplay: '',  // Initialize with empty string instead of null
         postFilterQueryRole: ''
-      });
+    });
     
     const handleSliderChange = (value: any) => {
         setSliderValue(value);
     };
-
 
     // useEffect(() => {
       
@@ -40,7 +39,7 @@ function Filter({params} : any) {
                         <h2>User attributes</h2>
                         <p>?</p>
                     </div>
-                    <form action={doFilterSubmit}>
+                    <form action={(formData) => doFilterSubmit(formData)}>
                         <div>
                             <Slider
                                 defaultValue={[33]}
@@ -70,21 +69,20 @@ function Filter({params} : any) {
                             <input type="hidden" id="postFilter" name="postFilter" value={postFilter?.postFilterDisplay} />
 
                             <input type="hidden" id="postFilterQueryRole" name="postFilterQueryRole" value={postFilter?.postFilterQueryRole} />
-
                             {/* <div>
-                            <h2>Is this for a relationship?</h2>
-                            <input type="radio" id="genderForGeneral" name="genderIsRelationship" value="noRelationship" />
-                            <label htmlFor="genderForGeneral">No</label>
-                            <input type="radio" id="genderForRelationship" name="genderIsRelationship" value="yesRelationship" />
-                            <label htmlFor="genderForRelationship">Yes</label>
-                        </div> */}
+                                <h2>Is this for a relationship?</h2>
+                                <input type="radio" id="genderForGeneral" name="genderIsRelationship" value="noRelationship" />
+                                <label htmlFor="genderForGeneral">No</label>
+                                <input type="radio" id="genderForRelationship" name="genderIsRelationship" value="yesRelationship" />
+                                <label htmlFor="genderForRelationship">Yes</label>
+                            </div> */}
                             <div>
                                 {postFilter && <p>{postFilter?.postFilterDisplay}</p>}
-                                <Button onClick={() => {
+                                <p onClick={() => {
                                     setIsOpen(prevState => {
                                         return !prevState
                                     })
-                                }}>Add criteria</Button>
+                                }}>Add criteria</p>
                             </div>
                         </div>
                         <div>
