@@ -1,3 +1,4 @@
+import { filterPostRoles } from "@/helper/post";
 import { AccountType, Mood } from "@/types";
 import { PrismaClient } from "@prisma/client";
 
@@ -133,35 +134,33 @@ async function main() {
         title: 'tech opportunities',
         description: "Exploring new opportunities in tech.",
         mood: Mood.Angry,
+        postFilterDisplay: filterPostRoles.PROVIDER,
+        postFilterQueryRole: 'work > looking > Service, Manufacturing > 50-75k'
       },
       {
         userId: 1,
         title: 'Web3 projects',
         description: "Excited about Web3 projects.",
+        postFilterDisplay: filterPostRoles.BOTH,
+        postFilterQueryRole: 'personals > Friends > Female'
       },
-    ],
-  });
-  await prisma.post.createMany({
-    data: [
       {
         userId: 2,
         title: 'teach programming',
         mood: Mood.Happy,
+        postFilterDisplay: filterPostRoles.BOTH,
+        postFilterQueryRole: 'personals > Relationship, Friends, Casual > Male, Female, nonBinary'
       },
-    ],
-  });
-
-  await prisma.post.createMany({
-    data: [
       {
         userId: 3,
         title: 'founder',
         description: "Sharing my journey as a startup founder.",
-        mood: Mood.Surprised
+        mood: Mood.Surprised,
+        postFilterDisplay: filterPostRoles.SEEKER,
+        postFilterQueryRole: 'work > looking > Manufacturing, Accounting, Service, Tech > over 100k'
       },
     ],
   });
-
 }
 
 main()
