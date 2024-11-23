@@ -82,7 +82,3 @@ export interface IUserQuery extends IUserTable {
         }
     };
 }
-
-export interface IPostQuery {
-
-}

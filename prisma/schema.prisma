@@ -6,6 +6,11 @@
 
 generator client {
   provider = "prisma-client-js"
+  output = "../../node_modules/.prisma/client"
+}
+
+generator zod {
+  provider = "prisma-zod-generator"
 }
 
 datasource db {

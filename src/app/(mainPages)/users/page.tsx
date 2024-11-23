@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import Users from '../../components/users/Users';
-import { IUserQuery } from '@/types';
+import { Prisma, PrismaClient } from '@prisma/client';
+
 
 async function UsersPage() {
     // const users = await prisma.user.findMany({
@@ -17,7 +18,7 @@ async function UsersPage() {
     //     },
     //   });
 
-    let queryObj: IUserQuery = {
+    let queryObj: Prisma.UserWhereInput = { // IUserQuery
         username: "Alice",
         accountType: "Email",
         userAttributes: {

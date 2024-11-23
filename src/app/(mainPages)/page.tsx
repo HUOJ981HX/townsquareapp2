@@ -5,6 +5,7 @@ import PostForm from "../components/posts/PostForm";
 import Posts from "../components/posts/Posts";
 import prisma from "@/lib/prisma"
 import ClientErrorButton from "../components/Button";
+import { Prisma } from "@prisma/client";
 
 export default async function Home() {
 
@@ -12,7 +13,7 @@ export default async function Home() {
 
   if (!session?.user) redirect("/authenticate");
 
-  let queryObj = {
+  let queryObj: Prisma.PostWhereInput = {
     description: "Exploring new opportunities in tech.",
     postFilterDisplay: {
       contains: "work > looking > Service, Manufacturing > 50-75k",
