@@ -31,6 +31,15 @@ model User {
     accountType     String
     userAttributes  UserAttributes?
     filter          Json?
+    filters         Filters[]
+}
+
+model Filters {
+    id              Int       @id @default(autoincrement())
+    userId          Int                    
+    user            User      @relation(fields: [userId], references: [id])
+    postFilter      Json?
+    userFilter      Json?
 }
 
 model UserAttributes {

@@ -12,6 +12,12 @@ export enum Mood {
     Desperate = "Desperate",
 }
 
+export enum Gender {
+    Female = "Female",
+    Male = "Male",
+    NonBinary = "Non-binary"
+}
+
 export interface PostDto {
     userId: number;
     title: string | undefined;

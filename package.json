@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx prisma/seed.ts",
-    "postinstall": "prisma generate"
+    "update": "rm -rf node_modules/.prisma && rm -rf node_modules && npm install && npx prisma migrate reset && npx prisma migrate dev --name init && npx prisma generate && npm run seed"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

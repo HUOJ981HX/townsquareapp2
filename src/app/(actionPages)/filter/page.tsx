@@ -58,7 +58,7 @@ function Filter() {
                                 <h2>Gender</h2>
                                 <input type="checkbox" name="UserAttributesGender" id="UserAttributesFemale" value="Female" />
                                 <label htmlFor="UserAttributesFemale">Female</label>
-                                <input type="checkbox" name="UserAttributesGender" id="UserAttributesMale" value="male" />
+                                <input type="checkbox" name="UserAttributesGender" id="UserAttributesMale" value="Male" />
                                 <label htmlFor="UserAttributesFemale">Male</label>
                                 <input type="checkbox" name="UserAttributesGender" id="UserAttributesNonBinary" value="Non-binary" />
                                 <label htmlFor="UserAttributesNonBinary">Non binary</label>

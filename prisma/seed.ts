@@ -1,5 +1,5 @@
 import { filterPostRoles } from "@/helper/post";
-import { AccountType, Mood } from "@/types";
+import { AccountType, Gender, Mood } from "@/types";
 import { PrismaClient } from "@prisma/client";
 // import { PrismaClient } from "../../node_modules/.prisma/client";
 
@@ -8,11 +8,11 @@ const prisma = new PrismaClient();
 async function main() {
 
   const user1 = await prisma.user.create({
-    data: { 
-      publicId: '4653f404-a121-11ef-b864-0242ac120002', 
-      username: 'Alice', 
-      email: 'alice@alice.alice', 
-      password: 'alice@alice.alice', 
+    data: {
+      publicId: '4653f404-a121-11ef-b864-0242ac120002',
+      username: 'Alice',
+      email: 'alice@alice.alice',
+      password: 'alice@alice.alice',
       accountType: AccountType.Email,
       filter: {
         description: "Exploring new opportunities in tech.",
@@ -38,6 +38,28 @@ async function main() {
   const user3 = await prisma.user.create({
     data: { publicId: '599080aa-a121-11ef-b864-0242ac120002', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Google },
   });
+
+  await prisma.filters.createMany({
+    data: [
+      {
+        userId: 2,
+        postFilter: {
+            postFilterDisplay: {
+              contains: "work > looking > Service, Manufacturing > 50-75k"
+          },
+          postFilterQueryRole: filterPostRoles.PROVIDER
+        },
+        userFilter: {
+          accountType: AccountType.Email,
+          userAttributes: {
+              gender: Gender.Male,
+              age: 25,
+          },
+        }
+      },
+
+    ]
+  })
 
   // Create some conversations
   const conversation1 = await prisma.conversation.create({
@@ -183,6 +205,7 @@ async function main() {
     ],
   });
 }
+
 
 main()
   .then(() => {

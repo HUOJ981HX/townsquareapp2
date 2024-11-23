@@ -13,7 +13,6 @@ export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
         callbacks: {
             // Augment JWT token with user ID
             async jwt({ token, user, account, profile }: any) {
-
                 // Only runs during initial sign in
                 if (user) {
                     // For credentials provider, user object comes directly from your authorize callback

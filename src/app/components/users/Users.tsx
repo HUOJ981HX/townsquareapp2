@@ -33,9 +33,6 @@ async function Users({ users }: any) {
     //     },
     // });
 
-    console.log('88888888888888888888');
-    console.log('88888888888888888888');
-    console.log(users);
     return (
         <div>
             {users.map((user: any, index: number) => (

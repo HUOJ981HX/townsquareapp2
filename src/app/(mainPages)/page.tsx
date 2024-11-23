@@ -13,6 +13,12 @@ export default async function Home() {
 
   if (!session?.user) redirect("/authenticate");
 
+  const filter = await prisma.filters.findFirst({
+    where: {
+      userId: parseInt(session?.user.id!)
+    }
+  });
+
   let queryObj: Prisma.PostWhereInput = {
     description: "Exploring new opportunities in tech.",
     postFilterDisplay: {
