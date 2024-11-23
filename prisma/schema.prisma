@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "../../node_modules/.prisma/client"
 }
 
 generator zod {
@@ -31,6 +30,7 @@ model User {
     posts           Post[]
     accountType     String
     userAttributes  UserAttributes?
+    filter          Json?
 }
 
 model UserAttributes {

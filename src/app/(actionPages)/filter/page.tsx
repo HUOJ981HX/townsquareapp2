@@ -39,7 +39,7 @@ function Filter() {
                         <h2>User attributes</h2>
                         <p>?</p>
                     </div>
-                    <form action={(formData) => doFilterSubmit(formData)}>
+                    <form action={doFilterSubmit}>
                         <div>
                             <Slider
                                 defaultValue={[33]}
@@ -56,17 +56,17 @@ function Filter() {
                         <div>
                             <div>
                                 <h2>Gender</h2>
-                                <input type="checkbox" name="gender" id="UserAttributesFemale" value="Female" />
+                                <input type="checkbox" name="UserAttributesGender" id="UserAttributesFemale" value="Female" />
                                 <label htmlFor="UserAttributesFemale">Female</label>
-                                <input type="checkbox" name="gender" id="UserAttributesMale" value="male" />
+                                <input type="checkbox" name="UserAttributesGender" id="UserAttributesMale" value="male" />
                                 <label htmlFor="UserAttributesFemale">Male</label>
-                                <input type="checkbox" name="gender" id="UserAttributesNonBinary" value="Female" />
+                                <input type="checkbox" name="UserAttributesGender" id="UserAttributesNonBinary" value="Non-binary" />
                                 <label htmlFor="UserAttributesNonBinary">Non binary</label>
                             </div>
 
                             {/* <input type="hidden" id="postFilter" name="postFilter" value={`${useSearchParams().get('purpose')}:${postFilter?.postFilterDisplay}`} /> */}
 
-                            <input type="hidden" id="postFilter" name="postFilter" value={postFilter?.postFilterDisplay} />
+                            <input type="hidden" id="postFilterDisplay" name="postFilterDisplay" value={postFilter?.postFilterDisplay} />
 
                             <input type="hidden" id="postFilterQueryRole" name="postFilterQueryRole" value={postFilter?.postFilterQueryRole} />
                             {/* <div>

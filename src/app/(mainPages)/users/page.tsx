@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 import Users from '../../components/users/Users';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 
 async function UsersPage() {

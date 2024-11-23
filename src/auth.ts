@@ -14,13 +14,6 @@ export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
             // Augment JWT token with user ID
             async jwt({ token, user, account, profile }: any) {
 
-                console.log('fffffffffffffffffffffff');
-                console.log('fffffffffffffffffffffff');
-                console.log('sean_log: account: ' + JSON.stringify(account));
-                console.log('sean_log: profile: ' + JSON.stringify(profile));
-                console.log('sean_log: token: ' + JSON.stringify(token));
-                console.log('sean_log: user: ' + JSON.stringify(user));
-
                 // Only runs during initial sign in
                 if (user) {
                     // For credentials provider, user object comes directly from your authorize callback
@@ -40,11 +33,12 @@ export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
                             },
                             select: {
                                 id: true,
+                                username: true,
                             },
                         });
                         if (dbUser) {
-                            token.id = dbUser.id
-                            token.name = dbUser.username
+                            token.id = dbUser.id;
+                            token.name = dbUser.username;
                         }
                         else {
                             const newUser = await prisma.user.create({
@@ -85,7 +79,7 @@ export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
 
                     const user = await prisma.user.findFirst({
                         where: {
-                            email: credentials.email,
+                            email: credentials.email as string,
                             accountType: AccountType.Email
                         },
                     });
@@ -102,7 +96,7 @@ export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
 
                     console.log("goood?");
 
-                    return { email: user.email, username: user.username, id: user.id };
+                    return { email: user.email, username: user.username, id: user.id } as any;
                 },
             }),
             Google({

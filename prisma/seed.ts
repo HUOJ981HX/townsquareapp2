@@ -1,13 +1,34 @@
 import { filterPostRoles } from "@/helper/post";
 import { AccountType, Mood } from "@/types";
 import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "../../node_modules/.prisma/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
 
   const user1 = await prisma.user.create({
-    data: { publicId: '4653f404-a121-11ef-b864-0242ac120002', username: 'Alice', email: 'alice@alice.alice', password: 'alice@alice.alice', accountType: AccountType.Email }
+    data: { 
+      publicId: '4653f404-a121-11ef-b864-0242ac120002', 
+      username: 'Alice', 
+      email: 'alice@alice.alice', 
+      password: 'alice@alice.alice', 
+      accountType: AccountType.Email,
+      filter: {
+        description: "Exploring new opportunities in tech.",
+        postFilterDisplay: {
+          contains: "work > looking > Service, Manufacturing > 50-75k",
+        },
+        user: {
+          username: "Alice",
+          accountType: "Email",
+          userAttributes: {
+            gender: "Male",
+            age: 25,
+          },
+        },
+      }
+    }
   });
 
   const user2 = await prisma.user.create({
