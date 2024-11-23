@@ -45,22 +45,44 @@ export interface IUserAttribute {
         gender?: string;
         age?: number;
         relationship?: IRelationship;
+        postFilterDisplay?: string;
+        postFilterQueryRole?: string;
     }[];
 }
 
-export interface IPost {
-    some: {
-        AND: {
-            title?: string;
-            description?: string;
-            postFilter?: string;
-        }[];
-    };
+export interface IPostTable {
+    title?: string;
+    description?: string;
+    image?: string;
+    postFilterDisplay?: string;
+    postFilterQueryRole?: string;
+    mood?: string;
 }
 
-export interface IUser {
+// export interface IPost {
+//     some: {
+//         AND: {
+//             title?: string;
+//             description?: string;
+//             postFilter?: string;
+//         }[];
+//     };
+// }
+
+export interface IUserTable {
     username: string;
     accountType: string;
     userAttributes: IUserAttribute;
-    posts: IPost;
+}
+
+export interface IUserQuery extends IUserTable {
+    posts: {
+        some: {
+            AND: IPostTable[]
+        }
+    };
+}
+
+export interface IPostQuery {
+
 }

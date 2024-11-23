@@ -15,7 +15,7 @@ export default async function Home() {
   let queryObj = {
     description: "Exploring new opportunities in tech.",
     postFilterDisplay: {
-      contains: "work > looking > Service, Manufacturing > ",
+      contains: "work > looking > Service, Manufacturing > 50-75k",
     },
     user: {
       username: "Alice",
