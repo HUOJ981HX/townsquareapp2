@@ -1,14 +1,12 @@
 -- CreateTable
 CREATE TABLE `User` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` VARCHAR(191) NOT NULL,
     `publicId` VARCHAR(191) NOT NULL,
     `username` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `lastOnline` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `accountType` VARCHAR(191) NOT NULL,
-    `filter` JSON NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -16,7 +14,7 @@ CREATE TABLE `User` (
 -- CreateTable
 CREATE TABLE `Filters` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `userId` INTEGER NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
     `postFilter` JSON NULL,
     `userFilter` JSON NULL,
 
@@ -33,9 +31,10 @@ CREATE TABLE `UserAttributes` (
     `job` VARCHAR(191) NULL,
     `collaboration` VARCHAR(191) NULL,
     `help` VARCHAR(191) NULL,
-    `userId` INTEGER NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+    `lastOnline` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `fitersId` INTEGER NULL,
 
-    UNIQUE INDEX `UserAttributes_userId_key`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -53,7 +52,7 @@ CREATE TABLE `Relationship` (
 -- CreateTable
 CREATE TABLE `Post` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `userId` INTEGER NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NULL,
     `image` VARCHAR(191) NULL,
@@ -61,6 +60,7 @@ CREATE TABLE `Post` (
     `postFilterDisplay` VARCHAR(191) NULL,
     `postFilterQueryRole` VARCHAR(191) NULL,
     `mood` VARCHAR(191) NULL,
+    `fitersId` INTEGER NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -79,7 +79,7 @@ CREATE TABLE `Message` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `content` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `senderId` INTEGER NOT NULL,
+    `senderId` VARCHAR(191) NOT NULL,
     `conversationId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -87,7 +87,7 @@ CREATE TABLE `Message` (
 
 -- CreateTable
 CREATE TABLE `UserConversation` (
-    `userId` INTEGER NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
     `conversationId` INTEGER NOT NULL,
     `joinedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -101,10 +101,16 @@ ALTER TABLE `Filters` ADD CONSTRAINT `Filters_userId_fkey` FOREIGN KEY (`userId`
 ALTER TABLE `UserAttributes` ADD CONSTRAINT `UserAttributes_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `UserAttributes` ADD CONSTRAINT `UserAttributes_fitersId_fkey` FOREIGN KEY (`fitersId`) REFERENCES `Filters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Relationship` ADD CONSTRAINT `Relationship_userAttributesId_fkey` FOREIGN KEY (`userAttributesId`) REFERENCES `UserAttributes`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Post` ADD CONSTRAINT `Post_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Post` ADD CONSTRAINT `Post_fitersId_fkey` FOREIGN KEY (`fitersId`) REFERENCES `Filters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Message` ADD CONSTRAINT `Message_senderId_fkey` FOREIGN KEY (`senderId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

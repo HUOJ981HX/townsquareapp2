@@ -20,13 +20,22 @@ export default async function Home() {
     }
   });
 
+
+  const filtersData = await prisma.filters.findMany({
+    where: {
+      userId: session?.user?.id!
+    },
+    include: {
+      userAttributes: true, // Include all related UserAttributes
+      posts: true,          // Include all related Posts
+    },
+  });
+  
   console.log('fffffffffffffffffffffff');
   console.log('fffffffffffffffffffffff_1');
   // console.log('sean_log filter: ' + filter?.postFilter);
 
-  console.log('sean_log ___1: ' + JSON.stringify(filter?.postFilter));
-  console.log('sean_log ___2: ' + JSON.stringify(filter?.userFilter));
-
+  console.log('sean_log filtersData_1: ' + JSON.stringify(filtersData));
 
   // const postFilter = JSON.parse(filter?.postFilter?.toString()!);
   // const userFilter = JSON.parse(filter?.userFilter?.toString()!);
@@ -34,12 +43,12 @@ export default async function Home() {
   // console.log('sean_log postFilter: ' + JSON.stringify(postFilter));
   // console.log('sean_log userFilter: ' + JSON.stringify(userFilter));
 
-  let queryFilterObj: Prisma.PostWhereInput = {
-    ...JSON.parse(JSON.stringify(filter?.postFilter)),
-    user: {
-      ...JSON.parse(JSON.stringify(filter?.userFilter)),
-    }
-  }
+  // let queryFilterObj: Prisma.PostWhereInput = {
+  //   ...JSON.parse(JSON.stringify(filter?.postFilter)),
+  //   user: {
+  //     ...JSON.parse(JSON.stringify(filter?.userFilter)),
+  //   }
+  // }
 
 
   let queryObj: Prisma.PostWhereInput = {
@@ -47,26 +56,43 @@ export default async function Home() {
     postFilterDisplay: {
       contains: "work > lookingd > Service, Manufacturing > 50-75k",
     },
+    fitersId: null,
     user: {
       username: "Alice",
       accountType: "Email",
+      // userAttributes: {
+      //   gender: "Male",
+      //   age: 25,
+      // },
       userAttributes: {
-        gender: "Male",
-        age: 25,
-      },
+        some: {
+            AND: [
+                {
+                    gender: "Male",
+                },
+                {
+                    age: 25,
+                },
+            ],
+        }
+    },
     },
   };
 
 
-  const wherePostFilter = removeEmptyObjValues(queryFilterObj);
+  // const wherePostFilter = removeEmptyObjValues(queryFilterObj);
 
   let posts = null;
 
-  if (wherePostFilter) {
-    posts = await prisma.post.findMany({
-      where: wherePostFilter,
-    });
-  }
+  // if (wherePostFilter) {
+  //   posts = await prisma.post.findMany({
+  //     where: wherePostFilter,
+  //   });
+  // }
+
+  posts = await prisma.post.findMany({
+    where: queryObj,
+  });
 
   // const posts = await prisma.post.findMany({
   //   select: {

@@ -22,30 +22,38 @@ async function UsersPage() {
         username: "Alice",
         accountType: "Email",
         userAttributes: {
-            AND: [
-                {
-                    gender: "Male",
-                },
-                {
-                    age: 25,
-                },
-                {
-                    relationship: {
-                        AND: [
-                            {
-                                description: "looking for someone",
-                            },
-                            {
-                                openTo: "female, non-binary",
-                            },
-                        ],
+            some: {
+                AND: [
+                    {
+                        gender: "Male",
                     },
-                },
-            ],
+                    {
+                        age: 25,
+                    },
+                    {
+                        fitersId: null,
+                    },
+                    {
+                        relationship: {
+                            AND: [
+                                {
+                                    description: "looking for someone",
+                                },
+                                {
+                                    openTo: "female, non-binary",
+                                },
+                            ],
+                        },
+                    },
+                ],
+            }
         },
         posts: {
             some: {
                 AND: [
+                    {
+                        fitersId: null,
+                    },
                     {
                         title: "tech opportunities"
                     },

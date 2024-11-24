@@ -88,3 +88,4 @@ export interface IUserQuery extends IUserTable {
         }
     };
 }
+

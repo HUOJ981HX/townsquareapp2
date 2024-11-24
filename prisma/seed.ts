@@ -29,6 +29,7 @@ async function main() {
   await prisma.filters.createMany({
     data: [
       {
+        id: 1,
         userId: "2",
         postFilter: {
             postFilterDisplay: {
@@ -44,7 +45,6 @@ async function main() {
           },
         }
       },
-
     ]
   })
 
@@ -119,26 +119,33 @@ async function main() {
     },
   });
 
+
   const userAttributes = [
+    {
+      description: 'Enthusiastic software engineer',
+      age: 25,
+      gender: Gender.Male,
+      fitersId: 1
+    },
     {
       userId: '1',
       description: 'Enthusiastic software engineer',
       age: 25,
-      gender: 'Male',
-      help: 'need with with coding issue'
+      gender: Gender.Male,
+      help: 'need with with coding issue',
     },
     {
       userId: '2',
       description: 'Creative graphic designer',
       age: 29,
-      gender: 'Female',
-      collaboration: 'work on a project together'
+      gender: Gender.Female,
+      collaboration: 'work on a project together',
     },
     {
       userId: '3',
       description: 'Passionate data scientist',
       age: 32,
-      gender: 'Non-binary',
+      gender: Gender.NonBinary,
     },
   ];
 
@@ -157,29 +164,45 @@ async function main() {
     }
   });
 
+
   await prisma.post.createMany({
     data: [
+      {
+        title: 'tech opportunities',
+        description: "Exploring new opportunities in tech.",
+        mood: Mood.Angry,
+        postFilterQueryRole: filterPostRoles.SEEKER,
+        postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
+        fitersId: 1
+      },
+      {
+        title: 'Web3 projects',
+        description: "Excited about Web3 projects.",
+        postFilterQueryRole: filterPostRoles.BOTH,
+        postFilterDisplay: 'personals > Friends > Female',
+        fitersId: 1
+      },
       {
         userId: '1',
         title: 'tech opportunities',
         description: "Exploring new opportunities in tech.",
         mood: Mood.Angry,
         postFilterQueryRole: filterPostRoles.PROVIDER,
-        postFilterDisplay: 'work > Manufacturing, Service > 50-75k'
+        postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
       },
       {
         userId: '1',
         title: 'Web3 projects',
         description: "Excited about Web3 projects.",
         postFilterQueryRole: filterPostRoles.BOTH,
-        postFilterDisplay: 'personals > Friends > Female'
+        postFilterDisplay: 'personals > Friends > Female',
       },
       {
         userId: '2',
         title: 'teach programming',
         mood: Mood.Happy,
         postFilterQueryRole: filterPostRoles.BOTH,
-        postFilterDisplay: 'personals > Casual, Friends, Relationship > Female, Male, nonBinary'
+        postFilterDisplay: 'personals > Casual, Friends, Relationship > Female, Male, nonBinary',
       },
       {
         userId: '3',
@@ -187,7 +210,7 @@ async function main() {
         description: "Sharing my journey as a startup founder.",
         mood: Mood.Surprised,
         postFilterQueryRole: filterPostRoles.SEEKER,
-        postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
+        postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k',
       },
     ],
   });
