@@ -5,34 +5,58 @@ import { auth } from "@/auth";
 import prisma from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { removeEmptyObjValues } from '@/helper';
+import { revalidatePath } from 'next/cache';
 
 export const doFilterSubmit = async (formData: FormData) => {
     console.log("formDataformDataformDataformDataformDataformDataformDataformDataformDataformData");
 
     const session = await auth();
 
-    console.log('sean_log session: ' + JSON.stringify(session));
-    for (var pair of formData.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]); 
-  }
+    // const filter: Prisma.PostWhereInput = {
+    //     postFilterDisplay: {
+    //       contains: formData.get('postFilterDisplay') as any,
+    //     },
+    //     postFilterQueryRole: formData.get('postFilterQueryRole') as any,
+    //     user: {
+    //       accountType: formData.get('email') as any,
+    //       userAttributes: {
+    //         gender: formData.get('UserAttributesGender') as any,
+    //         age: formData.get('UserAttributesAge') as any,
+    //       },
+    //     },
+    // }
 
-    const filter: Prisma.PostWhereInput = {
+    const postFilter: Prisma.FiltersUpdateInput = {
+      postFilter: {
         postFilterDisplay: {
           contains: formData.get('postFilterDisplay') as any,
         },
         postFilterQueryRole: formData.get('postFilterQueryRole') as any,
-        user: {
-          accountType: formData.get('email') as any,
-          userAttributes: {
-            gender: formData.get('UserAttributesGender') as any,
-            age: formData.get('UserAttributesAge') as any,
-          },
-        },
+      }
     }
 
-    const updatedUser = await prisma.user.update({
+    const userFilter: Prisma.FiltersUpdateInput = {
+      userFilter: {
+        userAttributes: {
+          gender: formData.get('UserAttributesGender') as any,
+          age: parseInt(formData.get('UserAttributesAge')?.toString()!) as any,
+        },
+      },
+    }
+
+    // console.log('sean_log removeEmptyObjValues(postFilter): ' + removeEmptyObjValues(postFilter));
+    // console.log('sean_log removeEmptyObjValues(userFilter): ' + removeEmptyObjValues(userFilter));
+    console.log('sean_log removeEmptyObjValues(postFilter): ' + JSON.stringify(removeEmptyObjValues(postFilter)));
+    console.log('sean_log removeEmptyObjValues(userFilter): ' + JSON.stringify(removeEmptyObjValues(userFilter)));
+
+    const postFilterObj = removeEmptyObjValues(postFilter) || { postFilter: null };
+    const userFilterObj = removeEmptyObjValues(userFilter) || { userFilter: null };
+
+
+    // To fix db so we can use .update
+    const updatedUser = await prisma.filters.updateMany({
         where: {
-            id: parseInt(session?.user?.id as string)
+          userId: session?.user?.id!
         },
         data: {
             // filter: {
@@ -49,14 +73,24 @@ export const doFilterSubmit = async (formData: FormData) => {
             //       },
             //     },
             // }, // New JSON object to save
-            filter : removeEmptyObjValues(filter) as any
+            // ...removeEmptyObjValues(postFilter),
+            // postFilter: null as any,
+            // ...removeEmptyObjValues(userFilter)
+            ...postFilterObj,
+            ...userFilterObj,
+            // userFilter : {
+            //   userAttributes: {
+            //     gender: "Male",
+            //     age: 56,
+            //   },
+            // }
         },
     });
 
     console.log('sean_log updatedUser: ' + JSON.stringify(updatedUser));
-
+    revalidatePath('/');
     // const referer = headers.get('referer') || '/'; // Fallback to root if referer is not present
-    // redirect('/');
+    redirect('/');
     // console.log('sean_log referer: ' + referer);
     // console.log("Redirecting back to:", referer);
 }

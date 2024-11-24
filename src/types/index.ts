@@ -18,13 +18,13 @@ export enum Gender {
     NonBinary = "Non-binary"
 }
 
-export interface PostDto {
-    userId: number;
-    title: string | undefined;
-    description?: string | undefined;
-    image?: string | undefined;
-    mood: string | undefined;
-}
+// export interface PostDto {
+//     userId: number;
+//     title: string | undefined;
+//     description?: string | undefined;
+//     image?: string | undefined;
+//     mood: string | undefined;
+// }
 
 // interface UserAttributesFilter {
 //     gender?: string;

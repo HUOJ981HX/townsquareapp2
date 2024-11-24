@@ -55,11 +55,11 @@ export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
             },
             // Add ID to the session object
             async session({ session, token }) {
-                console.log('sssssssssssssssssssssssss');
-                console.log('sssssssssssssssssssssssss');
+                // console.log('sssssssssssssssssssssssss');
+                // console.log('sssssssssssssssssssssssss');
 
-                console.log('sean_log: session: ' + JSON.stringify(session));
-                console.log('sean_log: token: ' + JSON.stringify(token));
+                // console.log('sean_log: session: ' + JSON.stringify(session));
+                // console.log('sean_log: token: ' + JSON.stringify(token));
                 if (session.user) {
                     session.user.id = token.id as any
                 }

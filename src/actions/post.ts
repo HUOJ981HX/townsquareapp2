@@ -1,7 +1,6 @@
 'use server';
 
 import { uploadImage } from '@/lib/cloudinary';
-import { PostDto } from '@/types';
 import { redirect } from 'next/navigation';
 // import { storePost } from '@/lib/posts';
 import { auth } from "@/auth";
@@ -34,8 +33,8 @@ export const createPostAction = async (prevState: any,formData: FormData) => {
     try {
         imageUrl = await uploadImage(formData.get('image'));
 
-        const postDto: PostDto = {
-            userId: parseInt(session?.user?.id as string),
+        const postDto = {
+            userId: session?.user?.id!,
             title: formData.get('title')?.toString(),
             description: formData.get('description')?.toString(),
             image: imageUrl,

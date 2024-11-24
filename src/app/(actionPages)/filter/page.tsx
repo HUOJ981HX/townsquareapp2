@@ -66,8 +66,10 @@ function Filter() {
 
                             {/* <input type="hidden" id="postFilter" name="postFilter" value={`${useSearchParams().get('purpose')}:${postFilter?.postFilterDisplay}`} /> */}
 
+                            <p>{postFilter?.postFilterDisplay}</p>
                             <input type="hidden" id="postFilterDisplay" name="postFilterDisplay" value={postFilter?.postFilterDisplay} />
 
+                            <p>{postFilter?.postFilterQueryRole}</p>
                             <input type="hidden" id="postFilterQueryRole" name="postFilterQueryRole" value={postFilter?.postFilterQueryRole} />
                             {/* <div>
                                 <h2>Is this for a relationship?</h2>
@@ -77,7 +79,6 @@ function Filter() {
                                 <label htmlFor="genderForRelationship">Yes</label>
                             </div> */}
                             <div>
-                                {postFilter && <p>{postFilter?.postFilterDisplay}</p>}
                                 <p onClick={() => {
                                     setIsOpen(prevState => {
                                         return !prevState

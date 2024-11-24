@@ -33,7 +33,7 @@ const PostCriteria = ({ setPostFilter, purpose, setIsOpen, isOpen }: any) => {
             const updatedValues = currentValues.includes(value)
                 ? currentValues.filter((item: any) => item !== value)
                 : [...currentValues, value];
-            setCurrentResponse(updatedValues);
+            setCurrentResponse(updatedValues.sort());
         } else {
             // For radio buttons, single selection
             setCurrentResponse(value);

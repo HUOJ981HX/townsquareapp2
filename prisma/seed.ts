@@ -9,43 +9,30 @@ async function main() {
 
   const user1 = await prisma.user.create({
     data: {
+      id: '1',
       publicId: '4653f404-a121-11ef-b864-0242ac120002',
       username: 'Alice',
       email: 'alice@alice.alice',
       password: 'alice@alice.alice',
       accountType: AccountType.Email,
-      filter: {
-        description: "Exploring new opportunities in tech.",
-        postFilterDisplay: {
-          contains: "work > looking > Service, Manufacturing > 50-75k",
-        },
-        user: {
-          username: "Alice",
-          accountType: "Email",
-          userAttributes: {
-            gender: "Male",
-            age: 25,
-          },
-        },
-      }
     }
   });
 
   const user2 = await prisma.user.create({
-    data: { publicId: '2ff449e8-a121-11ef-b864-0242ac120002', username: 'Bob', email: 'bob@bob.bob', password: 'bob@bob.bob', accountType: AccountType.Email },
+    data: {id: '2', publicId: '2ff449e8-a121-11ef-b864-0242ac120002', username: 'Bob', email: 'bob@bob.bob', password: 'bob@bob.bob', accountType: AccountType.Email },
   });
 
   const user3 = await prisma.user.create({
-    data: { publicId: '599080aa-a121-11ef-b864-0242ac120002', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Google },
+    data: {id: '3', publicId: '599080aa-a121-11ef-b864-0242ac120002', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Google },
   });
 
   await prisma.filters.createMany({
     data: [
       {
-        userId: 2,
+        userId: "2",
         postFilter: {
             postFilterDisplay: {
-              contains: "work > looking > Service, Manufacturing > 50-75k"
+              contains: "work > looking > Manufacturing, Service > 50-75k"
           },
           postFilterQueryRole: filterPostRoles.PROVIDER
         },
@@ -134,21 +121,21 @@ async function main() {
 
   const userAttributes = [
     {
-      userId: 1,
+      userId: '1',
       description: 'Enthusiastic software engineer',
       age: 25,
       gender: 'Male',
       help: 'need with with coding issue'
     },
     {
-      userId: 2,
+      userId: '2',
       description: 'Creative graphic designer',
       age: 29,
       gender: 'Female',
       collaboration: 'work on a project together'
     },
     {
-      userId: 3,
+      userId: '3',
       description: 'Passionate data scientist',
       age: 32,
       gender: 'Non-binary',
@@ -173,34 +160,34 @@ async function main() {
   await prisma.post.createMany({
     data: [
       {
-        userId: 1,
+        userId: '1',
         title: 'tech opportunities',
         description: "Exploring new opportunities in tech.",
         mood: Mood.Angry,
         postFilterQueryRole: filterPostRoles.PROVIDER,
-        postFilterDisplay: 'work > looking > Service, Manufacturing > 50-75k'
+        postFilterDisplay: 'work > looking > Manufacturing, Service > 50-75k'
       },
       {
-        userId: 1,
+        userId: '1',
         title: 'Web3 projects',
         description: "Excited about Web3 projects.",
         postFilterQueryRole: filterPostRoles.BOTH,
         postFilterDisplay: 'personals > Friends > Female'
       },
       {
-        userId: 2,
+        userId: '2',
         title: 'teach programming',
         mood: Mood.Happy,
         postFilterQueryRole: filterPostRoles.BOTH,
-        postFilterDisplay: 'personals > Relationship, Friends, Casual > Male, Female, nonBinary'
+        postFilterDisplay: 'personals > Casual, Friends, Relationship > Female, Male, nonBinary'
       },
       {
-        userId: 3,
+        userId: '3',
         title: 'founder',
         description: "Sharing my journey as a startup founder.",
         mood: Mood.Surprised,
         postFilterQueryRole: filterPostRoles.SEEKER,
-        postFilterDisplay: 'work > looking > Manufacturing, Accounting, Service, Tech > over 100k'
+        postFilterDisplay: 'work > looking > Accounting, Manufacturing, Service, Tech > over 100k'
       },
     ],
   });
