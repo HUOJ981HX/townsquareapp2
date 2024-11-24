@@ -55,11 +55,7 @@ export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
             },
             // Add ID to the session object
             async session({ session, token }) {
-                // console.log('sssssssssssssssssssssssss');
-                // console.log('sssssssssssssssssssssssss');
-
-                // console.log('sean_log: session: ' + JSON.stringify(session));
-                // console.log('sean_log: token: ' + JSON.stringify(token));
+        
                 if (session.user) {
                     session.user.id = token.id as any
                 }
@@ -73,8 +69,6 @@ export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
                     password: {},
                 },
                 authorize: async (credentials) => {
-                    console.log("222_credentials");
-                    console.log(JSON.stringify(credentials));
 
                     const user = await prisma.user.findFirst({
                         where: {
@@ -92,8 +86,6 @@ export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
                     if (!validPassword) {
                         throw new Error('Wrong email or password');
                     }
-
-                    console.log("goood?");
 
                     return { email: user.email, username: user.username, id: user.id } as any;
                 },

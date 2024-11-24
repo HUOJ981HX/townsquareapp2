@@ -24,7 +24,6 @@ export async function doGoogleLogin() {
 
 
 export async function signOutAction() {
-    console.log('88888888888888888888');
     await signOut({ redirectTo: "/authenticate", redirect: true })
 
 }

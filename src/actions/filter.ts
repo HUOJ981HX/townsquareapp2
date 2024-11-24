@@ -44,8 +44,6 @@ export const doFilterSubmit = async (formData: FormData) => {
       },
     }
 
-    // console.log('sean_log removeEmptyObjValues(postFilter): ' + removeEmptyObjValues(postFilter));
-    // console.log('sean_log removeEmptyObjValues(userFilter): ' + removeEmptyObjValues(userFilter));
     console.log('sean_log removeEmptyObjValues(postFilter): ' + JSON.stringify(removeEmptyObjValues(postFilter)));
     console.log('sean_log removeEmptyObjValues(userFilter): ' + JSON.stringify(removeEmptyObjValues(userFilter)));
 
@@ -87,7 +85,6 @@ export const doFilterSubmit = async (formData: FormData) => {
         },
     });
 
-    console.log('sean_log updatedUser: ' + JSON.stringify(updatedUser));
     revalidatePath('/');
     // const referer = headers.get('referer') || '/'; // Fallback to root if referer is not present
     redirect('/');

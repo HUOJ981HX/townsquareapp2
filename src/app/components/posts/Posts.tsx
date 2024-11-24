@@ -2,9 +2,6 @@
 async function Posts({ posts }: any) {
 
 
-    console.log('eeeeeeeeeeeeeeeeeeeeee');
-    console.log('eeeeeeeeeeeeeeeeeeeeee');
-    console.log('sean_log posts: ' + JSON.stringify(posts));
 
     return (
         <ul className="space-y-2">

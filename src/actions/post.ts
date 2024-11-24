@@ -43,10 +43,6 @@ export const createPostAction = async (prevState: any,formData: FormData) => {
     
         const result = await savePost(postDto);
 
-        console.log('666666666666666666');
-        console.log('666666666666666666');
-        console.log('sean_log result: ' + result);
-
         revalidatePath('/');
 
         return { status: 'success' };

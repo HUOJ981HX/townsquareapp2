@@ -25,6 +25,7 @@ const PostCriteria = ({ setPostFilter, purpose, setIsOpen, isOpen }: any) => {
     const [showSequence, setShowSequence] = useState(false);
     const [role, setRole] = useState(filterPostRoles.BOTH);
     const [category, setCategory] = useState("");
+    const [skipAdding, setSkipAdding] = useState(false);
 
     const handleOptionSelect = (value: any) => {
         if (questions[currentStep].type === "checkbox") {
@@ -39,19 +40,31 @@ const PostCriteria = ({ setPostFilter, purpose, setIsOpen, isOpen }: any) => {
             setCurrentResponse(value);
         }
     };
-
-    useEffect(() => {
-      console.log('eeeeeeeeeeeeeeeeeeeeee');
-      console.log('eeeeeeeeeeeeeeeeeeeeee');
-      console.log('sean_log responses: ' + responses);
-    }, [responses])
     
 
-    const handleNext = () => {
-        setResponses([...responses, currentResponse]);
+    // const handleNext = () => {
+    //     if(!skipAdding) {
+    //         setResponses([...responses, currentResponse]);
+    //         setSkipAdding(false);
+    //     }
+    //     setCurrentStep(currentStep + 1);
+    //     setCurrentResponse(null);
+    // };
+
+    const handleNext = useCallback(() => {
+        console.log('sssssssssssssssssssssssss');
+        console.log('sssssssssssssssssssssssss');
+        console.log('sean_log !skipAdding: ' + !skipAdding);
+        if (!skipAdding) {
+            console.log('444444444444444444');
+            setResponses([...responses, currentResponse]);
+        }
+        else {
+            setSkipAdding(false);
+        }
         setCurrentStep(currentStep + 1);
         setCurrentResponse(null);
-    };
+    }, [skipAdding, responses, currentResponse, currentStep, setSkipAdding]);
 
     const updateCategory = (category: string) => {
 
@@ -130,6 +143,7 @@ const PostCriteria = ({ setPostFilter, purpose, setIsOpen, isOpen }: any) => {
                                             console.log('1111111111111111111111');
                                             console.log('sean_log option.value: ' + option.value);
                                             setRole(option.value);
+                                            setSkipAdding(true);
                                         }
                                         // else {
                                         //     console.log('2222222222222222');
@@ -159,6 +173,7 @@ const PostCriteria = ({ setPostFilter, purpose, setIsOpen, isOpen }: any) => {
                         console.log('3333333333333333');
                         console.log('sean_log selectedOption.value: ' + selectedOption.value);
                         setRole(selectedOption.value);
+                        setSkipAdding(true);
                     }              
                     // else {
                     //     console.log('444444444444444444');

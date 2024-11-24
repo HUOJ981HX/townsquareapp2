@@ -32,7 +32,7 @@ async function main() {
         userId: "2",
         postFilter: {
             postFilterDisplay: {
-              contains: "work > looking > Manufacturing, Service > 50-75k"
+              contains: "work > Manufacturing, Service > 50-75k"
           },
           postFilterQueryRole: filterPostRoles.PROVIDER
         },
@@ -165,7 +165,7 @@ async function main() {
         description: "Exploring new opportunities in tech.",
         mood: Mood.Angry,
         postFilterQueryRole: filterPostRoles.PROVIDER,
-        postFilterDisplay: 'work > looking > Manufacturing, Service > 50-75k'
+        postFilterDisplay: 'work > Manufacturing, Service > 50-75k'
       },
       {
         userId: '1',
@@ -187,7 +187,7 @@ async function main() {
         description: "Sharing my journey as a startup founder.",
         mood: Mood.Surprised,
         postFilterQueryRole: filterPostRoles.SEEKER,
-        postFilterDisplay: 'work > looking > Accounting, Manufacturing, Service, Tech > over 100k'
+        postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
       },
     ],
   });

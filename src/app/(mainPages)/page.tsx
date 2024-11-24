@@ -57,11 +57,8 @@ export default async function Home() {
     },
   };
 
-  console.log('vvvvvvvvvvvvvvvvvvv');
-  console.log('vvvvvvvvvvvvvvvvvvv');
 
   const wherePostFilter = removeEmptyObjValues(queryFilterObj);
-  console.log('sean_log removeEmptyObjValues(queryFilterObj): ' + wherePostFilter);
 
   let posts = null;
 

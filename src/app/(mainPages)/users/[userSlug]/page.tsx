@@ -6,12 +6,8 @@ import prisma from '@/lib/prisma';
 
 export default async function UserPage({ params } : any) {
 
-  console.log('777777777777777777777');
-  console.log('777777777777777777777');
   const userSlug = (await params).userSlug;
 
-  console.log('sean_log await params: ' + JSON.stringify(await params));
-  console.log('sean_log userSlug: ' + userSlug);
 
   const user = await prisma.user.findMany({
     where: {
