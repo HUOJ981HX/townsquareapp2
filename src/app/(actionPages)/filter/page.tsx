@@ -22,15 +22,6 @@ function Filter() {
         setSliderValue(value);
     };
 
-    // useEffect(() => {
-      
-    //     console.log('cccccccccccccccccccc');
-    //     console.log('cccccccccccccccccccc');
-    //     console.log('cccccccccccccccccccc');
-    //     console.log('sean_log postFilter: ' + JSON.stringify(postFilter));
-    // }, [postFilter])
-    
-
     return (
         <>
             <div>

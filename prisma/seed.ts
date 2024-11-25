@@ -201,13 +201,13 @@ async function main() {
         postId: 1, 
         mood: Mood.Angry,
         postFilterQueryRole: filterPostRoles.PROVIDER,
-        postFilterDisplay: 'work > Manufacturing, Service > 50-75k'
+        postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
       },
       {
         filtersId: 2, 
         mood: Mood.Angry,
         postFilterQueryRole: filterPostRoles.PROVIDER,
-        postFilterDisplay: 'work > Manufacturing, Service > 50-75k'
+        postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
       },
       {
         postId: 2,

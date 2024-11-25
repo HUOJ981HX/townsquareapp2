@@ -52,23 +52,23 @@ export default async function Home() {
 
   console.log('sean_log postQueryObjpostQueryObj__: ' + JSON.stringify(postQueryObj));
 
-  let queryObj: Prisma.PostWhereInput = {
-    filterablePostAttributes: {
-      AND: [
-        {
-          mood: Mood.Angry,
-          postFilterQueryRole: filterPostRoles.PROVIDER,
-          postFilterDisplay: 'work > Manufacturing, Service > 50-75kz'
-        }
-      ]
-    },
-    user: {
-      filterableUserAttributes: {
-        gender: Gender.Female,
-        age: 80,
-      },
-    },
-  };
+  // let queryObj: Prisma.PostWhereInput = {
+  //   filterablePostAttributes: {
+  //     AND: [
+  //       {
+  //         mood: Mood.Angry,
+  //         postFilterQueryRole: filterPostRoles.PROVIDER,
+  //         postFilterDisplay: 'work > Manufacturing, Service > 50-75kz'
+  //       }
+  //     ]
+  //   },
+  //   user: {
+  //     filterableUserAttributes: {
+  //       gender: Gender.Female,
+  //       age: 80,
+  //     },
+  //   },
+  // };
 
 
   // const wherePostFilter = removeEmptyObjValues(queryFilterObj);
