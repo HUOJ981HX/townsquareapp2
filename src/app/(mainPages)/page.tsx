@@ -50,7 +50,7 @@ export default async function Home() {
     user: {
       username: "Alice",
       accountType: "Email",
-      userAttributes: {
+      filterableUserAttributes: {
         gender: "Male",
         age: 25,
       },

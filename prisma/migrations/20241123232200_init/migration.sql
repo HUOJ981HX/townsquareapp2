@@ -15,7 +15,7 @@ ALTER TABLE `Message` DROP FOREIGN KEY `Message_senderId_fkey`;
 ALTER TABLE `Post` DROP FOREIGN KEY `Post_userId_fkey`;
 
 -- DropForeignKey
-ALTER TABLE `UserAttributes` DROP FOREIGN KEY `UserAttributes_userId_fkey`;
+ALTER TABLE `FilterableUserAttributes` DROP FOREIGN KEY `UserAttributes_userId_fkey`;
 
 -- DropForeignKey
 ALTER TABLE `UserConversation` DROP FOREIGN KEY `UserConversation_userId_fkey`;
@@ -35,7 +35,7 @@ ALTER TABLE `User` DROP PRIMARY KEY,
     ADD PRIMARY KEY (`id`);
 
 -- AlterTable
-ALTER TABLE `UserAttributes` MODIFY `userId` VARCHAR(191) NOT NULL;
+ALTER TABLE `FilterableUserAttributes` MODIFY `userId` VARCHAR(191) NOT NULL;
 
 -- AlterTable
 ALTER TABLE `UserConversation` DROP PRIMARY KEY,
@@ -46,7 +46,7 @@ ALTER TABLE `UserConversation` DROP PRIMARY KEY,
 ALTER TABLE `Filters` ADD CONSTRAINT `Filters_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `UserAttributes` ADD CONSTRAINT `UserAttributes_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `FilterableUserAttributes` ADD CONSTRAINT `UserAttributes_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Post` ADD CONSTRAINT `Post_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

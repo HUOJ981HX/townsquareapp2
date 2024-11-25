@@ -29,22 +29,38 @@ async function main() {
   await prisma.filters.createMany({
     data: [
       {
-        userId: "2",
-        postFilter: {
-            postFilterDisplay: {
-              contains: "work > Manufacturing, Service > 50-75k"
-          },
-          postFilterQueryRole: filterPostRoles.PROVIDER
-        },
-        userFilter: {
-          accountType: AccountType.Email,
-          userAttributes: {
-              gender: Gender.Male,
-              age: 25,
-          },
-        }
+        id: 1,
+        userId: "1",
       },
+      {
+        id: 2,
+        userId: "2",
+      },
+    ]
+  })
 
+  await prisma.filterableUserAttributes.createMany({
+    data: [
+      {
+        userId: "1", 
+        age: 80,
+        gender: Gender.Female
+      },
+      {
+        filtersId: 2,
+        age: 80,
+        gender: Gender.Female
+      },
+      {
+        userId: "2", 
+        age: 39,
+        gender: Gender.Male
+      },
+      {
+        userId: "3", 
+        age: 45,
+        gender: Gender.NonBinary
+      },
     ]
   })
 
@@ -119,79 +135,105 @@ async function main() {
     },
   });
 
-  const userAttributes = [
-    {
-      userId: '1',
-      description: 'Enthusiastic software engineer',
-      age: 25,
-      gender: 'Male',
-      help: 'need with with coding issue'
-    },
-    {
-      userId: '2',
-      description: 'Creative graphic designer',
-      age: 29,
-      gender: 'Female',
-      collaboration: 'work on a project together'
-    },
-    {
-      userId: '3',
-      description: 'Passionate data scientist',
-      age: 32,
-      gender: 'Non-binary',
-    },
-  ];
+  // const filterableUserAttributes = [
+  //   {
+  //     userId: '1',
+  //     description: 'Enthusiastic software engineer',
+  //     age: 25,
+  //     gender: 'Male',
+  //     help: 'need with with coding issue'
+  //   },
+  //   {
+  //     userId: '2',
+  //     description: 'Creative graphic designer',
+  //     age: 29,
+  //     gender: 'Female',
+  //     collaboration: 'work on a project together'
+  //   },
+  //   {
+  //     userId: '3',
+  //     description: 'Passionate data scientist',
+  //     age: 32,
+  //     gender: 'Non-binary',
+  //   },
+  // ];
 
-  for (const attributes of userAttributes) {
-    await prisma.userAttributes.create({
-      data: attributes,
-    });
-  }
+  // for (const attributes of filterableUserAttributes) {
+  //   await prisma.filterableUserAttributes.create({
+  //     data: attributes,
+  //   });
+  // }
 
-  await prisma.relationship.create({
-    data:
-    {
-      userAttributesId: 1,
-      description: 'looking for someone',
-      openTo: 'female, non-binary'
-    }
-  });
 
   await prisma.post.createMany({
     data: [
       {
+        id: 1,
         userId: '1',
         title: 'tech opportunities',
         description: "Exploring new opportunities in tech.",
+      },
+      {
+        id: 2,
+        userId: '1',
+        title: 'Web3 projects',
+        description: "Excited about Web3 projects.",
+
+      },
+      {
+        id: 3,
+        userId: '2',
+        title: 'teach programming',
+      },
+      {
+        id: 4,
+        userId: '3',
+        title: 'founder',
+        description: "Sharing my journey as a startup founder.",
+      },
+    ],
+  });
+
+
+
+
+  await prisma.filterablePostAttributes.createMany({
+    data: [
+      {
+        postId: 1, 
         mood: Mood.Angry,
         postFilterQueryRole: filterPostRoles.PROVIDER,
         postFilterDisplay: 'work > Manufacturing, Service > 50-75k'
       },
       {
-        userId: '1',
-        title: 'Web3 projects',
-        description: "Excited about Web3 projects.",
+        filtersId: 2, 
+        mood: Mood.Angry,
+        postFilterQueryRole: filterPostRoles.PROVIDER,
+        postFilterDisplay: 'work > Manufacturing, Service > 50-75k'
+      },
+      {
+        postId: 2,
+        mood: Mood.Desperate,
         postFilterQueryRole: filterPostRoles.BOTH,
         postFilterDisplay: 'personals > Friends > Female'
       },
       {
-        userId: '2',
-        title: 'teach programming',
+        postId: 3,
         mood: Mood.Happy,
         postFilterQueryRole: filterPostRoles.BOTH,
         postFilterDisplay: 'personals > Casual, Friends, Relationship > Female, Male, nonBinary'
       },
       {
-        userId: '3',
-        title: 'founder',
-        description: "Sharing my journey as a startup founder.",
+        postId: 4,
         mood: Mood.Surprised,
         postFilterQueryRole: filterPostRoles.SEEKER,
         postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
       },
-    ],
-  });
+    ]
+  })
 }
+
+
 
 
 main()

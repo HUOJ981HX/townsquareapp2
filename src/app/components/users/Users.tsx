@@ -7,7 +7,7 @@ async function Users({ users }: any) {
     //     where: {
     //         username: "Cindy",
     //         accountType: "Google",
-    //         userAttributes: {
+    //         filterableUserAttributes: {
     //             is: {
     //                 //   relationship: "looking for someone",
     //                 //   age: 20,
@@ -18,7 +18,7 @@ async function Users({ users }: any) {
     //         },
     //     },
     //     include: {
-    //         userAttributes: true, // Join and include UserAttributes
+    //         filterableUserAttributes: true, // Join and include FilterableUserAttributes
     //     },
     // });
 
@@ -29,7 +29,7 @@ async function Users({ users }: any) {
     //         },
     //     },
     //     include: {
-    //         userAttributes: true, // Join and include UserAttributes
+    //         filterableUserAttributes: true, // Join and include FilterableUserAttributes
     //     },
     // });
 
@@ -45,7 +45,7 @@ async function Users({ users }: any) {
                 // </li>
                 <Link href={`/users/${user.publicId}`} key={index}>
                     <p>{user.username}</p>
-                    <p>{user.userAttributes.age}</p>
+                    <p>{user.filterableUserAttributes.age}</p>
                 </Link> 
             ))}
         </div>

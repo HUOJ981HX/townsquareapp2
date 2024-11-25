@@ -36,7 +36,7 @@ export enum Gender {
 // export interface UserFilter {
 //     username: string;
 //     accountType: string;
-//     userAttributes?: UserAttributesFilter;
+//     filterableUserAttributes?: UserAttributesFilter;
 // }
 
 export interface IRelationship {
@@ -78,7 +78,7 @@ export interface IPostTable {
 export interface IUserTable {
     username: string;
     accountType: string;
-    userAttributes: IUserAttribute;
+    filterableUserAttributes: IUserAttribute;
 }
 
 export interface IUserQuery extends IUserTable {

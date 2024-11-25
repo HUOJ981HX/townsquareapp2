@@ -14,7 +14,7 @@ export default async function UserPage({ params } : any) {
         publicId: userSlug,
     },
     include: {
-        userAttributes: true, // Join and include UserAttributes
+        filterableUserAttributes: true, // Join and include FilterableUserAttributes
     },
   });
 

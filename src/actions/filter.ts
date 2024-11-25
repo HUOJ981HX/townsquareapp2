@@ -19,7 +19,7 @@ export const doFilterSubmit = async (formData: FormData) => {
     //     postFilterQueryRole: formData.get('postFilterQueryRole') as any,
     //     user: {
     //       accountType: formData.get('email') as any,
-    //       userAttributes: {
+    //       filterableUserAttributes: {
     //         gender: formData.get('UserAttributesGender') as any,
     //         age: formData.get('UserAttributesAge') as any,
     //       },
@@ -37,7 +37,7 @@ export const doFilterSubmit = async (formData: FormData) => {
 
     const userFilter: Prisma.FiltersUpdateInput = {
       userFilter: {
-        userAttributes: {
+        filterableUserAttributes: {
           gender: formData.get('UserAttributesGender') as any,
           age: parseInt(formData.get('UserAttributesAge')?.toString()!) as any,
         },
@@ -65,7 +65,7 @@ export const doFilterSubmit = async (formData: FormData) => {
             //     user: {
             //       username: "Alice",
             //       accountType: "Email",
-            //       userAttributes: {
+            //       filterableUserAttributes: {
             //         gender: "Male",
             //         age: 25,
             //       },
@@ -77,7 +77,7 @@ export const doFilterSubmit = async (formData: FormData) => {
             ...postFilterObj,
             ...userFilterObj,
             // userFilter : {
-            //   userAttributes: {
+            //   filterableUserAttributes: {
             //     gender: "Male",
             //     age: 56,
             //   },

@@ -29,7 +29,7 @@ model User {
     lastOnline      DateTime @default(now())
     posts           Post[]
     accountType     String
-    userAttributes  UserAttributes?
+    filterableUserAttributes  FilterableUserAttributes?
     filters         Filters[]
 }
 
@@ -37,31 +37,24 @@ model Filters {
     id              Int       @id @default(autoincrement())
     userId          String                    
     user            User      @relation(fields: [userId], references: [id])
-    postFilter      Json?
-    userFilter      Json?
+    filterableUserAttributes  FilterableUserAttributes?
+    filterablePostAttributes  FilterablePostAttributes[]
+    // filterUserAttributesId  Int
+    // filterableUserAttributes  FilterableUserAttributes     @relation(fields: [filterUserAttributesId], references: [id])
 }
 
-model UserAttributes {
+model FilterableUserAttributes {
     id              Int     @id @default(autoincrement())
     age             Int?
     gender          String?
-    description     String?
-    friendship      String?
-    job             String?
-    collaboration   String?
-    help            String?
-    userId          String     @unique
-    user            User    @relation(fields: [userId], references: [id])
-    relationship    Relationship?
+    ethnicity       String?
+    personalityType String?
+    userId          String?     @unique
+    user            User?    @relation(fields: [userId], references: [id])
+    filtersId       Int?   @unique
+    filters         Filters?   @relation(fields: [filtersId], references: [id])
 }
 
-model Relationship {
-    id                  Int     @id @default(autoincrement())
-    userAttributesId    Int     @unique
-    userAttributes      UserAttributes @relation(fields: [userAttributesId], references: [id])
-    description         String
-    openTo              String
-}
 
 model Post {
     id                  Int                    @id @default(autoincrement())
@@ -71,10 +64,20 @@ model Post {
     description         String?
     image               String?
     createdAt           DateTime               @default(now())
+    filterablePostAttributes  FilterablePostAttributes?
+}
+
+model FilterablePostAttributes {
+    id              Int     @id @default(autoincrement())
     postFilterDisplay   String?
     postFilterQueryRole      String?
     mood                String?
+    postId          Int?     @unique
+    post            Post?    @relation(fields: [postId], references: [id])
+    filtersId       Int?
+    filters         Filters?   @relation(fields: [filtersId], references: [id])
 }
+
 
 model Conversation {
   id         Int      @id @default(autoincrement())

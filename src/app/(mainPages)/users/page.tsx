@@ -14,14 +14,14 @@ async function UsersPage() {
 
     // const users = await prisma.user.findMany({
     //     include: {
-    //       userAttributes: true, // Include the related UserAttributes data
+    //       filterableUserAttributes: true, // Include the related FilterableUserAttributes data
     //     },
     //   });
 
     let queryObj: Prisma.UserWhereInput = { // IUserQuery
         username: "Alice",
         accountType: "Email",
-        userAttributes: {
+        filterableUserAttributes: {
             AND: [
                 {
                     gender: "Male",
@@ -60,7 +60,7 @@ async function UsersPage() {
     const users = await prisma.user.findMany({
         where: queryObj,
         include: {
-            userAttributes: {
+            filterableUserAttributes: {
                 include: {
                     relationship: true, // Include the related relationship data
                 },

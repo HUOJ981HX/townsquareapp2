@@ -24,7 +24,7 @@ CREATE TABLE `Filters` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `UserAttributes` (
+CREATE TABLE `FilterableUserAttributes` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `age` INTEGER NULL,
     `gender` VARCHAR(191) NULL,
@@ -98,10 +98,10 @@ CREATE TABLE `UserConversation` (
 ALTER TABLE `Filters` ADD CONSTRAINT `Filters_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `UserAttributes` ADD CONSTRAINT `UserAttributes_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `FilterableUserAttributes` ADD CONSTRAINT `UserAttributes_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Relationship` ADD CONSTRAINT `Relationship_userAttributesId_fkey` FOREIGN KEY (`userAttributesId`) REFERENCES `UserAttributes`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Relationship` ADD CONSTRAINT `Relationship_userAttributesId_fkey` FOREIGN KEY (`userAttributesId`) REFERENCES `FilterableUserAttributes`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Post` ADD CONSTRAINT `Post_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
