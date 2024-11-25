@@ -195,8 +195,6 @@ async function main() {
   });
 
 
-
-
   await prisma.filterablePostAttributes.createMany({
     data: [
       {

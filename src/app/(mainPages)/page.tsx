@@ -6,7 +6,9 @@ import Posts from "../components/posts/Posts";
 import prisma from "@/lib/prisma"
 import ClientErrorButton from "../components/Button";
 import { Prisma } from "@prisma/client";
-import { removeEmptyObjValues } from "@/helper";
+import { cleanObject, removeEmptyObjValues } from "@/helper";
+import { Gender, Mood } from "@/types";
+import { filterPostRoles } from "@/helper/post";
 
 export default async function Home() {
 
@@ -17,6 +19,10 @@ export default async function Home() {
   const filter = await prisma.filters.findFirst({
     where: {
       userId: session?.user?.id!
+    },
+    include: {
+      filterableUserAttributes: true,
+      filterablePostAttributes: true,
     }
   });
 
@@ -24,49 +30,59 @@ export default async function Home() {
   console.log('fffffffffffffffffffffff_1');
   // console.log('sean_log filter: ' + filter?.postFilter);
 
-  console.log('sean_log ___1: ' + JSON.stringify(filter?.postFilter));
-  console.log('sean_log ___2: ' + JSON.stringify(filter?.userFilter));
+  console.log('sean_log ___1: ' + JSON.stringify(filter));
 
+  // let queryFilterObj: Prisma.PostWhereInput = {
+  //   ...JSON.parse(JSON.stringify(filter?.postFilter)),
+  //   user: {
+  //     ...JSON.parse(JSON.stringify(filter?.userFilter)),
+  //   }
+  // }
 
-  // const postFilter = JSON.parse(filter?.postFilter?.toString()!);
-  // const userFilter = JSON.parse(filter?.userFilter?.toString()!);
+  const cleanedFilter = cleanObject(filter, ["id", "userId", "postId", "filtersId"]);
 
-  // console.log('sean_log postFilter: ' + JSON.stringify(postFilter));
-  // console.log('sean_log userFilter: ' + JSON.stringify(userFilter));
-
-  let queryFilterObj: Prisma.PostWhereInput = {
-    ...JSON.parse(JSON.stringify(filter?.postFilter)),
-    user: {
-      ...JSON.parse(JSON.stringify(filter?.userFilter)),
-    }
-  }
-
-
-  let queryObj: Prisma.PostWhereInput = {
-    description: "Exploring new opportunities in tech.",
-    postFilterDisplay: {
-      contains: "work > lookingd > Service, Manufacturing > 50-75k",
+  const postQueryObj: Prisma.PostWhereInput = {
+    filterablePostAttributes: {
+      AND: cleanedFilter.filterablePostAttributes
     },
     user: {
-      username: "Alice",
-      accountType: "Email",
+      filterableUserAttributes: cleanedFilter.filterableUserAttributes
+    }
+  } 
+
+  console.log('sean_log postQueryObjpostQueryObj__: ' + JSON.stringify(postQueryObj));
+
+  let queryObj: Prisma.PostWhereInput = {
+    filterablePostAttributes: {
+      AND: [
+        {
+          mood: Mood.Angry,
+          postFilterQueryRole: filterPostRoles.PROVIDER,
+          postFilterDisplay: 'work > Manufacturing, Service > 50-75kz'
+        }
+      ]
+    },
+    user: {
       filterableUserAttributes: {
-        gender: "Male",
-        age: 25,
+        gender: Gender.Female,
+        age: 80,
       },
     },
   };
 
 
-  const wherePostFilter = removeEmptyObjValues(queryFilterObj);
+  // const wherePostFilter = removeEmptyObjValues(queryFilterObj);
 
   let posts = null;
 
-  if (wherePostFilter) {
-    posts = await prisma.post.findMany({
-      where: wherePostFilter,
-    });
-  }
+  // if (queryObj) {
+  // }
+
+  posts = await prisma.post.findMany({
+    where: postQueryObj,
+  });
+
+  console.log('sean_log posts___1: ' + JSON.stringify(posts));
 
   // const posts = await prisma.post.findMany({
   //   select: {
