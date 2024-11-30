@@ -200,9 +200,9 @@ const PostCriteria = ({ setPostFilter, purpose, setIsOpen, isOpen }: any) => {
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
+            {/* <DialogTrigger asChild>
                 <Button>Open Questionnaire</Button>
-            </DialogTrigger>
+            </DialogTrigger> */}
             <DialogContent className="sm:max-w-[425px]">
 
                 {showSequence ?

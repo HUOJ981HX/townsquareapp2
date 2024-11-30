@@ -1,14 +1,14 @@
+
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { createPostAction } from "../../actions/post";
 import PostForm from "../components/posts/PostForm";
-import Posts from "../components/posts/Posts";
 import prisma from "@/lib/prisma"
 import ClientErrorButton from "../components/Button";
 import { Prisma } from "@prisma/client";
 import { cleanObject, removeEmptyObjValues } from "@/helper";
 import { Gender, Mood } from "@/types";
 import { filterPostRoles } from "@/helper/post";
+import HomeClient from "./HomeClient";
 
 export default async function Home() {
 
@@ -48,7 +48,7 @@ export default async function Home() {
     user: {
       filterableUserAttributes: cleanedFilter.filterableUserAttributes
     }
-  } 
+  }
 
   console.log('sean_log postQueryObjpostQueryObj__: ' + JSON.stringify(postQueryObj));
 
@@ -96,10 +96,25 @@ export default async function Home() {
   // })
 
   return (
-    <div>
-      <ClientErrorButton />
-      <PostForm action={createPostAction} />
-      <Posts posts={posts} />
-    </div>
+    <>
+      {
+        posts
+          ?
+          <HomeClient posts={posts} />
+          // <p>No post to display1</p>
+          // posts.map((post: any, index: number) => (
+          //   <li
+          //     key={index}
+          //     className="text-lg text-gray-700 cursor-pointer hover:text-gray-900"
+          //   >
+          //     {post.title}
+          //     <img src={post.image} width="200" height="100" />
+          //   </li>
+          // ))
+          :
+          <p>No post to display2</p>
+      }
+    </>
+
   );
 }

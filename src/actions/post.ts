@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { auth } from "@/auth";
 import { savePost } from '@/lib/prisma/posts';
 import { revalidatePath } from 'next/cache';
+import prisma from '@/lib/prisma';
 // import {  } from '@/lib/exceptions';
 
 export const createPostAction = async (prevState: any,formData: FormData) => {
@@ -28,29 +29,41 @@ export const createPostAction = async (prevState: any,formData: FormData) => {
 
     let imageUrl;
 
-    throw new Error('Username already taken');
+    // throw new Error('Username already taken');
 
     try {
-        imageUrl = await uploadImage(formData.get('image'));
+        // imageUrl = await uploadImage(formData.get('image'));
 
-        const postDto = {
-            userId: session?.user?.id!,
-            title: formData.get('title')?.toString(),
-            description: formData.get('description')?.toString(),
-            image: imageUrl,
-            mood: formData.get('mood')?.toString(),
-        }
+        const newPost = await prisma.post.create({
+            data: {
+                userId: session?.user?.id!,
+                title: formData.get('title')?.toString()!,
+                description: formData.get('description')?.toString(),
+            }
+        });
+
+        await prisma.filterablePostAttributes.create({
+            data: {
+                mood: formData.get('mood')?.toString(),
+                postId: newPost.id, // Link it to the newly created post
+            },
+        });
     
-        const result = await savePost(postDto);
+        // await savePost(postDto);
 
         revalidatePath('/');
 
-        return { status: 'success' };
+        return { 
+            status: 'success', 
+            message: 'Post created successfully!' 
+        };
 
     } catch (error) {
-        throw new Error(
-            'Image upload failed, post was not created. Please try again later.'
-        );
+        console.error('Post creation error:', error);
+        return { 
+            status: 'error', 
+            message: 'Failed to create post. Please try again later.' 
+        };
     }
 
 };

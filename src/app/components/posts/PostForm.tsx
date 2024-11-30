@@ -1,13 +1,35 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import FormSubmit from './FormSubmit';
 import { Mood } from '@/types';
 import ImagePicker from '../ImagePicker';
+import { useToast } from "@/hooks/use-toast"
 
+export default function PostForm({ action, setIsOpen } : any) {
+  const [state, formAction] = useActionState(action, {
+    status: "",
+    message: ""
+  });
 
-export default function PostForm({ action } : any) {
-  const [state, formAction] = useActionState(action, {} as any);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (state.status === 'success') {
+      console.log('vvvvvvvvvvvvvvvvvvv');
+      console.log('vvvvvvvvvvvvvvvvvvv');
+      toast({
+        description: state.message,
+      });
+      setIsOpen(false);
+    } else if (state.status === 'error') {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: state.message,
+      });
+    }
+}, [state]);
 
   return (
     <>

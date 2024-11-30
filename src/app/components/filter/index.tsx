@@ -8,29 +8,61 @@ import { Slider } from '@/components/ui/slider'
 import { work } from '@/helper/post';
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { useActionState } from 'react';
+import { createPostAction } from '@/actions/post';
+import { useToast } from "@/hooks/use-toast"
+import { useGlobalContext } from '@/context/GlobalContext';
 
-
-function Filter() {
+function Filter({purpose}: any) {
     const [sliderValue, setSliderValue] = useState(33);
     const [isOpen, setIsOpen] = useState(false);
     const [postFilter, setPostFilter] = useState< { postFilterDisplay: string, postFilterQueryRole: string }>({
         postFilterDisplay: '',  // Initialize with empty string instead of null
         postFilterQueryRole: ''
     });
+
+    const [state, formAction] = useActionState(doFilterSubmit, {
+        status: "",
+        message: ""
+    });
+
+    const { setOpenFilter } = useGlobalContext();
+    const { toast } = useToast();
+
+    useEffect(() => {
+        if (state.status === 'success') {
+          toast({
+            description: state.message,
+          });
+
+        setOpenFilter(false);
+
+        } else if (state.status === 'error') {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: state.message,
+          });
+        }
+
+    }, [state]);
     
     const handleSliderChange = (value: any) => {
         setSliderValue(value);
     };
 
+    useEffect(() => {
+        if (state.status === 'success') {
+        } else if (state.status === 'error') {
+        }
+    }, [state]);
+
     return (
         <>
-            <div>
+            <div className='fixed w-screen h-screen z-50 bg-[red] left-0 top-0'>
+                <Button onClick={() => setOpenFilter(false)}>Close</Button>
                 <div>
-                    <div className='flex'>
-                        <h2>User attributes</h2>
-                        <p>?</p>
-                    </div>
-                    <form action={doFilterSubmit}>
+                    <form action={formAction}>
                         <div>
                             <Slider
                                 defaultValue={[33]}
@@ -74,7 +106,7 @@ function Filter() {
                                     setIsOpen(prevState => {
                                         return !prevState
                                     })
-                                }}>Add criteria</p>
+                                }}>Add Post criteria</p>
                             </div>
                         </div>
                         <div>
@@ -85,10 +117,6 @@ function Filter() {
                     </form>
                 </div>
                 <div>
-                    <div className='flex'>
-                        <h2>Post attributes</h2>
-                        <p>?</p>
-                    </div>
                     <PostCriteria setPostFilter={setPostFilter} purpose={useSearchParams().get('purpose')} setIsOpen={setIsOpen} isOpen={isOpen} />
                 </div>
             </div>

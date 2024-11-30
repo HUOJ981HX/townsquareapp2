@@ -3,6 +3,7 @@ import "./globals.css";
 import SignOutButton from "./components/SignOutButton";
 import { ErrorProvider } from '@/context/ErrorContext';
 import { Toaster } from "@/components/ui/toaster";
+import { GlobalProvider } from "@/context/GlobalContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,10 +19,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ErrorProvider>
-          
-          <SignOutButton />
-          {children}
-          <Toaster />
+          <GlobalProvider>
+            <div className="max-w-[800px] w-full m-auto">
+              {/* <SignOutButton /> */}
+              {children}
+              <Toaster />
+            </div>
+          </GlobalProvider>
         </ErrorProvider>
       </body>
     </html>

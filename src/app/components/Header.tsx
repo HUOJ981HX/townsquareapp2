@@ -5,23 +5,27 @@ import React from 'react'
 
 function Header() {
   return (
-    <div className='flex'>
-      <p>Terms</p>
+    <div className='flex w-full justify-evenly'>
 
-      {/* post and users page */}
-      {/* <Link href={"/filter"} >Filter</Link> */}
       <Link href={{
-        pathname: '/filter',
-        query: {
-          purpose: postCriteriaIntentType.FILTER
-        }
-      }}>Filter</Link>
-      {/* <p>Filter</p> */}
-      {/* post page */}
-      <p>Post</p>
+        pathname: '/',
+      }}>Feed</Link>
 
-      {/* Users page */}
-      <p>Groups</p>
+      <Link href={{
+        pathname: '/users',
+      }}>Users</Link>
+
+      <Link href={{
+        pathname: '/chat',
+      }}>Chat</Link>
+
+      <Link href={{
+        pathname: '/me',
+      }}>Me</Link>
+
+      <Link href={{
+        pathname: '/about',
+      }}>About</Link>
     </div>
   )
 }
