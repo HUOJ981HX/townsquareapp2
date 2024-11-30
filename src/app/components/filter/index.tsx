@@ -1,6 +1,6 @@
 "use client"
 
-import { doFilterSubmit } from '@/actions/filter'
+import { filterSubmitAction } from '@/actions/filter'
 import BaseModal from '@/app/components/BaseModal';
 import PostCriteria from '@/app/components/PostCriteria';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,8 @@ import { useActionState } from 'react';
 import { createPostAction } from '@/actions/post';
 import { useToast } from "@/hooks/use-toast"
 import { useGlobalContext } from '@/context/GlobalContext';
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 
 function Filter({purpose}: any) {
     const [sliderValue, setSliderValue] = useState(33);
@@ -21,7 +23,7 @@ function Filter({purpose}: any) {
         postFilterQueryRole: ''
     });
 
-    const [state, formAction] = useActionState(doFilterSubmit, {
+    const [state, formAction] = useActionState(filterSubmitAction, {
         status: "",
         message: ""
     });
@@ -63,6 +65,12 @@ function Filter({purpose}: any) {
                 <Button onClick={() => setOpenFilter(false)}>Close</Button>
                 <div>
                     <form action={formAction}>
+
+                    <div className="flex items-center space-x-2">
+                        <Switch id="filterOff" name='filterOff'/>
+                        <Label htmlFor="filterOff">Turn off filter</Label>
+                    </div>
+
                         <div>
                             <Slider
                                 defaultValue={[33]}
@@ -117,7 +125,7 @@ function Filter({purpose}: any) {
                     </form>
                 </div>
                 <div>
-                    <PostCriteria setPostFilter={setPostFilter} purpose={useSearchParams().get('purpose')} setIsOpen={setIsOpen} isOpen={isOpen} />
+                    <PostCriteria setPostFilter={setPostFilter} purpose={purpose} setIsOpen={setIsOpen} isOpen={isOpen} />
                 </div>
             </div>
             {/* <PostCriteria questions={work} /> */}

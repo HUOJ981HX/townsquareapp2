@@ -7,7 +7,14 @@ import { Prisma } from '@prisma/client';
 import { removeEmptyObjValues } from '@/helper';
 import { revalidatePath } from 'next/cache';
 
-export const doFilterSubmit = async (prevState: any, formData: FormData) => {
+export const filterSubmitAction = async (prevState: any, formData: FormData) => {
+
+  console.log('999999999999999999999');
+  console.log('999999999999999999999');
+  console.log('999999999999999999999');
+  for (var pair of formData.entries()) {
+    console.log(pair[0]+ ', ' + pair[1]); 
+  }
 
   try {
     const session = await auth();
@@ -18,12 +25,26 @@ export const doFilterSubmit = async (prevState: any, formData: FormData) => {
       select: { id: true }, // Only fetch the `id` of posts
     });
   
+    let filterOff = false;
+
+    if(formData.get('filterOff')) {
+      filterOff = true;
+    }
+
+    await prisma.filters.update({
+      where: {id: filtersObj!.id},
+      data: {
+        filterOff
+      }
+    })
+
     const filterableUserAttributesData = {
       age: parseInt(formData.get('UserAttributesAge')?.toString()!) as any,
       gender: formData.get('UserAttributesGender') as any,
       ethnicity: formData.get('UserAttributesEthnicity') as any,
       personalityType: formData.get('UserAttributesPersonalityType') as any,
     };
+
   
     const userFilter: Prisma.FilterableUserAttributesUpsertArgs = {
       where: { filtersId: filtersObj!.id },
@@ -34,7 +55,7 @@ export const doFilterSubmit = async (prevState: any, formData: FormData) => {
       },
     }
   
-    await prisma.filterableUserAttributes.upsert(userFilter);
+    // await prisma.filterableUserAttributes.upsert(userFilter);
   
     const filterablePostAttributesData = {
       postFilterDisplay: formData.get('postFilterDisplay') as any,
@@ -50,7 +71,10 @@ export const doFilterSubmit = async (prevState: any, formData: FormData) => {
       },
     }
   
-    await prisma.filterablePostAttributes.upsert(postFilter);
+    // await prisma.filterablePostAttributes.upsert(postFilter);
+
+    revalidatePath('/');
+
 
     return { 
         status: 'success', 
@@ -66,7 +90,6 @@ export const doFilterSubmit = async (prevState: any, formData: FormData) => {
 
   }
 
-  // revalidatePath('/');
 
   // redirect('/');
 }

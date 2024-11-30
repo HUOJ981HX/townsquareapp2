@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx prisma/seed.ts",
-    "update": "rm -rf node_modules/.prisma && rm -rf node_modules && npm install && npx prisma migrate reset && npx prisma migrate dev --name init && npx prisma generate && npm run seed"
+    "update": "npx prisma migrate reset && npx prisma db push && npx prisma generate && tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
@@ -18,7 +18,9 @@
     "@radix-ui/react-radio-group": "^1.2.1",
     "@radix-ui/react-slider": "^1.2.1",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.1",
     "@radix-ui/react-toast": "^1.2.2",
+    "@radix-ui/react-toggle": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.5.1",
     "clsx": "^2.1.1",

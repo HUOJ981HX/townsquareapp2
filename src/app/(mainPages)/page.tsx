@@ -26,74 +26,36 @@ export default async function Home() {
     }
   });
 
-  console.log('fffffffffffffffffffffff');
-  console.log('fffffffffffffffffffffff_1');
-  // console.log('sean_log filter: ' + filter?.postFilter);
-
-  console.log('sean_log ___1: ' + JSON.stringify(filter));
-
-  // let queryFilterObj: Prisma.PostWhereInput = {
-  //   ...JSON.parse(JSON.stringify(filter?.postFilter)),
-  //   user: {
-  //     ...JSON.parse(JSON.stringify(filter?.userFilter)),
-  //   }
-  // }
-
-  const cleanedFilter = cleanObject(filter, ["id", "userId", "postId", "filtersId"]);
-
-  const postQueryObj: Prisma.PostWhereInput = {
-    filterablePostAttributes: {
-      AND: cleanedFilter.filterablePostAttributes
-    },
-    user: {
-      filterableUserAttributes: cleanedFilter.filterableUserAttributes
-    }
-  }
-
-  console.log('sean_log postQueryObjpostQueryObj__: ' + JSON.stringify(postQueryObj));
-
-  // let queryObj: Prisma.PostWhereInput = {
-  //   filterablePostAttributes: {
-  //     AND: [
-  //       {
-  //         mood: Mood.Angry,
-  //         postFilterQueryRole: filterPostRoles.PROVIDER,
-  //         postFilterDisplay: 'work > Manufacturing, Service > 50-75kz'
-  //       }
-  //     ]
-  //   },
-  //   user: {
-  //     filterableUserAttributes: {
-  //       gender: Gender.Female,
-  //       age: 80,
-  //     },
-  //   },
-  // };
-
-
-  // const wherePostFilter = removeEmptyObjValues(queryFilterObj);
-
   let posts = null;
 
-  // if (queryObj) {
-  // }
+  console.log('fffffffffffffffffffffff');
+  console.log('fffffffffffffffffffffff');
+  console.log('sean_log filter: ' + JSON.stringify(filter));
 
-  posts = await prisma.post.findMany({
-    where: postQueryObj,
-  });
+  if(filter && filter.filterOff) {
 
-  console.log('sean_log posts___1: ' + JSON.stringify(posts));
+    console.log('1111111111111111111111');
+    console.log('sean_log filterOff: ' + filter.filterOff);
+    posts = await prisma.post.findMany();
+  }
 
-  // const posts = await prisma.post.findMany({
-  //   select: {
-  //     id: true,
-  //     title: true,
-  //     userId: true,
-  //     image: true,
-  //     createdAt: true,
-  //     mood: true,
-  //   }
-  // })
+  else {
+    console.log('2222222222222222');
+    const cleanedFilter = cleanObject(filter, ["id", "userId", "postId", "filtersId"]);
+
+    const postQueryObj: Prisma.PostWhereInput = {
+      filterablePostAttributes: {
+        AND: cleanedFilter.filterablePostAttributes
+      },
+      user: {
+        filterableUserAttributes: cleanedFilter.filterableUserAttributes
+      }
+    }
+  
+    posts = await prisma.post.findMany({
+      where: postQueryObj,
+    });
+  }
 
   return (
     <>
@@ -101,18 +63,8 @@ export default async function Home() {
         posts
           ?
           <HomeClient posts={posts} />
-          // <p>No post to display1</p>
-          // posts.map((post: any, index: number) => (
-          //   <li
-          //     key={index}
-          //     className="text-lg text-gray-700 cursor-pointer hover:text-gray-900"
-          //   >
-          //     {post.title}
-          //     <img src={post.image} width="200" height="100" />
-          //   </li>
-          // ))
           :
-          <p>No post to display2</p>
+          <p>No post to display</p>
       }
     </>
 
