@@ -19,8 +19,8 @@ function SubHeader() {
     setIsOpen(!isOpen)
   }}>Create Post</Button>;
   const groupsButton = <Button>Groups</Button>;
-  const hallsButton = <Button>Halls</Button>;
-  const myChatsButton = <Button>My Chats</Button>;
+  const hallsButton = <Button><Link href={"/chat/halls"}>Halls</Link></Button>;
+  const myChatsButton = <Button><Link href={"/chat"}>My Chats</Link></Button>;
   const profileButton = <Button>Profile</Button>;
   const profilePostButton = <Button>My Posts</Button>;
   const accountButton = <Button>Account</Button>;
