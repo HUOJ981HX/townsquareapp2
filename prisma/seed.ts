@@ -10,7 +10,6 @@ async function main() {
   const user1 = await prisma.user.create({
     data: {
       id: '1',
-      publicId: '4653f404-a121-11ef-b864-0242ac120002',
       username: 'Alice',
       email: 'alice@alice.alice',
       password: 'alice@alice.alice',
@@ -19,12 +18,54 @@ async function main() {
   });
 
   const user2 = await prisma.user.create({
-    data: {id: '2', publicId: '2ff449e8-a121-11ef-b864-0242ac120002', username: 'Bob', email: 'bob@bob.bob', password: 'bob@bob.bob', accountType: AccountType.Email },
+    data: {id: '2', username: 'Bob', email: 'bob@bob.bob', password: 'bob@bob.bob', accountType: AccountType.Email },
   });
 
   const user3 = await prisma.user.create({
-    data: {id: '3', publicId: '599080aa-a121-11ef-b864-0242ac120002', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Google },
+    data: {id: '3', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Google },
   });
+
+  const conversation1 = await prisma.conversation.create({
+    data: {
+      userId: user1.id,
+      messages: {
+        create: [
+          {
+            text: 'Hey Jane, how are you?',
+            userName: user1.username,
+            userId: user1.id,
+          },
+          {
+            text: 'Hi John! I am good. How about you?',
+            userName: user2.username,
+            userId: user2.id,
+          },
+        ],
+      },
+    },
+  });
+
+  const conversation2 = await prisma.conversation.create({
+    data: {
+      userId: user2.id,
+      messages: {
+        create: [
+          {
+            text: 'Hey John, ready for the project meeting?',
+            userName: user2.username,
+            userId: user2.id,
+          },
+          {
+            text: 'Yes, I am all set. Let’s do this!',
+            userName: user1.username,
+            userId: user1.id,
+          },
+        ],
+      },
+    },
+  });
+
+  
 
   await prisma.filters.createMany({
     data: [
@@ -64,105 +105,7 @@ async function main() {
     ]
   })
 
-  // Create some conversations
-  const conversation1 = await prisma.conversation.create({
-    data: {},
-  });
 
-  const conversation2 = await prisma.conversation.create({
-    data: {},
-  });
-
-  // Add users to conversations
-  await prisma.userConversation.create({
-    data: {
-      userId: user1.id,
-      conversationId: conversation1.id,
-    },
-  });
-
-  await prisma.userConversation.create({
-    data: {
-      userId: user2.id,
-      conversationId: conversation1.id,
-    },
-  });
-
-  await prisma.userConversation.create({
-    data: {
-      userId: user1.id,
-      conversationId: conversation2.id,
-    },
-  });
-
-  await prisma.userConversation.create({
-    data: {
-      userId: user3.id,
-      conversationId: conversation2.id,
-    },
-  });
-
-  // Add some messages
-  await prisma.message.create({
-    data: {
-      content: 'Hello, how are you?',
-      senderId: user1.id,
-      conversationId: conversation1.id,
-    },
-  });
-
-  await prisma.message.create({
-    data: {
-      content: 'I\'m doing great, thanks for asking!',
-      senderId: user2.id,
-      conversationId: conversation1.id,
-    },
-  });
-
-  await prisma.message.create({
-    data: {
-      content: 'Hey, what\'s up?',
-      senderId: user1.id,
-      conversationId: conversation2.id,
-    },
-  });
-
-  await prisma.message.create({
-    data: {
-      content: 'Not much, just hanging out.',
-      senderId: user3.id,
-      conversationId: conversation2.id,
-    },
-  });
-
-  // const filterableUserAttributes = [
-  //   {
-  //     userId: '1',
-  //     description: 'Enthusiastic software engineer',
-  //     age: 25,
-  //     gender: 'Male',
-  //     help: 'need with with coding issue'
-  //   },
-  //   {
-  //     userId: '2',
-  //     description: 'Creative graphic designer',
-  //     age: 29,
-  //     gender: 'Female',
-  //     collaboration: 'work on a project together'
-  //   },
-  //   {
-  //     userId: '3',
-  //     description: 'Passionate data scientist',
-  //     age: 32,
-  //     gender: 'Non-binary',
-  //   },
-  // ];
-
-  // for (const attributes of filterableUserAttributes) {
-  //   await prisma.filterableUserAttributes.create({
-  //     data: attributes,
-  //   });
-  // }
 
 
   await prisma.post.createMany({

@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx prisma/seed.ts",
-    "update": "npx prisma migrate reset && npx prisma db push && npx prisma generate && tsx prisma/seed.ts"
+    "update": "npx prisma migrate reset && npx prisma db push && npx prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
