@@ -42,7 +42,9 @@ export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
                         else {
                             const newUser = await prisma.user.create({
                                 data: {
-                                    publicId: uuidv4(), username: token.name, email: token.email, accountType: AccountType.Google
+                                    username: token.name, 
+                                    email: token.email, 
+                                    accountType: AccountType.Google
                                 }
                             })
 

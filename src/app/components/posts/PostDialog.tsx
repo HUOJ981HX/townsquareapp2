@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import React from 'react'
 import PostForm from './PostForm'
-import { createPostAction } from '@/actions/post'
+import { createPostAction } from '@/actions/post.action'
 
 function PostDialog({isOpen, setIsOpen}: any) {
   return (

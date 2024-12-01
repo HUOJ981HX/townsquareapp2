@@ -1,15 +1,11 @@
 "use client"
 
-import { filterSubmitAction } from '@/actions/filter'
-import BaseModal from '@/app/components/BaseModal';
+import { filterSubmitAction } from '@/actions/filter.action'
 import PostCriteria from '@/app/components/PostCriteria';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider'
-import { work } from '@/helper/post';
 import React, { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { useActionState } from 'react';
-import { createPostAction } from '@/actions/post';
 import { useToast } from "@/hooks/use-toast"
 import { useGlobalContext } from '@/context/GlobalContext';
 import { Label } from "@/components/ui/label"

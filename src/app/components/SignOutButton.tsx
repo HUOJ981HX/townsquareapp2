@@ -1,5 +1,5 @@
 
-import { signOutAction } from "@/actions/authenticate"
+import { signOutAction } from "@/actions/authenticate.action"
 
 function SignOutButton() {
   return (
