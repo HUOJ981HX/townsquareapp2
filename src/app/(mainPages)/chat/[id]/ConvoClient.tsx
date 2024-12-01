@@ -51,7 +51,7 @@ function ConvoClient({ convoId, loadedMessages, session }: any) {
       
       sendMessage({
         messageObj: state.convoMessage,
-        chatId: state.convoMessage?.conversationId,
+        chatId: state.convoMessage?.chatId,
         channel: "convo-message"
       });
 

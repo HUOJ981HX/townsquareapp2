@@ -25,46 +25,140 @@ async function main() {
     data: {id: '3', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Google },
   });
 
-  const conversation1 = await prisma.conversation.create({
+ 
+  const chat1 = await prisma.chat.create({
     data: {
-      userId: user1.id,
-      messages: {
+      // userId: user1.id,
+      name: 'John and Jane Chat',
+      userChats: {
         create: [
-          {
-            text: 'Hey Jane, how are you?',
-            userName: user1.username,
-            userId: user1.id,
-          },
-          {
-            text: 'Hi John! I am good. How about you?',
-            userName: user2.username,
-            userId: user2.id,
-          },
-        ],
-      },
-    },
-  });
+          { userId: user1.id },
+          { userId: user2.id }
+        ]
+      }
+    }
+  })
 
-  const conversation2 = await prisma.conversation.create({
+  // Create messages for chat1
+  await prisma.message.createMany({
+    data: [
+      {
+        text: 'Hey Jane, how are you?',
+        userId: user1.id,
+        userName: user1.username,
+        chatId: chat1.id,
+      },
+      {
+        text: 'Hi John, I\'m good! How about you?',
+        userId: user2.id,
+        userName: user2.username,
+        chatId: chat1.id,
+      }
+    ]
+  })
+
+  // Conversation 2: Between user 1 and user 3
+  const chat2 = await prisma.chat.create({
     data: {
-      userId: user2.id,
-      messages: {
+      // userId: user1.id,
+      name: 'John and Bob Chat',
+      userChats: {
         create: [
-          {
-            text: 'Hey John, ready for the project meeting?',
-            userName: user2.username,
-            userId: user2.id,
-          },
-          {
-            text: 'Yes, I am all set. Let’s do this!',
-            userName: user1.username,
-            userId: user1.id,
-          },
-        ],
-      },
-    },
-  });
+          { userId: user1.id },
+          { userId: user3.id }
+        ]
+      }
+    }
+  })
 
+  // Create messages for chat2
+  await prisma.message.createMany({
+    data: [
+      {
+        text: 'Hey Bob, what\'s up?',
+        userId: user1.id,
+        userName: user1.username,
+        chatId: chat2.id,
+      },
+      {
+        text: 'Not much, John. Just working on some projects.',
+        userId: user3.id,
+        userName: user3.username,
+        chatId: chat2.id,
+      }
+    ]
+  })
+
+  // Conversation 3: Between user 2 and user 3
+  const chat3 = await prisma.chat.create({
+    data: {
+      // userId: user2.id,
+      name: 'Jane and Bob Chat',
+      userChats: {
+        create: [
+          { userId: user2.id },
+          { userId: user3.id }
+        ]
+      }
+    }
+  })
+
+  // Create messages for chat3
+  await prisma.message.createMany({
+    data: [
+      {
+        text: 'Hi Bob, do you want to collaborate on a project?',
+        userId: user2.id,
+        userName: user2.username,
+        chatId: chat3.id,
+      },
+      {
+        text: 'Sure, Jane! What did you have in mind?',
+        userId: user3.id,
+        userName: user3.username,
+        chatId: chat3.id,
+      }
+    ]
+  })
+
+  // Conversation 4: Between user 1, user 2, and user 3
+  const chat4 = await prisma.chat.create({
+    data: {
+      // userId: user1.id,
+      name: 'Group Chat',
+      userChats: {
+        create: [
+          { userId: user1.id },
+          { userId: user2.id },
+          { userId: user3.id }
+        ]
+      }
+    }
+  })
+
+  // Create messages for chat4
+  await prisma.message.createMany({
+    data: [
+      {
+        text: 'Hey everyone, let\'s have a group discussion!',
+        userId: user1.id,
+        userName: user1.username,
+        chatId: chat4.id,
+      },
+      {
+        text: 'Great idea, John!',
+        userId: user2.id,
+        userName: user2.username,
+        chatId: chat4.id,
+      },
+      {
+        text: 'Count me in!',
+        userId: user3.id,
+        userName: user3.username,
+        chatId: chat4.id,
+      }
+    ]
+  })
   
 
   await prisma.filters.createMany({
@@ -104,9 +198,6 @@ async function main() {
       },
     ]
   })
-
-
-
 
   await prisma.post.createMany({
     data: [

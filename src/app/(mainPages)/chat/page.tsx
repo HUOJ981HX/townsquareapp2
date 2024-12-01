@@ -12,18 +12,51 @@ async function Chat() {
 
   const session = await auth();
 
-  const convos = await prisma.conversation.findMany({
+  // const convos = await prisma.chat.findMany({
+  //   where: {
+  //     userId: session?.user?.id!
+  //   },
+  //   include: {
+  //     messages: {
+  //       take: 1, 
+  //       orderBy: {
+  //         createdAt: 'desc',
+  //       },
+  //     },
+  //   },
+  // });
+
+  const convos = await prisma.chat.findMany({
     where: {
-      userId: session?.user?.id!
+      userChats: {
+        some: {
+          userId: session?.user?.id!
+        }
+      }
     },
     include: {
+      // userChats: {
+      //   include: {
+      //     user: true
+      //   }
+      // },
       messages: {
-        take: 1, 
+        take: 1,
         orderBy: {
-          createdAt: 'desc',
+          createdAt: 'desc'
         },
-      },
+        select: {
+          id: true,
+          text: true,
+          createdAt: true,
+          userName: true,
+          userId: true
+        }
+      }
     },
+    orderBy: {
+      updatedAt: 'desc'
+    }
   });
 
   console.log('cccccccccccccccccccc');

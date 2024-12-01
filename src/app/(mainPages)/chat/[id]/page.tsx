@@ -9,7 +9,7 @@ async function ConvoPage({ params }: any) {
 
   const { id } = await params;
 
-  const convo = await prisma.conversation.findFirst({
+  const convo = await prisma.chat.findFirst({
     where: {
       id,
     },

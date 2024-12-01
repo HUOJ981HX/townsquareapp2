@@ -23,12 +23,13 @@ model User {
     email           String
     password        String?
     createdAt       DateTime @default(now())
-    conversation    Conversation[]
+    // conversation    Chat[]
     lastOnline      DateTime @default(now())
     posts           Post[]
     accountType     String
     filterableUserAttributes  FilterableUserAttributes?
     filters         Filters[]
+    userChats       UserChat[]
 }
 
 model Filters {
@@ -75,13 +76,25 @@ model FilterablePostAttributes {
     filters         Filters?   @relation(fields: [filtersId], references: [id])
 }
 
-model Conversation {
+model UserChat {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId    String
+  joinedAt  DateTime @default(now())  
+  @@unique([userId, chatId])
+}
+
+model Chat {
   id            String      @id @default(uuid())
-  userId        String
+  name          String?
+  // userId        String
+  userChats     UserChat[]
+  messages      Message[]
+  // user          User     @relation(fields: [userId], references: [id])
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  messages      Message[]
-  user          User     @relation(fields: [userId], references: [id])
 }
 
 model Message {
@@ -90,6 +103,6 @@ model Message {
   createdAt       DateTime @default(now())
   userName        String
   userId          String
-  conversationId  String
-  conversation    Conversation @relation(fields: [conversationId], references: [id])
+  chat            Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId          String
 }
