@@ -22,7 +22,7 @@ async function main() {
   });
 
   const user3 = await prisma.user.create({
-    data: {id: '3', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Google },
+    data: {id: '3', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Email },
   });
 
  

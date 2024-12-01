@@ -12,7 +12,7 @@ export const createMessageAction = async (prevState: any,formData: FormData) => 
         console.log(pair[0]+ ', ' + pair[1]); 
     }
     
-    let conversationId = formData.get('convoId')!.toString();
+    let chatId = formData.get('convoId')!.toString();
     let text = formData.get('msg')!.toString();
     let userId = formData.get('userId')!.toString();
     let userName = formData.get('userName')!.toString();
@@ -20,7 +20,7 @@ export const createMessageAction = async (prevState: any,formData: FormData) => 
     try {
         const convoMessage = await prisma.message.create({
             data: {
-                conversationId,
+                chatId,
                 text,
                 userId,
                 userName
@@ -33,7 +33,7 @@ export const createMessageAction = async (prevState: any,formData: FormData) => 
 
         return { 
             status: 'success', 
-            message: 'Message sent successfully!' ,
+            message: 'Message sent successfully!',
             convoMessage,
         };
     } catch (error) {

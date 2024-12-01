@@ -1,15 +1,14 @@
-import prisma from '@/lib/prisma'
-import React from 'react'
+import prisma from "@/lib/prisma";
+import React from "react";
 import { auth } from "@/auth";
-import Link from 'next/link';
+import Link from "next/link";
 
 enum ChatSubHeaders {
   MyChat = "MyChat",
-  Halls = "Halls"
+  Halls = "Halls",
 }
 
 async function Chat() {
-
   const session = await auth();
 
   // const convos = await prisma.chat.findMany({
@@ -18,7 +17,7 @@ async function Chat() {
   //   },
   //   include: {
   //     messages: {
-  //       take: 1, 
+  //       take: 1,
   //       orderBy: {
   //         createdAt: 'desc',
   //       },
@@ -30,49 +29,60 @@ async function Chat() {
     where: {
       userChats: {
         some: {
-          userId: session?.user?.id!
-        }
-      }
+          userId: session?.user?.id!,
+        },
+      },
     },
     include: {
-      // userChats: {
-      //   include: {
-      //     user: true
-      //   }
-      // },
+      userChats: {
+        include: {
+          user: true,
+        },
+      },
       messages: {
         take: 1,
         orderBy: {
-          createdAt: 'desc'
+          createdAt: "desc",
         },
         select: {
           id: true,
           text: true,
           createdAt: true,
           userName: true,
-          userId: true
-        }
-      }
+          userId: true,
+        },
+      },
     },
     orderBy: {
-      updatedAt: 'desc'
-    }
+      updatedAt: "desc",
+    },
   });
 
-  console.log('cccccccccccccccccccc');
-  console.log('cccccccccccccccccccc');
-  console.log('sean_log convos: ' + JSON.stringify(convos));
+  console.log("cccccccccccccccccccc");
+  console.log("cccccccccccccccccccc");
+  console.log("sean_log convos: " + JSON.stringify(convos));
+
+  const getChatUsers = (users: any) => {
+    return (
+      <div className="flex">
+        {users.map((user: any) => {
+          return <p> {user.user.username} | </p>;
+        })}
+      </div>
+    );
+  };
 
   return (
     <div>
       <h2>Your chat</h2>
       {convos.map((convo: any, index: number) => (
-        <div className='p-4 border-[solid]'>
+        <div className="p-4 border-[solid]" id={convo.id}>
           <Link href={`/chat/${convo.id}`}>{convo.messages[0].text}</Link>
+          {getChatUsers(convo.userChats)}
         </div>
       ))}
     </div>
-  )
+  );
 }
 
-export default Chat
+export default Chat;
