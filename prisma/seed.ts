@@ -25,6 +25,10 @@ async function main() {
     data: {id: '3', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Email },
   });
 
+  const user4 = await prisma.user.create({
+    data: {id: '4', username: 'Dave', email: 'dave@dave.dave', password: 'dave@dave.dave', accountType: AccountType.Email },
+  });
+
  
   const chat1 = await prisma.chat.create({
     data: {
@@ -195,6 +199,11 @@ async function main() {
         userId: "3", 
         age: 45,
         gender: Gender.NonBinary
+      },
+      {
+        userId: "4", 
+        age: 65,
+        gender: Gender.Male
       },
     ]
   })

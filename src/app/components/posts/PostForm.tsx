@@ -16,8 +16,6 @@ export default function PostForm({ action, setIsOpen } : any) {
 
   useEffect(() => {
     if (state.status === 'success') {
-      console.log('vvvvvvvvvvvvvvvvvvv');
-      console.log('vvvvvvvvvvvvvvvvvvv');
       toast({
         description: state.message,
       });
