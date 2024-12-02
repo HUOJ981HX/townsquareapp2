@@ -78,12 +78,54 @@ export async function sendPrivateMessageToUsers(
       })
     );
 
-    console.log('vvvvvvvvvvvvvvvvvvv');
-    console.log('vvvvvvvvvvvvvvvvvvv');
-    console.log('sean_log results: ' + JSON.stringify(results));
+    console.log("vvvvvvvvvvvvvvvvvvv");
+    console.log("vvvvvvvvvvvvvvvvvvv");
+    console.log("sean_log results: " + JSON.stringify(results));
     return results;
   } catch (error) {
     console.error("Error sending messages:", error);
+    throw error;
+  }
+}
+
+export async function sendMessageToGroupChat(
+  senderId: string,
+  recipientUserIds: string[],
+  messageText: string
+) {
+  try {
+    // Include the sender in the list of users for the chat
+    const allUserIds = Array.from(new Set([senderId, ...recipientUserIds]));
+
+    // If no existing group chat, create a new one
+    const newGroupChat = await prisma.chat.create({
+      data: {
+        name: `Group Chat (${new Date().toLocaleString()})`,
+        userChats: {
+          create: allUserIds.map((userId) => ({
+            userId: userId,
+          })),
+        },
+      },
+    });
+    let chatId: string = newGroupChat.id;
+    // Create the message in the group chat
+    const message = await prisma.message.create({
+      data: {
+        text: messageText,
+        userId: senderId,
+        userName: "Bob",
+        chatId: chatId,
+      },
+    });
+
+    return {
+      chatId,
+      messageId: message.id,
+      users: allUserIds,
+    };
+  } catch (error) {
+    console.error("Error creating group chat and sending message:", error);
     throw error;
   }
 }
