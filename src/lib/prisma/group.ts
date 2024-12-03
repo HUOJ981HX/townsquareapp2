@@ -5,20 +5,18 @@ export async function updateUserGroups(
   targetUserId,
   oldGroupIds}: any
 ) {
-  console.log("ttttttttttttttttttt");
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
 
-  console.log("sean_log targetGroupIds: " + targetGroupIds);
-  console.log("sean_log oldGroupIds: " + oldGroupIds);
-  console.log("sean_log targetUserId: " + targetUserId);
-  console.log("sean_log typeof oldGroupIds: " + typeof oldGroupIds);
   // Start a transaction to ensure atomicity
   const result = await prisma.$transaction(async (tx) => {
 
-    // const groupIdsToDelete = oldGroupIds.filter((groupId: any) => !targetGroupIds.includes(groupId));
+    const groupIdsToDelete = oldGroupIds.filter((groupId: any) => !targetGroupIds.includes(groupId));
     // console.log('sean_log groupIdsToDelete: ' + groupIdsToDelete);
     // console.log('sean_log groupIdsToDeleteJSON: ' + JSON.stringify(groupIdsToDelete));
 
+    console.log('ggggggggggggggggggggggg');
+    console.log('ggggggggggggggggggggggg');
+    console.log('sean_log groupIdsToDelete: ' + groupIdsToDelete);
+    console.log('sean_log groupIdsToDelete: ' + JSON.stringify(groupIdsToDelete));
     // Remove user from groups not in target groups
     await tx.userGroup.deleteMany({
       where: {
@@ -27,8 +25,8 @@ export async function updateUserGroups(
             // notIn: targetGroupIds, // Where you do want to add
             // ["d838f99b-3a5e-4c6e-8f82-12102a2ba104"]
 
-            // in: groupIdsToDelete,
-            in: ["be0ab1d1-4691-444b-af6f-3c7b7a48ab83", "d838f99b-3a5e-4c6e-8f82-12102a2ba104"],
+            in: groupIdsToDelete,
+            // in: ["be0ab1d1-4691-444b-af6f-3c7b7a48ab83", "d838f99b-3a5e-4c6e-8f82-12102a2ba104"],
             // Current groups belonging to logged in user
             // ["be0ab1d1-4691-444b-af6f-3c7b7a48ab83,d838f99b-3a5e-4c6e-8f82-12102a2ba104"]
 

@@ -40,7 +40,7 @@ function GroupForm({ userSlug, groups }: any) {
           type="hidden"
           id="oldGroupIds"
           name="oldGroupIds"
-          value={oldGroupIds}
+          value={JSON.stringify(oldGroupIds)}
         />
 
         {groups.map((group: any) => {
@@ -59,7 +59,7 @@ function GroupForm({ userSlug, groups }: any) {
                 name="targetGroups"
               />
               <label htmlFor={group.id} className="ml-2">
-                {group.name}
+                {group.name} - {group.id}
               </label>
             </div>
           );
