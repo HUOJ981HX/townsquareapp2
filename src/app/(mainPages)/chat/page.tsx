@@ -12,20 +12,16 @@ enum ChatSubHeaders {
 
 async function Chat() {
   const session = await auth();
+  const userId = session?.user?.id;
 
-  // const convos = await prisma.chat.findMany({
-  //   where: {
-  //     userId: session?.user?.id!
-  //   },
-  //   include: {
-  //     messages: {
-  //       take: 1,
-  //       orderBy: {
-  //         createdAt: 'desc',
-  //       },
-  //     },
-  //   },
-  // });
+  const groups = await prisma.group.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      userGroups: true, 
+    },
+  });
 
   const convos = await prisma.chat.findMany({
     where: {
@@ -60,10 +56,6 @@ async function Chat() {
     },
   });
 
-  console.log("cccccccccccccccccccc");
-  console.log("cccccccccccccccccccc");
-  console.log("sean_log convos: " + JSON.stringify(convos));
-
   const getChatUsers = (users: any) => {
     return (
       <div className="flex">
@@ -79,7 +71,7 @@ async function Chat() {
       <h2>Your chat</h2>
       <div className="flex">
         <p>test buttons</p>
-        <TestButton />
+        <TestButton groups={groups} />
       </div>
       {convos.map((convo: any, index: number) => (
         <div className="p-4 border-[solid]" id={convo.id}>

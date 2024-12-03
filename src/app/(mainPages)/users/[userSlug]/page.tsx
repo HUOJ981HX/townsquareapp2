@@ -30,10 +30,7 @@ export default async function UserPage({ params }: any) {
     },
   });
 
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-  console.log('sean_log userSlug: ' + userSlug);
-  console.log("sean_log groups: " + JSON.stringify(groups));
+
 
   return (
     <>

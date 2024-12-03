@@ -7,7 +7,39 @@ import {
   sendPrivateMessageToUsers,
 } from "@/helper/chat/server";
 
-function TestButton() {
+function TestButton({groups}: any) {
+
+  console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
+  console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
+  console.log("sean_log groups: " + JSON.stringify(groups));
+
+
+  // [
+  //   {
+  //     "id": "be0ab1d1-4691-444b-af6f-3c7b7a48ab83",
+  //     "name": "group alice, cindy",
+  //     "createdAt": "2024-12-03T03:05:04.315Z",
+  //     "updatedAt": "2024-12-03T03:05:04.315Z",
+  //     "userId": "2",
+  //     "userGroups": [
+  //       {
+  //         "id": 2,
+  //         "userId": "3",
+  //         "groupId": "be0ab1d1-4691-444b-af6f-3c7b7a48ab83"
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     "id": "d838f99b-3a5e-4c6e-8f82-12102a2ba104",
+  //     "name": "group empty",
+  //     "createdAt": "2024-12-03T03:05:04.320Z",
+  //     "updatedAt": "2024-12-03T03:05:04.320Z",
+  //     "userId": "2",
+  //     "userGroups": []
+  //   }
+  // ]
+  
+
   return (
     <>
       <Button
