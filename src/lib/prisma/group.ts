@@ -1,46 +1,69 @@
 import prisma from "@/lib/prisma";
 
 export async function updateUserGroups(
-  targetGroups: any[], 
-  userIdToAdd: string
+{  targetGroupIds,
+  targetUserId,
+  oldGroupIds}: any
 ) {
+  console.log("ttttttttttttttttttt");
+  console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
+
+  console.log("sean_log targetGroupIds: " + targetGroupIds);
+  console.log("sean_log oldGroupIds: " + oldGroupIds);
+  console.log("sean_log targetUserId: " + targetUserId);
+  console.log("sean_log typeof oldGroupIds: " + typeof oldGroupIds);
   // Start a transaction to ensure atomicity
   const result = await prisma.$transaction(async (tx) => {
+
+    // const groupIdsToDelete = oldGroupIds.filter((groupId: any) => !targetGroupIds.includes(groupId));
+    // console.log('sean_log groupIdsToDelete: ' + groupIdsToDelete);
+    // console.log('sean_log groupIdsToDeleteJSON: ' + JSON.stringify(groupIdsToDelete));
+
     // Remove user from groups not in target groups
     await tx.userGroup.deleteMany({
       where: {
-        userId: userIdToAdd,
+        userId: targetUserId,
         groupId: {
-          notIn: targetGroups
-        }
-      }
+            // notIn: targetGroupIds, // Where you do want to add
+            // ["d838f99b-3a5e-4c6e-8f82-12102a2ba104"]
+
+            // in: groupIdsToDelete,
+            in: ["be0ab1d1-4691-444b-af6f-3c7b7a48ab83", "d838f99b-3a5e-4c6e-8f82-12102a2ba104"],
+            // Current groups belonging to logged in user
+            // ["be0ab1d1-4691-444b-af6f-3c7b7a48ab83,d838f99b-3a5e-4c6e-8f82-12102a2ba104"]
+
+
+        //   in: targetGroupIds,
+        //   notIn: oldGroupIds,
+        },
+      },
     });
 
     // Add user to target groups where they're not already a member
     const existingMemberships = await tx.userGroup.findMany({
       where: {
-        userId: userIdToAdd,
+        userId: targetUserId,
         groupId: {
-          in: targetGroups
-        }
+          in: targetGroupIds,
+        },
       },
       select: {
-        groupId: true
-      }
+        groupId: true,
+      },
     });
 
     // Determine which target groups the user is not yet a member of
-    const groupsToJoin = targetGroups.filter(
-      groupId => !existingMemberships.some(m => m.groupId === groupId)
+    const groupsToJoin = targetGroupIds.filter(
+      (groupId: any) => !existingMemberships.some((m) => m.groupId === groupId)
     );
 
     // Bulk create new UserGroup entries
     if (groupsToJoin.length > 0) {
       await tx.userGroup.createMany({
-        data: groupsToJoin.map(groupId => ({
-          userId: userIdToAdd,
-          groupId: groupId
-        }))
+        data: groupsToJoin.map((groupId: any) => ({
+          userId: targetUserId,
+          groupId: groupId,
+        })),
       });
     }
 
@@ -49,9 +72,9 @@ export async function updateUserGroups(
       where: {
         userId: "2", // Assuming this is the original user ID from the context
       },
-      include: {
-        userGroups: true,
-      },
+    //   include: {
+    //     oldGroupIds: true,
+    //   },
     });
   });
 

@@ -8,22 +8,24 @@ export const updateGroupsAction = async (
   formData: FormData
 ) => {
   // const session = await auth();
-  console.log("uuuuuuuuuuuuuuuuuuuuu");
-  console.log("uuuuuuuuuuuuuuuuuuuuu");
-  for (var pair of formData.entries()) {
-    console.log(pair[0] + ", " + pair[1]);
-  }
+//   console.log("uuuuuuuuuuuuuuuuuuuuu");
+//   console.log("uuuuuuuuuuuuuuuuuuuuu");
+//   for (var pair of formData.entries()) {
+//     console.log(pair[0] + ", " + pair[1]);
+//   }
 
-  let targetGroups = formData.getAll("targetGroups");
-  let arrayGroupIds = formData.getAll("arrayGroupIds");
+  let targetGroupIds = formData.getAll("targetGroups");
+  let oldGroupIds = formData.get("oldGroupIds");
   let targetUserId = formData.get("targetUserId")!.toString();
 
-  console.log("sean_log targetGroups: " + JSON.stringify(targetGroups));
-  console.log("sean_log targetUserId: " + JSON.stringify(targetUserId));
-  console.log("sean_log arrayGroupIds: " + JSON.stringify(arrayGroupIds));
+  console.log("sean_log targetGroupIds: " + targetGroupIds);
+  console.log('sean_log targetGroupIds: ' + JSON.stringify(targetGroupIds));
+  console.log("sean_log oldGroupIds: " + oldGroupIds);
+  console.log('sean_log oldGroupIds: ' + JSON.stringify(oldGroupIds)); // Issue here "be0ab1d1-4691-444b-af6f-3c7b7a48ab83,d838f99b-3a5e-4c6e-8f82-12102a2ba104"
+  console.log("sean_log targetUserId: " + targetUserId);
 
   try {
-    let result = updateUserGroups(targetGroups, targetUserId)
+    let result = updateUserGroups({targetGroupIds, targetUserId, oldGroupIds});
 
     // for (const groupId of targetGroups) {
     //   // Check if the user is already a member of the group
@@ -47,10 +49,6 @@ export const updateGroupsAction = async (
     //     });
     //   }
     // }
-
-    console.log('vvvvvvvvvvvvvvvvvvv');
-    console.log('vvvvvvvvvvvvvvvvvvv');
-    console.log('sean_log result: ' + JSON.stringify(result));
 
     return {
       status: "success",

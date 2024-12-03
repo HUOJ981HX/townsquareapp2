@@ -10,11 +10,11 @@ function GroupForm({ userSlug, groups }: any) {
     message: "",
   });
 
-  const arrayGroupIds = groups.map((item: any) => item.id);
+  const oldGroupIds = groups.map((item: any) => item.id);
 
   console.log("cccccccccccccccccccc");
-  console.log("sean_log arrayGroupIds: " + arrayGroupIds);
-  console.log('sean_log arrayGroupIds_json: ' + JSON.stringify(arrayGroupIds));
+  console.log("sean_log arrayGroupIds: " + oldGroupIds);
+  console.log('sean_log arrayGroupIds_json: ' + JSON.stringify(oldGroupIds));
 
   useEffect(() => {
     if (state.status === "success") {
@@ -38,9 +38,9 @@ function GroupForm({ userSlug, groups }: any) {
 
         <input
           type="hidden"
-          id="arrayGroupIds"
-          name="arrayGroupIds"
-          value={arrayGroupIds}
+          id="oldGroupIds"
+          name="oldGroupIds"
+          value={oldGroupIds}
         />
 
         {groups.map((group: any) => {
