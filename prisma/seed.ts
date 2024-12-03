@@ -292,12 +292,6 @@ async function main() {
         postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
       },
       {
-        filtersId: 2, 
-        mood: Mood.Angry,
-        postFilterQueryRole: filterPostRoles.PROVIDER,
-        postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
-      },
-      {
         postId: 2,
         mood: Mood.Desperate,
         postFilterQueryRole: filterPostRoles.BOTH,
@@ -314,6 +308,12 @@ async function main() {
         mood: Mood.Surprised,
         postFilterQueryRole: filterPostRoles.SEEKER,
         postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
+      },
+      {
+        filtersId: 2, 
+        mood: Mood.Angry,
+        postFilterQueryRole: filterPostRoles.PROVIDER,
+        postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
       },
     ]
   })
