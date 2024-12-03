@@ -33,22 +33,6 @@ function ConvoClient({ convoId, loadedMessages, session }: any) {
 
   useEffect(() => {
     if (state.status === "success") {
-      console.log("sssssssssssssssssssssssss");
-      console.log("sean_log success: " + JSON.stringify(state));
-      // `state` Good per below:
-      // {
-      //   "status": "success",
-      //   "message": "Message sent successfully!",
-      //   "convoMessage": {
-      //     "id": 6,
-      //     "text": "test2",
-      //     "createdAt": "2024-12-01T03:35:00.664Z",
-      //     "userName": "Bob",
-      //     "userId": "2",
-      //     "conversationId": "4fc36231-917b-48d2-83f0-385a6c9cf787"
-      //   }
-      // }
-      
       sendMessage({
         messageObj: state.convoMessage,
         chatId: state.convoMessage?.chatId,

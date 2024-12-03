@@ -3,8 +3,13 @@ import Image from "next/image";
 import Users from "@/app/components/users/Users";
 import prisma from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
+import { auth } from "@/auth";
+import GroupForm from "./GroupFormClient";
 
 export default async function UserPage({ params }: any) {
+  const session = await auth();
+  const userId = session?.user?.id;
+
   const userSlug = (await params).userSlug;
 
   const user = await prisma.user.findFirst({
@@ -16,9 +21,19 @@ export default async function UserPage({ params }: any) {
     },
   });
 
+  const groups = await prisma.group.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      userGroups: true, 
+    },
+  });
+
   console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
   console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-  console.log("sean_log user: " + JSON.stringify(user));
+  console.log('sean_log userSlug: ' + userSlug);
+  console.log("sean_log groups: " + JSON.stringify(groups));
 
   return (
     <>
@@ -28,7 +43,7 @@ export default async function UserPage({ params }: any) {
           <p>{user?.filterableUserAttributes?.age}</p>
           <p>{user?.filterableUserAttributes?.gender}</p>
         </div>
-        <Button>add to group</Button>
+        <GroupForm userSlug={userSlug} groups={groups} />
       </div>
     </>
   );

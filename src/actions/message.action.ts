@@ -6,8 +6,6 @@ import prisma from "@/lib/prisma";
 export const createMessageAction = async (prevState: any,formData: FormData) => {
 
     // const session = await auth();
-    console.log('fffffffffffffffffffffff');
-    console.log('fffffffffffffffffffffff');
     for (var pair of formData.entries()) {
         console.log(pair[0]+ ', ' + pair[1]); 
     }
@@ -26,10 +24,6 @@ export const createMessageAction = async (prevState: any,formData: FormData) => 
                 userName
             }
         })
-
-        console.log('mmmmmmmmmmmmmmmmmm');
-        console.log('mmmmmmmmmmmmmmmmmm');
-        console.log('sean_log convoMessage: ' + JSON.stringify(convoMessage));
 
         return { 
             status: 'success', 

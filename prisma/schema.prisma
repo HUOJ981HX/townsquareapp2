@@ -18,91 +18,111 @@ datasource db {
 }
 
 model User {
-    id              String      @id @default(uuid())
-    username        String
-    email           String
-    password        String?
-    createdAt       DateTime @default(now())
-    // conversation    Chat[]
-    lastOnline      DateTime @default(now())
-    posts           Post[]
-    accountType     String
-    filterableUserAttributes  FilterableUserAttributes?
-    filters         Filters[]
-    userChats       UserChat[]
+  id                       String                    @id @default(uuid())
+  username                 String
+  email                    String
+  password                 String?
+  createdAt                DateTime                  @default(now())
+  // conversation    Chat[]
+  lastOnline               DateTime                  @default(now())
+  posts                    Post[]
+  accountType              String
+  filterableUserAttributes FilterableUserAttributes?
+  filters                  Filters[]
+  userChats                UserChat[]
+  userGroups               UserGroup[]
+  group                    Group[]
 }
 
 model Filters {
-    id              Int       @id @default(autoincrement())
-    userId          String                    
-    user            User      @relation(fields: [userId], references: [id])
-    filterOff       Boolean?
-    filterableUserAttributes  FilterableUserAttributes?
-    filterablePostAttributes  FilterablePostAttributes[]
+  id                       Int                        @id @default(autoincrement())
+  userId                   String
+  user                     User                       @relation(fields: [userId], references: [id])
+  filterOff                Boolean?
+  filterableUserAttributes FilterableUserAttributes?
+  filterablePostAttributes FilterablePostAttributes[]
 }
 
 model FilterableUserAttributes {
-    id              Int     @id @default(autoincrement())
-    age             Int?
-    gender          String?
-    ethnicity       String?
-    personalityType String?
-    userId          String?     @unique
-    user            User?    @relation(fields: [userId], references: [id])
-    filtersId       Int?   @unique
-    filters         Filters?   @relation(fields: [filtersId], references: [id])
+  id              Int      @id @default(autoincrement())
+  age             Int?
+  gender          String?
+  ethnicity       String?
+  personalityType String?
+  userId          String?  @unique
+  user            User?    @relation(fields: [userId], references: [id])
+  filtersId       Int?     @unique
+  filters         Filters? @relation(fields: [filtersId], references: [id])
 }
 
-
 model Post {
-    id                  Int                    @id @default(autoincrement())
-    userId              String                    
-    user                User                   @relation(fields: [userId], references: [id])
-    title               String
-    description         String?
-    image               String?
-    createdAt           DateTime               @default(now())
-    filterablePostAttributes  FilterablePostAttributes?
+  id                       Int                       @id @default(autoincrement())
+  userId                   String
+  user                     User                      @relation(fields: [userId], references: [id])
+  title                    String
+  description              String?
+  image                    String?
+  createdAt                DateTime                  @default(now())
+  filterablePostAttributes FilterablePostAttributes?
 }
 
 model FilterablePostAttributes {
-    id              Int     @id @default(autoincrement())
-    postFilterDisplay   String?
-    postFilterQueryRole      String?
-    mood                String?
-    postId          Int?     @unique
-    post            Post?    @relation(fields: [postId], references: [id])
-    filtersId       Int?      @unique
-    filters         Filters?   @relation(fields: [filtersId], references: [id])
+  id                  Int      @id @default(autoincrement())
+  postFilterDisplay   String?
+  postFilterQueryRole String?
+  mood                String?
+  postId              Int?     @unique
+  post                Post?    @relation(fields: [postId], references: [id])
+  filtersId           Int?     @unique
+  filters             Filters? @relation(fields: [filtersId], references: [id])
 }
 
-model UserChat {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Message {
+  id        Int      @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
+  userName  String
   userId    String
   chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId    String
-  joinedAt  DateTime @default(now())  
+}
+
+model UserChat {
+  id       String   @id @default(uuid())
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  chat     Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId   String
+  joinedAt DateTime @default(now())
+
   @@unique([userId, chatId])
 }
 
 model Chat {
-  id            String      @id @default(uuid())
-  name          String?
+  id        String     @id @default(uuid())
+  name      String?
   // userId        String
-  userChats     UserChat[]
-  messages      Message[]
+  userChats UserChat[]
+  messages  Message[]
   // user          User     @relation(fields: [userId], references: [id])
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
-model Message {
-  id              Int      @id @default(autoincrement())
-  text            String
-  createdAt       DateTime @default(now())
-  userName        String
-  userId          String
-  chat            Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
-  chatId          String
+model Group {
+  id        String      @id @default(uuid())
+  name      String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  userGroups UserGroup[]
+}
+
+model UserGroup {
+  id      Int    @id @default(autoincrement())
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId String
 }

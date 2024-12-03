@@ -16,6 +16,9 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
     console.log(pair[0]+ ', ' + pair[1]); 
   }
 
+  console.log('ggggggggggggggggggggggg');
+  console.log('sean_log UserAttributesGender: ' + JSON.stringify(formData.get('UserAttributesGender')));
+
   try {
     const session = await auth();
     const userId = session?.user?.id!;

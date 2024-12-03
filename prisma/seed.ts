@@ -29,6 +29,51 @@ async function main() {
     data: {id: '4', username: 'Dave', email: 'dave@dave.dave', password: 'dave@dave.dave', accountType: AccountType.Email },
   });
 
+  await prisma.group.create({
+    data: {
+      name: 'group alice, cindy',
+      userId: '2',
+      userGroups: {
+        create: [
+          { userId: user1.id },
+          { userId: user3.id }
+        ]
+      }
+    }
+  })
+
+  await prisma.group.create({
+    data: {
+      name: 'group empty',
+      userId: '2',
+    }
+  })
+
+  await prisma.group.create({
+    data: {
+      name: 'group bob, cindy',
+      userId: '1',
+      userGroups: {
+        create: [
+          { userId: user2.id },
+          { userId: user3.id }
+        ]
+      }
+    }
+  })
+
+  await prisma.group.create({
+    data: {
+      name: 'group bob, alice',
+      userId: '3',
+      userGroups: {
+        create: [
+          { userId: user1.id },
+          { userId: user2.id }
+        ]
+      }
+    }
+  })
  
   const chat1 = await prisma.chat.create({
     data: {
