@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "@/lib/prisma";
+import { updateUserGroups } from "@/lib/prisma/group";
 // import { auth } from "@/auth";
 
 export const updateGroupsAction = async (
@@ -23,28 +23,35 @@ export const updateGroupsAction = async (
   console.log("sean_log arrayGroupIds: " + JSON.stringify(arrayGroupIds));
 
   try {
-    for (const groupId of targetGroups) {
-      // Check if the user is already a member of the group
-      const existingMember = await prisma.userGroup.findFirst({
-        where: {
-          userId: targetUserId,
-          groupId: groupId as any,
-        },
-      });
+    let result = updateUserGroups(targetGroups, targetUserId)
 
-      // If not, create a new entry
-      if (!existingMember) {
-        console.log('ggggggggggggggggggggggg');
-        console.log('iiiiiiiiiiiiiiiiiii');
-        console.log('sean_log groupId: ' + groupId);
-        await prisma.userGroup.create({
-          data: {
-            userId: targetUserId,
-            groupId: groupId as any,
-          },
-        });
-      }
-    }
+    // for (const groupId of targetGroups) {
+    //   // Check if the user is already a member of the group
+    //   const existingMember = await prisma.userGroup.findFirst({
+    //     where: {
+    //       userId: targetUserId,
+    //       groupId: groupId as any,
+    //     },
+    //   });
+
+    //   // If not, create a new entry
+    //   if (!existingMember) {
+    //     console.log('ggggggggggggggggggggggg');
+    //     console.log('iiiiiiiiiiiiiiiiiii');
+    //     console.log('sean_log groupId: ' + groupId);
+    //     await prisma.userGroup.create({
+    //       data: {
+    //         userId: targetUserId,
+    //         groupId: groupId as any,
+    //       },
+    //     });
+    //   }
+    // }
+
+    console.log('vvvvvvvvvvvvvvvvvvv');
+    console.log('vvvvvvvvvvvvvvvvvvv');
+    console.log('sean_log result: ' + JSON.stringify(result));
+
     return {
       status: "success",
       message: "Users added successfully!",
