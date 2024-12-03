@@ -9,15 +9,10 @@ import { revalidatePath } from 'next/cache';
 
 export const filterSubmitAction = async (prevState: any, formData: FormData) => {
 
-  console.log('999999999999999999999');
-  console.log('999999999999999999999');
-  console.log('999999999999999999999');
+
   for (var pair of formData.entries()) {
     console.log(pair[0]+ ', ' + pair[1]); 
   }
-
-  console.log('ggggggggggggggggggggggg');
-  console.log('sean_log UserAttributesGender: ' + JSON.stringify(formData.get('UserAttributesGender')));
 
   try {
     const session = await auth();
@@ -57,7 +52,8 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
         userId,
       },
     }
-  
+
+    // DON'T DELETE
     // await prisma.filterableUserAttributes.upsert(userFilter);
   
     const filterablePostAttributesData = {
@@ -74,6 +70,7 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
       },
     }
   
+    // DON'T DELETE
     // await prisma.filterablePostAttributes.upsert(postFilter);
 
     revalidatePath('/');

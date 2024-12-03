@@ -55,6 +55,7 @@ model FilterableUserAttributes {
   filters         Filters? @relation(fields: [filtersId], references: [id])
 }
 
+
 model Post {
   id                       Int                       @id @default(autoincrement())
   userId                   String
