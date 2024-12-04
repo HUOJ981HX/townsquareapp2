@@ -9,6 +9,9 @@ import { postCriteriaIntentType } from '@/helper/post';
 function HomeClient({ posts }: any) {
   const { openFilter } = useGlobalContext();
 
+  console.log('pppppppppppppppppp');
+  console.log('pppppppppppppppppp');
+  console.log('sean_log posts: ' + JSON.stringify(posts));
   return (
     <div>
   
@@ -21,7 +24,14 @@ function HomeClient({ posts }: any) {
             key={index}
             className="text-lg text-gray-700 cursor-pointer hover:text-gray-900"
           >
-            {post.title}
+            <p><strong>username</strong> - {post.user.username}</p>
+
+            <p><strong>title</strong> - {post.title}</p>
+            <p><strong>description</strong> - {post.description}</p>
+            <p><strong>filterablePostAttributes</strong> - {post.filterablePostAttributes.postFilterDisplay}</p>
+            <p><strong>postFilterQueryRole</strong> - {post.filterablePostAttributes.postFilterQueryRole}</p>
+            <p><strong>mood</strong> - {post.filterablePostAttributes.mood}</p>
+            
             <img src={post.image} width="200" height="100" />
           </li>
         ))

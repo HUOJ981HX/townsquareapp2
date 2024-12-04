@@ -60,14 +60,8 @@ export default async function Home() {
 
     const postQueryObj: Prisma.PostWhereInput = {
       filterablePostAttributes: {
-        // ...cleanFilterablePostAttributes,
-
-        // filterablePostAttributesFilters: {
-          // some: {
-
+        ...cleanFilterablePostAttributes,
         OR: filterablePostAttributesFilters,
-          // },
-        // }
       },
       user: {
         filterableUserAttributes: cleanedFilter.filterableUserAttributes,
@@ -76,6 +70,10 @@ export default async function Home() {
 
     posts = await prisma.post.findMany({
       where: postQueryObj,
+      include: {
+        filterablePostAttributes: true,
+        user: true
+      }
     });
     // }
 
