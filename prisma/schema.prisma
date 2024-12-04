@@ -40,7 +40,7 @@ model Filters {
   user                     User                       @relation(fields: [userId], references: [id])
   filterOff                Boolean?
   filterableUserAttributes FilterableUserAttributes?
-  filterablePostAttributes FilterablePostAttributes[]
+  filterablePostAttributes FilterablePostAttributes?
 }
 
 model FilterableUserAttributes {
@@ -76,6 +76,15 @@ model FilterablePostAttributes {
   post                Post?    @relation(fields: [postId], references: [id])
   filtersId           Int?     @unique
   filters             Filters? @relation(fields: [filtersId], references: [id])
+  filterablePostAttributesFilters   FilterablePostAttributesFilters[]
+}
+
+model FilterablePostAttributesFilters {
+  id                  Int      @id @default(autoincrement())
+  postFilterDisplay   String
+  postFilterQueryRole String
+  filterablePostAttributesId                   Int
+  filterablePostAttributes                     FilterablePostAttributes                      @relation(fields: [filterablePostAttributesId], references: [id])
 }
 
 model Message {

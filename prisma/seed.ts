@@ -309,11 +309,56 @@ async function main() {
         postFilterQueryRole: filterPostRoles.SEEKER,
         postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
       },
+      // { Does not need it here no more than Post need to appear in User, just the relation is fine
+      //   filtersId: 2, 
+      //   mood: Mood.Angry,
+      //   postFilterQueryRole: filterPostRoles.PROVIDER,
+      //   postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
+      // },
+    ]
+  })
+
+  await prisma.filterablePostAttributesFilters.createMany({
+    data: [
       {
-        filtersId: 2, 
-        mood: Mood.Angry,
+        filterablePostAttributesId: 1,
         postFilterQueryRole: filterPostRoles.PROVIDER,
         postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
+      },
+      {
+        filterablePostAttributesId: 1,
+        postFilterQueryRole: filterPostRoles.BOTH,
+        postFilterDisplay: 'personals > Friends > Female'
+      },
+      {
+        filterablePostAttributesId: 1,
+        postFilterQueryRole: filterPostRoles.BOTH,
+        postFilterDisplay: 'personals > Casual, Friends, Relationship > Female, Male, nonBinary'
+      },
+      {
+        filterablePostAttributesId: 1,
+        postFilterQueryRole: filterPostRoles.SEEKER,
+        postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
+      },
+      {
+        filterablePostAttributesId: 2,
+        postFilterQueryRole: filterPostRoles.PROVIDER,
+        postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
+      },
+      {
+        filterablePostAttributesId: 2,
+        postFilterQueryRole: filterPostRoles.BOTH,
+        postFilterDisplay: 'personals > Friends > Female'
+      },
+      {
+        filterablePostAttributesId: 2,
+        postFilterQueryRole: filterPostRoles.BOTH,
+        postFilterDisplay: 'personals > Casual, Friends, Relationship > Female, Male, nonBinary'
+      },
+      {
+        filterablePostAttributesId: 2,
+        postFilterQueryRole: filterPostRoles.SEEKER,
+        postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
       },
     ]
   })
