@@ -11,7 +11,7 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
-function Filter({ purpose }: any) {
+function Filter({ purpose, filter }: any) {
   const [sliderValue, setSliderValue] = useState(33);
   const [isOpen, setIsOpen] = useState(false);
   const [postFilter, setPostFilter] = useState<{

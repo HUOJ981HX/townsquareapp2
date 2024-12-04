@@ -6,18 +6,19 @@ import { useGlobalContext } from '@/context/GlobalContext';
 import Filter from '../components/filter';
 import { postCriteriaIntentType } from '@/helper/post';
 
-function HomeClient({ posts }: any) {
+function HomeClient({ posts, filter }: any) {
   const { openFilter } = useGlobalContext();
 
-  console.log('pppppppppppppppppp');
-  console.log('pppppppppppppppppp');
-  console.log('sean_log posts: ' + JSON.stringify(posts));
+  console.log('fffffffffffffffffffffff');
+  console.log('fffffffffffffffffffffff');
+  console.log('sean_log filter: ' + JSON.stringify(filter));
+
   return (
     <div>
   
       {openFilter 
         ?
-        <Filter purpose={postCriteriaIntentType.FILTER} />
+        <Filter purpose={postCriteriaIntentType.FILTER} filter={filter} />
         :
         posts.map((post: any, index: number) => (
           <li

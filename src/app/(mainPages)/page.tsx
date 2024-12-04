@@ -26,10 +26,6 @@ export default async function Home() {
 
   let posts = null;
 
-  console.log("fffffffffffffffffffffff");
-  console.log("fffffffffffffffffffffff");
-  console.log("sean_log filter: " + JSON.stringify(filter));
-
   posts = await prisma.post.findMany();
 
   if (filter && filter.filterOff) {
@@ -43,20 +39,10 @@ export default async function Home() {
       "filterablePostAttributesId",
     ]);
 
-    console.log("cccccccccccccccccccc");
-    console.log("cccccccccccccccccccc");
-    console.log("sean_log cleanedFilter: " + JSON.stringify(cleanedFilter));
     const {
       filterablePostAttributesFilters,
       ...cleanFilterablePostAttributes
     } = cleanedFilter.filterablePostAttributes;
-
-    console.log('eeeeeeeeeeeeeeeeeeeeee');
-    console.log('eeeeeeeeeeeeeeeeeeeeee');
-    // console.log("sean_log filterablePostAttributesFilters: " + JSON.stringify(filterablePostAttributesFilters));
-    // console.log("sean_log cleanFilterablePostAttributes: " + JSON.stringify(cleanFilterablePostAttributes));
-    console.log('sean_log cleanedFilter: ' + JSON.stringify(cleanedFilter));
-
 
     const postQueryObj: Prisma.PostWhereInput = {
       filterablePostAttributes: {
@@ -75,10 +61,9 @@ export default async function Home() {
         user: true
       }
     });
-    // }
 
     return (
-      <>{posts ? <HomeClient posts={posts} /> : <p>No post to display</p>}</>
+      <>{posts ? <HomeClient posts={posts} filter={filter} /> : <p>No post to display</p>}</>
     );
   }
 }
