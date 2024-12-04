@@ -286,6 +286,14 @@ async function main() {
   await prisma.filterablePostAttributes.createMany({
     data: [
       {
+        filtersId: 1, 
+        mood: Mood.Desperate,
+      },
+      {
+        filtersId: 2, 
+        mood: Mood.Angry,
+      },
+      {
         postId: 1, 
         mood: Mood.Angry,
         postFilterQueryRole: filterPostRoles.PROVIDER,
@@ -309,12 +317,7 @@ async function main() {
         postFilterQueryRole: filterPostRoles.SEEKER,
         postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
       },
-      // { Does not need it here no more than Post need to appear in User, just the relation is fine
-      //   filtersId: 2, 
-      //   mood: Mood.Angry,
-      //   postFilterQueryRole: filterPostRoles.PROVIDER,
-      //   postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
-      // },
+
     ]
   })
 

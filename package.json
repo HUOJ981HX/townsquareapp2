@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx prisma/seed.ts",
+    "reseed": "npx prisma migrate reset && npx prisma db push && tsx prisma/seed.ts",
     "update": "npx prisma migrate reset && npx prisma db push && npx prisma generate"
   },
   "dependencies": {
