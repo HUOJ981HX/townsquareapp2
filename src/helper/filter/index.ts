@@ -1,4 +1,4 @@
-import { FilterFormInputs } from "@/types/filter";
+import { FilterFormInputs, Gender } from "@/types/filter";
 import { Prisma } from "@prisma/client";
 
 export const buildPostFilter = (formData: any) => {
@@ -25,9 +25,14 @@ export const buildPostFilter = (formData: any) => {
           gte: parseInt(formData.get(FilterFormInputs.UserAgeMin)) || 18, // Age greater than or equal to 18
           lte: parseInt(formData.get(FilterFormInputs.UserAgeMax)) || 100, // Age less than or equal to 35
         },
-        ...(formData.get(FilterFormInputs.UserGender) && {
-          gender: formData.getAll(FilterFormInputs.UserGender),
-        }),
+        gender: {
+          in: formData.getAll(FilterFormInputs.UserGender).length
+            ? formData.getAll(FilterFormInputs.UserGender)
+            : [Gender.Female, Gender.Male, Gender.NonBinary],
+        },
+        // ...(formData.get(FilterFormInputs.UserGender) && {
+        //   gender: formData.getAll(FilterFormInputs.UserGender),
+        // }),
       },
     },
   };
