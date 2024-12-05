@@ -44,6 +44,10 @@ export default async function Home() {
       ...cleanFilterablePostAttributes
     } = cleanedFilter.filterablePostAttributes;
 
+    console.log('cccccccccccccccccccc');
+    console.log('cccccccccccccccccccc');
+    console.log('sean_log cleanedFilter: ' + JSON.stringify(cleanedFilter));
+    
     const postQueryObj: Prisma.PostWhereInput = {
       filterablePostAttributes: {
         ...cleanFilterablePostAttributes,
@@ -53,6 +57,35 @@ export default async function Home() {
         filterableUserAttributes: cleanedFilter.filterableUserAttributes,
       },
     };
+
+    // {
+    //   "filterablePostAttributes": {
+    //     "mood": "Angry",
+    //     "OR": [
+    //       {
+    //         "postFilterDisplay": "work > Manufacturing, Service > 50-75k",
+    //         "postFilterQueryRole": "provider"
+    //       },
+    //       {
+    //         "postFilterDisplay": "personals > Friends > Female",
+    //         "postFilterQueryRole": "both"
+    //       },
+    //       {
+    //         "postFilterDisplay": "personals > Casual, Friends, Relationship > Female, Male, nonBinary",
+    //         "postFilterQueryRole": "both"
+    //       },
+    //       {
+    //         "postFilterDisplay": "work > Accounting, Manufacturing, Service, Tech > over 100k",
+    //         "postFilterQueryRole": "seeker"
+    //       }
+    //     ]
+    //   },
+    //   "user": { "filterableUserAttributes": { "age": 80, "gender": "Female" } }
+    // }
+    
+
+    console.log('oooooooooooooooo');
+    console.log('sean_log postQueryObj: ' + JSON.stringify(postQueryObj));
 
     posts = await prisma.post.findMany({
       where: postQueryObj,

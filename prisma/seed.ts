@@ -1,5 +1,5 @@
 import { filterPostRoles } from "@/helper/post";
-import { AccountType, Gender, Mood } from "@/types";
+import { AccountType, Gender, Mood  } from "@/types/filter";
 import { PrismaClient } from "@prisma/client";
 // import { PrismaClient } from "../../node_modules/.prisma/client";
 

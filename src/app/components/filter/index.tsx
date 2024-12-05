@@ -10,17 +10,19 @@ import { useToast } from "@/hooks/use-toast";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { FilterFormInputs, Gender } from "@/types/filter";
+import MoodInput from "../sharedFormInputs/MoodInput";
 
 function Filter({ purpose, filter }: any) {
-  const [sliderValue, setSliderValue] = useState(33);
+  const [ageMin, setAgeMin] = useState(33);
+  const [ageMax, setAgeMax] = useState(33);
   const [isOpen, setIsOpen] = useState(false);
-  const [postFilter, setPostFilter] = useState<{
-    postFilterDisplay: string;
-    postFilterQueryRole: string;
-  }[]>([{
-    postFilterDisplay: "", // Initialize with empty string instead of null
-    postFilterQueryRole: "",
-  }]);
+  const [postFilter, setPostFilter] = useState<
+    {
+      postFilterDisplay: string;
+      postFilterQueryRole: string;
+    }[]
+  >([]);
 
   const [state, formAction] = useActionState(filterSubmitAction, {
     status: "",
@@ -46,8 +48,12 @@ function Filter({ purpose, filter }: any) {
     }
   }, [state]);
 
-  const handleSliderChange = (value: any) => {
-    setSliderValue(value);
+  const handleAgeMin = (value: any) => {
+    setAgeMin(value);
+  };
+
+  const handleAgeMax = (value: any) => {
+    setAgeMax(value);
   };
 
   useEffect(() => {
@@ -69,99 +75,91 @@ function Filter({ purpose, filter }: any) {
             </div>
 
             <div>
-              <Slider
-                defaultValue={[33]}
-                max={100}
-                min={18}
-                step={1}
-                id="UserAttributesAge"
-                name="UserAttributesAge"
-                onValueChange={handleSliderChange}
-              />
-              <p>Current value: {sliderValue}</p>
-            </div>
-
-            <div>
+              <h2 className="text-[2rem]">User filter</h2>
               <div>
-                <h2>Gender</h2>
+                <div>
+                  <Slider
+                    defaultValue={[33]}
+                    max={100}
+                    min={18}
+                    step={1}
+                    id={FilterFormInputs.UserAgeMin}
+                    name={FilterFormInputs.UserAgeMin}
+                    onValueChange={handleAgeMin}
+                  />
+                  <p>minimum age: {ageMin}</p>
+                </div>
+
+                <div>
+                  <Slider
+                    defaultValue={[33]}
+                    max={100}
+                    min={18}
+                    step={1}
+                    id={FilterFormInputs.UserAgeMax}
+                    name={FilterFormInputs.UserAgeMax}
+                    onValueChange={handleAgeMax}
+                  />
+                  <p>maximum age: {ageMax}</p>
+                </div>
+              </div>
+              <div>
+                <p>Gender</p>
                 <input
                   type="checkbox"
-                  name="UserAttributesGender"
-                  id="UserAttributesFemale"
-                  value="Female"
+                  name={FilterFormInputs.UserGender}
+                  id={`${FilterFormInputs.UserGender}${Gender.Female}`}
+                  value={Gender.Female}
                 />
                 <label htmlFor="UserAttributesFemale">Female</label>
                 <input
                   type="checkbox"
-                  name="UserAttributesGender"
-                  id="UserAttributesMale"
-                  value="Male"
+                  name={FilterFormInputs.UserGender}
+                  id={`${FilterFormInputs.UserGender}${Gender.Male}`}
+                  value={Gender.Male}
                 />
                 <label htmlFor="UserAttributesFemale">Male</label>
                 <input
                   type="checkbox"
-                  name="UserAttributesGender"
-                  id="UserAttributesNonBinary"
-                  value="Non-binary"
+                  name={FilterFormInputs.UserGender}
+                  id={`${FilterFormInputs.UserGender}${Gender.NonBinary}`}
+                  value={Gender.NonBinary}
                 />
                 <label htmlFor="UserAttributesNonBinary">Non binary</label>
               </div>
+            </div>
 
-              {/* <input type="hidden" id="postFilter" name="postFilter" value={`${useSearchParams().get('purpose')}:${postFilter?.postFilterDisplay}`} /> */}
+            <div>
+              <h2 className="text-[2rem]">Post filter</h2>
 
-                {
-                    postFilter.map((filter) => {
-                        return (
-                            <>
-                                <p>{filter?.postFilterDisplay}</p>
-                                <p>{filter?.postFilterQueryRole}</p>
-                            </>
-                        )
-                    })
-                }
-
-            <input
-                type="hidden"
-                id="postFilterDisplay"
-                name="postFilterDisplay"
-                value={JSON.stringify(postFilter)}
-              />
-
-
-              {/* <p>{postFilter?.postFilterDisplay}</p>
-              <p>------postFilterDisplay------</p>
-              <input
-                type="hidden"
-                id="postFilterDisplay"
-                name="postFilterDisplay"
-                value={postFilter?.postFilterDisplay}
-              />
-
-              <p>{postFilter?.postFilterQueryRole}</p>
-              <p>------postFilterQueryRole------</p>
-              <input
-                type="hidden"
-                id="postFilterQueryRole"
-                name="postFilterQueryRole"
-                value={postFilter?.postFilterQueryRole}
-              /> */}
-              {/* <div>
-                                <h2>Is this for a relationship?</h2>
-                                <input type="radio" id="genderForGeneral" name="genderIsRelationship" value="noRelationship" />
-                                <label htmlFor="genderForGeneral">No</label>
-                                <input type="radio" id="genderForRelationship" name="genderIsRelationship" value="yesRelationship" />
-                                <label htmlFor="genderForRelationship">Yes</label>
-                            </div> */}
+              <MoodInput />
               <div>
-                <p
-                  onClick={() => {
-                    setIsOpen((prevState) => {
-                      return !prevState;
-                    });
-                  }}
-                >
-                  Add Post criteria
-                </p>
+                {postFilter.map((filter) => {
+                  return (
+                    <>
+                      <p>{filter?.postFilterDisplay}</p>
+                      <p>{filter?.postFilterQueryRole}</p>
+                    </>
+                  );
+                })}
+
+                <input
+                  type="hidden"
+                  id={FilterFormInputs.PostPurpose}
+                  name={FilterFormInputs.PostPurpose}
+                  value={JSON.stringify(postFilter)}
+                />
+                <div>
+                  <p
+                    onClick={() => {
+                      setIsOpen((prevState) => {
+                        return !prevState;
+                      });
+                    }}
+                  >
+                    Add Post criteria
+                  </p>
+                </div>
               </div>
             </div>
             <div></div>

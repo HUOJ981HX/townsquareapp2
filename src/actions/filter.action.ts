@@ -6,6 +6,7 @@ import prisma from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { removeEmptyObjValues } from '@/helper';
 import { revalidatePath } from 'next/cache';
+import { buildPostFilter } from '@/helper/filter';
 
 export const filterSubmitAction = async (prevState: any, formData: FormData) => {
 
@@ -25,6 +26,10 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
   
     let filterOff = false;
 
+    console.log('bbbbbbbbbbbbbbbbbb');
+    console.log('fffffffffffffffffffffff');
+    console.log('sean_log formData: ' + JSON.stringify(buildPostFilter(formData)));
+
     if(formData.get('filterOff')) {
       filterOff = true;
     }
@@ -37,7 +42,7 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
     })
 
     const filterableUserAttributesData = {
-      age: parseInt(formData.get('UserAttributesAge')?.toString()!) as any,
+      age: parseInt(formData.get('UserAttributesAge')?.toString()!) as any, // Modify here
       gender: formData.get('UserAttributesGender') as any,
       ethnicity: formData.get('UserAttributesEthnicity') as any,
       personalityType: formData.get('UserAttributesPersonalityType') as any,
@@ -73,7 +78,7 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
     // DON'T DELETE
     // await prisma.filterablePostAttributes.upsert(postFilter);
 
-    revalidatePath('/');
+    // revalidatePath('/');
 
 
     return { 

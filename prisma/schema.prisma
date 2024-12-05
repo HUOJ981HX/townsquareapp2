@@ -29,6 +29,7 @@ model User {
   accountType              String
   filterableUserAttributes FilterableUserAttributes?
   filters                  Filters[]
+  filterOff                Boolean?
   userChats                UserChat[]
   userGroups               UserGroup[]
   group                    Group[]
@@ -38,9 +39,9 @@ model Filters {
   id                       Int                        @id @default(autoincrement())
   userId                   String
   user                     User                       @relation(fields: [userId], references: [id])
-  filterOff                Boolean?
-  filterableUserAttributes FilterableUserAttributes?
-  filterablePostAttributes FilterablePostAttributes?
+  // filterableUserAttributes FilterableUserAttributes?
+  // filterablePostAttributes FilterablePostAttributes?
+  filterJson              Json
 }
 
 model FilterableUserAttributes {
@@ -51,8 +52,8 @@ model FilterableUserAttributes {
   personalityType String?
   userId          String?  @unique
   user            User?    @relation(fields: [userId], references: [id])
-  filtersId       Int?     @unique
-  filters         Filters? @relation(fields: [filtersId], references: [id])
+  // filtersId       Int?     @unique
+  // filters         Filters? @relation(fields: [filtersId], references: [id])
 }
 
 
@@ -74,18 +75,18 @@ model FilterablePostAttributes {
   mood                String?
   postId              Int?     @unique
   post                Post?    @relation(fields: [postId], references: [id])
-  filtersId           Int?     @unique
-  filters             Filters? @relation(fields: [filtersId], references: [id])
-  filterablePostAttributesFilters   FilterablePostAttributesFilters[]
+  // filtersId           Int?     @unique
+  // filters             Filters? @relation(fields: [filtersId], references: [id])
+  // filterablePostAttributesFilters   FilterablePostAttributesFilters[]
 }
 
-model FilterablePostAttributesFilters {
-  id                  Int      @id @default(autoincrement())
-  postFilterDisplay   String
-  postFilterQueryRole String
-  filterablePostAttributesId                   Int
-  filterablePostAttributes                     FilterablePostAttributes                      @relation(fields: [filterablePostAttributesId], references: [id])
-}
+// model FilterablePostAttributesFilters {
+//   id                  Int      @id @default(autoincrement())
+//   postFilterDisplay   String
+//   postFilterQueryRole String
+//   filterablePostAttributesId                   Int
+//   filterablePostAttributes                     FilterablePostAttributes                      @relation(fields: [filterablePostAttributesId], references: [id])
+// }
 
 model Message {
   id        Int      @id @default(autoincrement())

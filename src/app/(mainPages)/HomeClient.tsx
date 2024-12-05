@@ -9,10 +9,6 @@ import { postCriteriaIntentType } from '@/helper/post';
 function HomeClient({ posts, filter }: any) {
   const { openFilter } = useGlobalContext();
 
-  console.log('fffffffffffffffffffffff');
-  console.log('fffffffffffffffffffffff');
-  console.log('sean_log filter: ' + JSON.stringify(filter));
-
   return (
     <div>
   

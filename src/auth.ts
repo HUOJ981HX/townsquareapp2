@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import prisma from "@/lib/prisma";
 import Google from "next-auth/providers/google";
-import { AccountType } from "./types";
+import { AccountType  } from "@/types/filter";
 import { v4 as uuidv4 } from 'uuid';
 
 export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(
