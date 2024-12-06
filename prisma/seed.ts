@@ -215,10 +215,51 @@ async function main() {
       {
         id: 1,
         userId: "1",
+        filterPostJson: {
+          filterablePostAttributes: {
+            mood: "Surprised",
+            OR: [
+              {
+                postFilterDisplay:
+                  "work > Accounting, Manufacturing, Service, Tech > over 100k",
+                postFilterQueryRole: "seeker",
+              },
+            ],
+          },
+          user: {
+            filterableUserAttributes: {
+              age: { gte: 27, lte: 80 },
+              gender: {
+                in: ["Non-binary"]
+              } 
+            },
+          },
+        }
       },
       {
         id: 2,
         userId: "2",
+        filterPostJson: {
+          filterablePostAttributes: {
+            mood: "Happy",
+            OR: [
+              {
+                postFilterDisplay:
+                  "personals > Casual, Friends, Relationship > Female, Male, nonBinary",
+                postFilterQueryRole: "both",
+              },
+            ],
+          },
+          user: {
+            filterableUserAttributes: {
+              age: { gte: 27, lte: 50 },
+              gender: {
+                in: ["Male","Non-binary"]
+              } 
+            },
+          },
+        }
+
       },
     ]
   })
@@ -227,11 +268,6 @@ async function main() {
     data: [
       {
         userId: "1", 
-        age: 80,
-        gender: Gender.Female
-      },
-      {
-        filtersId: 2,
         age: 80,
         gender: Gender.Female
       },
@@ -286,14 +322,6 @@ async function main() {
   await prisma.filterablePostAttributes.createMany({
     data: [
       {
-        filtersId: 1, 
-        mood: Mood.Desperate,
-      },
-      {
-        filtersId: 2, 
-        mood: Mood.Angry,
-      },
-      {
         postId: 1, 
         mood: Mood.Angry,
         postFilterQueryRole: filterPostRoles.PROVIDER,
@@ -321,50 +349,50 @@ async function main() {
     ]
   })
 
-  await prisma.filterablePostAttributesFilters.createMany({
-    data: [
-      {
-        filterablePostAttributesId: 1,
-        postFilterQueryRole: filterPostRoles.PROVIDER,
-        postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
-      },
-      {
-        filterablePostAttributesId: 1,
-        postFilterQueryRole: filterPostRoles.BOTH,
-        postFilterDisplay: 'personals > Friends > Female'
-      },
-      {
-        filterablePostAttributesId: 1,
-        postFilterQueryRole: filterPostRoles.BOTH,
-        postFilterDisplay: 'personals > Casual, Friends, Relationship > Female, Male, nonBinary'
-      },
-      {
-        filterablePostAttributesId: 1,
-        postFilterQueryRole: filterPostRoles.SEEKER,
-        postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
-      },
-      {
-        filterablePostAttributesId: 2,
-        postFilterQueryRole: filterPostRoles.PROVIDER,
-        postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
-      },
-      {
-        filterablePostAttributesId: 2,
-        postFilterQueryRole: filterPostRoles.BOTH,
-        postFilterDisplay: 'personals > Friends > Female'
-      },
-      {
-        filterablePostAttributesId: 2,
-        postFilterQueryRole: filterPostRoles.BOTH,
-        postFilterDisplay: 'personals > Casual, Friends, Relationship > Female, Male, nonBinary'
-      },
-      {
-        filterablePostAttributesId: 2,
-        postFilterQueryRole: filterPostRoles.SEEKER,
-        postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
-      },
-    ]
-  })
+  // await prisma.filterablePostAttributesFilters.createMany({
+  //   data: [
+  //     {
+  //       filterablePostAttributesId: 1,
+  //       postFilterQueryRole: filterPostRoles.PROVIDER,
+  //       postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
+  //     },
+  //     {
+  //       filterablePostAttributesId: 1,
+  //       postFilterQueryRole: filterPostRoles.BOTH,
+  //       postFilterDisplay: 'personals > Friends > Female'
+  //     },
+  //     {
+  //       filterablePostAttributesId: 1,
+  //       postFilterQueryRole: filterPostRoles.BOTH,
+  //       postFilterDisplay: 'personals > Casual, Friends, Relationship > Female, Male, nonBinary'
+  //     },
+  //     {
+  //       filterablePostAttributesId: 1,
+  //       postFilterQueryRole: filterPostRoles.SEEKER,
+  //       postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
+  //     },
+  //     {
+  //       filterablePostAttributesId: 2,
+  //       postFilterQueryRole: filterPostRoles.PROVIDER,
+  //       postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
+  //     },
+  //     {
+  //       filterablePostAttributesId: 2,
+  //       postFilterQueryRole: filterPostRoles.BOTH,
+  //       postFilterDisplay: 'personals > Friends > Female'
+  //     },
+  //     {
+  //       filterablePostAttributesId: 2,
+  //       postFilterQueryRole: filterPostRoles.BOTH,
+  //       postFilterDisplay: 'personals > Casual, Friends, Relationship > Female, Male, nonBinary'
+  //     },
+  //     {
+  //       filterablePostAttributesId: 2,
+  //       postFilterQueryRole: filterPostRoles.SEEKER,
+  //       postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
+  //     },
+  //   ]
+  // })
 }
 
 

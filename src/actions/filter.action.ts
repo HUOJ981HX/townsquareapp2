@@ -88,6 +88,9 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
 
   } catch (error) {
 
+    console.log('eeeeeeeeeeeeeeeeeeeeee');
+    console.log('sean_log error: ' + JSON.stringify(error));
+
     return { 
       status: 'error', 
       message: 'Failed to submit filter. Please try again later.' 

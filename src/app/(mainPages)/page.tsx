@@ -10,79 +10,31 @@ export default async function Home() {
 
   if (!session?.user) redirect("/authenticate");
 
-  const filter = await prisma.filters.findFirst({
+  const filter = await prisma.filters.findMany({
     where: {
       userId: session?.user?.id!,
-    },
-    include: {
-      filterableUserAttributes: true,
-      filterablePostAttributes: {
-        include: {
-          filterablePostAttributesFilters: true,
-        },
-      },
     },
   });
 
   let posts = null;
 
-  posts = await prisma.post.findMany();
+  // posts = await prisma.post.findMany();
 
-  if (filter && filter.filterOff) {
+  console.log('fffffffffffffffffffffff');
+  console.log('fffffffffffffffffffffff');
+  console.log('sean_log filter: ' + JSON.stringify(filter));
+
+  if (filter && !filter.length && !filter[0]?.filterPostJson) {
     posts = await prisma.post.findMany();
   } else {
-    const cleanedFilter = cleanObject(filter, [
-      "id",
-      "userId",
-      "postId",
-      "filtersId",
-      "filterablePostAttributesId",
-    ]);
 
-    const {
-      filterablePostAttributesFilters,
-      ...cleanFilterablePostAttributes
-    } = cleanedFilter.filterablePostAttributes;
+    const postQuery: any = filter[0].filterPostJson
 
-    console.log("cccccccccccccccccccc");
-    console.log("cccccccccccccccccccc");
-    console.log("sean_log cleanedFilter: " + JSON.stringify(cleanedFilter));
-
-    const postQueryObj: Prisma.PostWhereInput = {
-      filterablePostAttributes: {
-        ...cleanFilterablePostAttributes,
-        OR: filterablePostAttributesFilters,
-      },
-      user: {
-        filterableUserAttributes: cleanedFilter.filterableUserAttributes,
-      },
-    };
-
-    console.log("oooooooooooooooo");
-    console.log("sean_log postQueryObj: " + JSON.stringify(postQueryObj));
-
+    console.log('pppppppppppppppppp');
+    console.log('qqqqqqqqqqqqqqqqqqq');
+    console.log('sean_log postQuery: ' + JSON.stringify(postQuery));
     posts = await prisma.post.findMany({
-      // where: postQueryObj,
-      where: {
-        filterablePostAttributes: {
-          mood: "Happy",
-          OR: [
-            {
-              postFilterDisplay:
-                "personals > Casual, Friends, Relationship > Female, Male, nonBinary",
-              postFilterQueryRole: "both",
-            },
-          ],
-        },
-        user: {
-          filterableUserAttributes: {
-            age: { gte: 27, lte: 50 },
-            gender: {
-              in: ["Male","Non-binary"]
-            } 
-          },
-        },
-      },
+      where: postQuery,
       include: {
         filterablePostAttributes: true,
         user: {
@@ -92,6 +44,69 @@ export default async function Home() {
         },
       },
     });
+
+
+    // const cleanedFilter = cleanObject(filter, [
+    //   "id",
+    //   "userId",
+    //   "postId",
+    //   "filtersId",
+    //   "filterablePostAttributesId",
+    // ]);
+
+    // const {
+    //   filterablePostAttributesFilters,
+    //   ...cleanFilterablePostAttributes
+    // } = cleanedFilter.filterablePostAttributes;
+
+    // console.log("cccccccccccccccccccc");
+    // console.log("cccccccccccccccccccc");
+    // console.log("sean_log cleanedFilter: " + JSON.stringify(cleanedFilter));
+
+    // const postQueryObj: Prisma.PostWhereInput = {
+    //   filterablePostAttributes: {
+    //     ...cleanFilterablePostAttributes,
+    //     OR: filterablePostAttributesFilters,
+    //   },
+    //   user: {
+    //     filterableUserAttributes: cleanedFilter.filterableUserAttributes,
+    //   },
+    // };
+
+    // console.log("oooooooooooooooo");
+    // console.log("sean_log postQueryObj: " + JSON.stringify(postQueryObj));
+
+    // posts = await prisma.post.findMany({
+    //   // where: postQueryObj,
+    //   where: {
+    //     filterablePostAttributes: {
+    //       mood: "Happy",
+    //       OR: [
+    //         {
+    //           postFilterDisplay:
+    //             "personals > Casual, Friends, Relationship > Female, Male, nonBinary",
+    //           postFilterQueryRole: "both",
+    //         },
+    //       ],
+    //     },
+    //     user: {
+    //       filterableUserAttributes: {
+    //         age: { gte: 27, lte: 50 },
+    //         gender: {
+    //           in: ["Male","Non-binary"]
+    //         } 
+    //       },
+    //     },
+    //   },
+    //   include: {
+    //     filterablePostAttributes: true,
+    //     user: {
+    //       include: {
+    //         filterableUserAttributes: true,
+    //       },
+    //     },
+    //   },
+    // });
 
 
     return (
