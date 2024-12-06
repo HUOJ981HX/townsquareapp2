@@ -10,7 +10,7 @@ export default async function Home() {
 
   if (!session?.user) redirect("/authenticate");
 
-  const filter = await prisma.filters.findMany({
+  const filter = await prisma.filter.findFirst({
     where: {
       userId: session?.user?.id!,
     },
@@ -20,19 +20,31 @@ export default async function Home() {
 
   // posts = await prisma.post.findMany();
 
-  console.log('fffffffffffffffffffffff');
-  console.log('fffffffffffffffffffffff');
-  console.log('sean_log filter: ' + JSON.stringify(filter));
+  console.log("fffffffffffffffffffffff");
+  console.log("fffffffffffffffffffffff");
+  console.log("sean_log filter?.filterOff: " + JSON.stringify(filter?.filterOff));
 
-  if (filter && !filter.length && !filter[0]?.filterPostJson) {
-    posts = await prisma.post.findMany();
+  if (filter?.filterOff || !filter || !filter?.filterPostJson) {
+    posts = await prisma.post.findMany({
+      include: {
+        filterablePostAttributes: true,
+        user: {
+          include: {
+            filterableUserAttributes: true,
+          },
+        },
+      },
+    });
+
+    console.log("yyyyyyyyyyyyyyyyyyyyy");
+    console.log("yyyyyyyyyyyyyyyyyyyyy");
+    console.log("sean_log posts: " + JSON.stringify(posts));
   } else {
+    const postQuery: any = filter.filterPostJson;
 
-    const postQuery: any = filter[0].filterPostJson
-
-    console.log('pppppppppppppppppp');
-    console.log('qqqqqqqqqqqqqqqqqqq');
-    console.log('sean_log postQuery: ' + JSON.stringify(postQuery));
+    console.log("pppppppppppppppppp");
+    console.log("qqqqqqqqqqqqqqqqqqq");
+    console.log("sean_log postQuery: " + JSON.stringify(postQuery));
     posts = await prisma.post.findMany({
       where: postQuery,
       include: {
@@ -44,7 +56,6 @@ export default async function Home() {
         },
       },
     });
-
 
     // const cleanedFilter = cleanObject(filter, [
     //   "id",
@@ -94,7 +105,7 @@ export default async function Home() {
     //         age: { gte: 27, lte: 50 },
     //         gender: {
     //           in: ["Male","Non-binary"]
-    //         } 
+    //         }
     //       },
     //     },
     //   },
@@ -107,16 +118,15 @@ export default async function Home() {
     //     },
     //   },
     // });
-
-
-    return (
-      <>
-        {posts ? (
-          <HomeClient posts={posts} filter={filter} />
-        ) : (
-          <p>No post to display</p>
-        )}
-      </>
-    );
   }
+
+  return (
+    <>
+      {posts ? (
+        <HomeClient posts={posts} filter={filter} />
+      ) : (
+        <p>No post to display</p>
+      )}
+    </>
+  );
 }

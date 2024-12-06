@@ -210,11 +210,12 @@ async function main() {
   })
   
 
-  await prisma.filters.createMany({
+  await prisma.filter.createMany({
     data: [
       {
         id: 1,
         userId: "1",
+        filterOff: false,
         filterPostJson: {
           filterablePostAttributes: {
             mood: "Surprised",
@@ -239,6 +240,7 @@ async function main() {
       {
         id: 2,
         userId: "2",
+        filterOff: false,
         filterPostJson: {
           filterablePostAttributes: {
             mood: "Happy",

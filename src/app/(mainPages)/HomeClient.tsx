@@ -11,7 +11,6 @@ function HomeClient({ posts, filter }: any) {
 
   return (
     <div>
-  
       {openFilter 
         ?
         <Filter purpose={postCriteriaIntentType.FILTER} filter={filter} />

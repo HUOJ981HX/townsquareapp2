@@ -19,7 +19,7 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
     const session = await auth();
     const userId = session?.user?.id!;
   
-    const filtersObj = await prisma.filters.findFirst({ // {"id":2}
+    const filtersObj = await prisma.filter.findFirst({ // {"id":2}
       where: { userId },
       select: { id: true }, // Only fetch the `id` of posts
     });
@@ -30,55 +30,59 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
     console.log('fffffffffffffffffffffff');
     console.log('sean_log formData: ' + JSON.stringify(buildPostFilter(formData)));
 
+    console.log('oooooooooooooooo');
+    console.log('sean_log filterOff: ' + JSON.stringify(formData.get('filterOff')));
+    console.log('sean_log filterOff: ' + formData.get('filterOff'));
+
     if(formData.get('filterOff')) {
       filterOff = true;
     }
 
-    await prisma.filters.update({
-      where: {id: filtersObj!.id},
+    await prisma.filter.update({
+      where: {userId: session?.user?.id!},
       data: {
         filterOff
       }
-    })
+    });
 
-    const filterableUserAttributesData = {
-      age: parseInt(formData.get('UserAttributesAge')?.toString()!) as any, // Modify here
-      gender: formData.get('UserAttributesGender') as any,
-      ethnicity: formData.get('UserAttributesEthnicity') as any,
-      personalityType: formData.get('UserAttributesPersonalityType') as any,
-    };
+    // const filterableUserAttributesData = {
+    //   age: parseInt(formData.get('UserAttributesAge')?.toString()!) as any, // Modify here
+    //   gender: formData.get('UserAttributesGender') as any,
+    //   ethnicity: formData.get('UserAttributesEthnicity') as any,
+    //   personalityType: formData.get('UserAttributesPersonalityType') as any,
+    // };
 
   
-    const userFilter: Prisma.FilterableUserAttributesUpsertArgs = {
-      where: { filtersId: filtersObj!.id },
-      update: filterableUserAttributesData,
-      create: {
-        ...filterableUserAttributesData,
-        userId,
-      },
-    }
+    // const userFilter: Prisma.FilterableUserAttributesUpsertArgs = {
+    //   where: { filtersId: filtersObj!.id },
+    //   update: filterableUserAttributesData,
+    //   create: {
+    //     ...filterableUserAttributesData,
+    //     userId,
+    //   },
+    // }
 
     // DON'T DELETE
     // await prisma.filterableUserAttributes.upsert(userFilter);
   
-    const filterablePostAttributesData = {
-      postFilterDisplay: formData.get('postFilterDisplay') as any,
-      postFilterQueryRole: formData.get('postFilterQueryRole') as any,
-      mood: formData.get('postFilterQueryMood') as any,
-    };
+    // const filterablePostAttributesData = {
+    //   postFilterDisplay: formData.get('postFilterDisplay') as any,
+    //   postFilterQueryRole: formData.get('postFilterQueryRole') as any,
+    //   mood: formData.get('postFilterQueryMood') as any,
+    // };
   
-    const postFilter: Prisma.FilterablePostAttributesUpsertArgs = {
-      where: { filtersId: filtersObj!.id },
-      update: filterablePostAttributesData,
-      create: {
-        ...filterablePostAttributesData,
-      },
-    }
+    // const postFilter: Prisma.FilterablePostAttributesUpsertArgs = {
+    //   where: { filtersId: filtersObj!.id },
+    //   update: filterablePostAttributesData,
+    //   create: {
+    //     ...filterablePostAttributesData,
+    //   },
+    // }
   
     // DON'T DELETE
     // await prisma.filterablePostAttributes.upsert(postFilter);
 
-    // revalidatePath('/');
+    revalidatePath('/');
 
 
     return { 

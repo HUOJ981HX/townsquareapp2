@@ -28,21 +28,23 @@ model User {
   posts                    Post[]
   accountType              String
   filterableUserAttributes FilterableUserAttributes?
-  filters                  Filters[]
-  filterOff                Boolean?
+  filter                  Filter?
+  // filterOff                Boolean?
   userChats                UserChat[]
   userGroups               UserGroup[]
   group                    Group[]
 }
 
-model Filters {
+model Filter {
   id                       Int                        @id @default(autoincrement())
-  userId                   String
+  userId                   String @unique
   user                     User                       @relation(fields: [userId], references: [id])
   // filterableUserAttributes FilterableUserAttributes?
   // filterablePostAttributes FilterablePostAttributes?
   filterPostJson              Json?
   filterUserJson              Json?
+  filterOff                Boolean?
+
 }
 
 model FilterableUserAttributes {

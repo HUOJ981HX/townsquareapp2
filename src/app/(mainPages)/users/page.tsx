@@ -9,14 +9,10 @@ async function UsersPage() {
 
     const session = await auth();
 
-    const filter = await prisma.filters.findFirst({
+    const filter = await prisma.filter.findFirst({
         where: {
             userId: session?.user?.id!
         },
-        include: {
-            filterableUserAttributes: true,
-            filterablePostAttributes: true,
-        }
     });
 
     let users = null;
