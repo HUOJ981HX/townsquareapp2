@@ -60,9 +60,7 @@ const PostCriteria = ({ setPostFilter, purpose, setIsOpen, isOpen }: any) => {
   // };
 
   const handleNext = useCallback(() => {
-    console.log("sssssssssssssssssssssssss");
-    console.log("sssssssssssssssssssssssss");
-    console.log("sean_log !skipAdding: " + !skipAdding);
+
     if (!skipAdding) {
       console.log("444444444444444444");
       setResponses([...responses, currentResponse]);

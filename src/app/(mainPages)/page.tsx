@@ -93,9 +93,6 @@ export default async function Home() {
       },
     });
 
-    console.log("pppppppppppppppppp");
-    console.log("sssssssssssssssssssssssss");
-    console.log("sean_log posts: " + JSON.stringify(posts));
 
     return (
       <>

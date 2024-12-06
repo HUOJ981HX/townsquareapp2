@@ -5,14 +5,9 @@ import { Button } from "@/components/ui/button";
 import {
   sendMessageToGroupChat,
   sendPrivateMessageToUsers,
-} from "@/helper/chat/server";
+} from "@/helper/realtime/chat";
 
 function TestButton({groups}: any) {
-
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-  console.log("sean_log groups: " + JSON.stringify(groups));
-
 
   // [
   //   {

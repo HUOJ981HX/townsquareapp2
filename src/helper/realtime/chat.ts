@@ -5,6 +5,8 @@ import { pusherServer } from "@/lib/pusher";
 
 export const sendMessage = async ({ messageObj, chatId, channel }: any) => {
   try {
+    console.log('jjjjjjjjjjjjjjjjjjj');
+    console.log('sean_log messageObj: ' + JSON.stringify(messageObj));
     await pusherServer.trigger(chatId, channel, messageObj);
   } catch (error: any) {
     throw new Error(error.message);

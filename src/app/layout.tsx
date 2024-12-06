@@ -30,6 +30,8 @@ export default async function RootLayout({
                 <SignOutButton />
                 <p className="pr-8 pl-8">|</p>
                 {username}
+                <p className="pr-8 pl-8">|</p>
+                {session?.user?.id}
               </div>
               {children}
               <Toaster />

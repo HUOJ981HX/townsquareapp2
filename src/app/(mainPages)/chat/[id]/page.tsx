@@ -15,11 +15,9 @@ async function ConvoPage({ params }: any) {
     },
     include: {
       messages: true,
+      userChats: true
     },
   });
-
-  console.log("lllllllllllllllllll");
-  console.log("sean_log convo: " + JSON.stringify(convo));
 
   return (
     <>
@@ -32,7 +30,7 @@ async function ConvoPage({ params }: any) {
           </div>
         ))}
       </div> */}
-      <ConvoClient convoId={convo!.id} loadedMessages={convo?.messages} session={session}/>
+      <ConvoClient convo={convo} session={session}/>
     </>
   );
 }
