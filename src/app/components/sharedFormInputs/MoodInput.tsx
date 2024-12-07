@@ -1,11 +1,11 @@
 import React from "react";
 import { FilterFormInputs, Mood } from "@/types/filter";
 
-function MoodInput() {
+function MoodInput({PostMood}: any) {
   return (
     <div>
       <label htmlFor={FilterFormInputs.PostMood}>Mood</label>
-      <select id={FilterFormInputs.PostMood} name={FilterFormInputs.PostMood}>
+      <select id={FilterFormInputs.PostMood} name={FilterFormInputs.PostMood} defaultValue={PostMood}>
         <option value={Mood.Happy}>{Mood.Happy}</option>
         <option value={Mood.Laugh}>{Mood.Laugh}</option>
         <option value={Mood.Surprised}>{Mood.Surprised}</option>

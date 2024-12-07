@@ -13,20 +13,16 @@ import { Switch } from "@/components/ui/switch";
 import { FilterFormInputs, Gender } from "@/types/filter";
 import MoodInput from "../sharedFormInputs/MoodInput";
 
-function Filter({ purpose, filter }: any) {
-  const [ageMin, setAgeMin] = useState(33);
-  const [ageMax, setAgeMax] = useState(33);
+function Filter({ purpose, filterJson, filterOff }: any) {
+  const [ageMin, setAgeMin] = useState(filterJson.UserAgeMin);
+  const [ageMax, setAgeMax] = useState(filterJson.UserAgeMax);
   const [isOpen, setIsOpen] = useState(false);
   const [postFilter, setPostFilter] = useState<
     {
       postFilterDisplay: string;
       postFilterQueryRole: string;
     }[]
-  >([]);
-
-  console.log('fffffffffffffffffffffff');
-  console.log('iiiiiiiiiiiiiiiiiii');
-  console.log('sean_log filter: ' + JSON.stringify(filter));
+  >(filterJson.PostPurpose);
 
   const [state, formAction] = useActionState(filterSubmitAction, {
     status: "",
@@ -66,6 +62,10 @@ function Filter({ purpose, filter }: any) {
     }
   }, [state]);
 
+  console.log('ddddddddddddddddddddddd');
+  console.log('vvvvvvvvvvvvvvvvvvv');
+  console.log('sean_log filterOff: ' + filterOff);
+
   return (
     <>
       {/* <div className='fixed w-screen h-screen z-50 bg-[red] left-0 top-0'> */}
@@ -74,7 +74,7 @@ function Filter({ purpose, filter }: any) {
         <div>
           <form action={formAction}>
             <div className="flex items-center space-x-2">
-              <Switch id="filterOff" name="filterOff" />
+              <Switch id="filterOff" name="filterOff" defaultChecked={filterOff} />
               <Label htmlFor="filterOff">Turn off filter</Label>
             </div>
 
@@ -83,7 +83,7 @@ function Filter({ purpose, filter }: any) {
               <div>
                 <div>
                   <Slider
-                    defaultValue={[33]}
+                    defaultValue={[ageMin]}
                     max={100}
                     min={18}
                     step={1}
@@ -96,7 +96,7 @@ function Filter({ purpose, filter }: any) {
 
                 <div>
                   <Slider
-                    defaultValue={[33]}
+                    defaultValue={[ageMax]}
                     max={100}
                     min={18}
                     step={1}
@@ -114,6 +114,7 @@ function Filter({ purpose, filter }: any) {
                   name={FilterFormInputs.UserGender}
                   id={`${FilterFormInputs.UserGender}${Gender.Female}`}
                   value={Gender.Female}
+                  defaultChecked={filterJson.UserGender.includes(Gender.Female) ? true : false}
                 />
                 <label htmlFor="UserAttributesFemale">Female</label>
                 <input
@@ -121,6 +122,7 @@ function Filter({ purpose, filter }: any) {
                   name={FilterFormInputs.UserGender}
                   id={`${FilterFormInputs.UserGender}${Gender.Male}`}
                   value={Gender.Male}
+                  defaultChecked={filterJson.UserGender.includes(Gender.Male) ? true : false}
                 />
                 <label htmlFor="UserAttributesFemale">Male</label>
                 <input
@@ -128,6 +130,7 @@ function Filter({ purpose, filter }: any) {
                   name={FilterFormInputs.UserGender}
                   id={`${FilterFormInputs.UserGender}${Gender.NonBinary}`}
                   value={Gender.NonBinary}
+                  defaultChecked={filterJson.UserGender.includes(Gender.NonBinary) ? true : false}
                 />
                 <label htmlFor="UserAttributesNonBinary">Non binary</label>
               </div>
@@ -136,7 +139,7 @@ function Filter({ purpose, filter }: any) {
             <div>
               <h2 className="text-[2rem]">Post filter</h2>
 
-              <MoodInput />
+              <MoodInput PostMood={filterJson.PostMood} />
               <div>
                 {postFilter.map((filter) => {
                   return (

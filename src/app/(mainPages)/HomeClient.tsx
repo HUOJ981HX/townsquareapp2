@@ -3,8 +3,9 @@
 
 import React from 'react'
 import { useGlobalContext } from '@/context/GlobalContext';
-import Filter from '../components/filter';
+import Filter from '../components/filter/filter.compo';
 import { postCriteriaIntentType } from '@/helper/post';
+import { Gender } from '@/types/filter';
 
 function HomeClient({ posts, filter }: any) {
   const { openFilter } = useGlobalContext();
@@ -13,7 +14,13 @@ function HomeClient({ posts, filter }: any) {
     <div>
       {openFilter 
         ?
-        <Filter purpose={postCriteriaIntentType.FILTER} filter={filter} />
+        <Filter purpose={postCriteriaIntentType.FILTER} filterOff={filter?.filterOff} filterJson={filter?.filterJson || {
+          "PostMood": "Happy",
+          "UserAgeMin": 18,
+          "UserAgeMax": 100,
+          "UserGender": [Gender.Female, Gender.Male, Gender.NonBinary],
+          "PostPurpose": []
+        }} />
         :
         posts.map((post: any, index: number) => (
           <li
