@@ -1,3 +1,4 @@
+import { FilterFormInputs } from "@/types/filter";
 import { Prisma } from "@prisma/client";
 
 export const concatenatePostFilterArray = (items: any[]) => {
@@ -59,23 +60,30 @@ export function cleanObject(obj: any, keysToRemove: any) {
     return clean(obj);
 }
 
-// export const removeEmptyObjValues = (obj: any): any => {
-//     if (obj === null || obj === undefined || obj === '') {
-//         return null; // Remove the property
-//     }
+export function convertFormDataToObject(formData: FormData): Record<string, any> {
+    const result: Record<string, any> = {};
 
-//     if (typeof obj === 'object' && !Array.isArray(obj)) {
-//         const cleanedObject: any = {};
-//         for (const key in obj) {
-//             if (Object.prototype.hasOwnProperty.call(obj, key)) {
-//                 const cleanedValue = removeEmptyObjValues(obj[key]);
-//                 if (cleanedValue !== undefined) {
-//                     cleanedObject[key] = cleanedValue;
-//                 }
-//             }
-//         }
-//         return Object.keys(cleanedObject).length > 0 ? cleanedObject : null;
-//     }
+    const arrayInputs = [FilterFormInputs.UserGender];
 
-//     return obj;
-// };
+    for (const [key, value] of formData.entries()) {
+        // If the key corresponds to checkbox inputs (multi-value)
+        if (arrayInputs.includes(key as any)) {
+            if (!result[key]) {
+                // Initialize the array if not already present
+                result[key] = [];
+            }
+            result[key].push(value); // Collect all values for the same key
+        } else {
+            // Try to parse the value to preserve its type
+            try {
+                const parsedValue = JSON.parse(value as string); // Parse JSON strings
+                result[key] = parsedValue; // Assign the parsed value
+            } catch (e) {
+                // If parsing fails, keep the original string value
+                result[key] = value;
+            }
+        }
+    }
+
+    return result;
+}

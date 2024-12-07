@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { auth } from "@/auth";
 import prisma from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
-import { removeEmptyObjValues } from '@/helper';
+import { convertFormDataToObject, removeEmptyObjValues } from '@/helper';
 import { revalidatePath } from 'next/cache';
 import { buildPostFilter } from '@/helper/filter';
 
@@ -27,12 +27,19 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
     let filterOff = false;
 
     console.log('bbbbbbbbbbbbbbbbbb');
+    console.log('bbbbbbbbbbbbbbbbbb');
     console.log('fffffffffffffffffffffff');
-    console.log('sean_log formData: ' + JSON.stringify(buildPostFilter(formData)));
+    console.log('fffffffffffffffffffffff');
 
-    console.log('oooooooooooooooo');
-    console.log('sean_log filterOff: ' + JSON.stringify(formData.get('filterOff')));
-    console.log('sean_log filterOff: ' + formData.get('filterOff'));
+    for (var pair of formData.entries()) {
+      console.log(pair[0]+ ', ' + pair[1]); 
+  }
+
+    let objToSave = convertFormDataToObject(formData);
+
+    console.log('sean_log objToSave: ' + JSON.stringify(objToSave));
+    console.log('sean_log buildPostFilter: ' + JSON.stringify(buildPostFilter(objToSave)));
+
 
     if(formData.get('filterOff')) {
       filterOff = true;
@@ -41,7 +48,8 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
     await prisma.filter.update({
       where: {userId: session?.user?.id!},
       data: {
-        filterOff
+        filterOff,
+        
       }
     });
 
@@ -90,7 +98,7 @@ export const filterSubmitAction = async (prevState: any, formData: FormData) => 
         message: 'Filter submitted successfully!' 
     };
 
-  } catch (error) {
+  } catch (error: any) {
 
     console.log('eeeeeeeeeeeeeeeeeeeeee');
     console.log('sean_log error: ' + JSON.stringify(error));

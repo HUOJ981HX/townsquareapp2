@@ -24,6 +24,10 @@ function Filter({ purpose, filter }: any) {
     }[]
   >([]);
 
+  console.log('fffffffffffffffffffffff');
+  console.log('iiiiiiiiiiiiiiiiiii');
+  console.log('sean_log filter: ' + JSON.stringify(filter));
+
   const [state, formAction] = useActionState(filterSubmitAction, {
     status: "",
     message: "",

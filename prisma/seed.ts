@@ -216,51 +216,75 @@ async function main() {
         id: 1,
         userId: "1",
         filterOff: false,
-        filterPostJson: {
-          filterablePostAttributes: {
-            mood: "Surprised",
-            OR: [
-              {
-                postFilterDisplay:
-                  "work > Accounting, Manufacturing, Service, Tech > over 100k",
-                postFilterQueryRole: "seeker",
-              },
-            ],
-          },
-          user: {
-            filterableUserAttributes: {
-              age: { gte: 27, lte: 80 },
-              gender: {
-                in: ["Non-binary"]
-              } 
-            },
-          },
+        filterJson: {
+          "UserAgeMin": 27,
+          "UserAgeMax": 80,
+          "UserGender": ["Non-binary"],
+          "PostMood": "Surprised",
+          "PostPurpose": [
+            {
+              "postFilterDisplay": "work > Accounting, Manufacturing, Service, Tech > over 100k",
+              "postFilterQueryRole": "seeker"
+            }
+          ]
         }
+        // filterPostJson: {
+        //   filterablePostAttributes: {
+        //     mood: "Surprised",
+        //     OR: [
+        //       {
+        //         postFilterDisplay:
+        //           "work > Accounting, Manufacturing, Service, Tech > over 100k",
+        //         postFilterQueryRole: "seeker",
+        //       },
+        //     ],
+        //   },
+        //   user: {
+        //     filterableUserAttributes: {
+        //       age: { gte: 27, lte: 80 },
+        //       gender: {
+        //         in: ["Non-binary"]
+        //       } 
+        //     },
+        //   },
+        // }
       },
       {
         id: 2,
         userId: "2",
         filterOff: false,
-        filterPostJson: {
-          filterablePostAttributes: {
-            mood: "Happy",
-            OR: [
-              {
-                postFilterDisplay:
-                  "personals > Casual, Friends, Relationship > Female, Male, nonBinary",
-                postFilterQueryRole: "both",
-              },
-            ],
-          },
-          user: {
-            filterableUserAttributes: {
-              age: { gte: 27, lte: 50 },
-              gender: {
-                in: ["Male","Non-binary"]
-              } 
-            },
-          },
+        filterJson: {
+          "UserAgeMin": 27,
+          "UserAgeMax": 50,
+          "UserGender": ["Male","Non-binary"],
+          "PostMood": "Happy",
+          "PostPurpose": [
+            {
+              "postFilterDisplay": "personals > Casual, Friends, Relationship > Female, Male, nonBinary",
+              "postFilterQueryRole": "both"
+            }
+          ]
         }
+        // filterPostJson: {
+        //   filterablePostAttributes: {
+        //     mood: "Happy",
+        //     OR: [
+        //       {
+        //         postFilterDisplay:
+        //           "personals > Casual, Friends, Relationship > Female, Male, nonBinary",
+        //         postFilterQueryRole: "both",
+        //       },
+        //     ],
+        //   },
+        //   user: {
+        //     filterableUserAttributes: {
+        //       age: { gte: 27, lte: 50 },
+        //       gender: {
+        //         in: ["Male","Non-binary"]
+        //       } 
+        //     },
+        //   },
+        // }
 
       },
     ]

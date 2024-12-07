@@ -41,8 +41,9 @@ model Filter {
   user                     User                       @relation(fields: [userId], references: [id])
   // filterableUserAttributes FilterableUserAttributes?
   // filterablePostAttributes FilterablePostAttributes?
-  filterPostJson              Json?
-  filterUserJson              Json?
+  // filterPostJson              Json?
+  // filterUserJson              Json?
+  filterJson               Json?
   filterOff                Boolean?
 
 }
