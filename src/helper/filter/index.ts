@@ -46,15 +46,15 @@ import { Prisma } from "@prisma/client";
 
 export const buildPostFilter = (jsonObj: any) => {
   const queryObj = {
-    filterablePostAttributes: {
-      ...(jsonObj[FilterFormInputs.PostMood] && {
-        mood: jsonObj[FilterFormInputs.PostMood],
-      }),
-      ...(JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.PostPurpose]))
-        .length && {
-        OR: JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.PostPurpose])),
-      }),
-    },
+    // filterablePostAttributes: {
+    //   ...(jsonObj[FilterFormInputs.PostMood] && {
+    //     mood: jsonObj[FilterFormInputs.PostMood],
+    //   }),
+    //   ...(JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.PostPurpose]))
+    //     .length && {
+    //     OR: JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.PostPurpose])),
+    //   }),
+    // },
     user: {
       filterableUserAttributes: {
         age: {
@@ -77,21 +77,21 @@ export const buildPostFilter = (jsonObj: any) => {
 
 export const buildUserFilter = (jsonObj: any) => {
   const queryObj = {
-    posts: {
-      some: {
-        filterablePostAttributes: {
-          ...(jsonObj[FilterFormInputs.PostMood] && {
-            mood: jsonObj[FilterFormInputs.PostMood],
-          }),
-          ...(JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.PostPurpose]))
-            .length && {
-            OR: JSON.parse(
-              JSON.stringify(jsonObj[FilterFormInputs.PostPurpose])
-            ),
-          }),
-        },
-      },
-    },
+    // posts: {
+    //   some: {
+    //     filterablePostAttributes: {
+    //       ...(jsonObj[FilterFormInputs.PostMood] && {
+    //         mood: jsonObj[FilterFormInputs.PostMood],
+    //       }),
+    //       ...(JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.PostPurpose]))
+    //         .length && {
+    //         OR: JSON.parse(
+    //           JSON.stringify(jsonObj[FilterFormInputs.PostPurpose])
+    //         ),
+    //       }),
+    //     },
+    //   },
+    // },
     filterableUserAttributes: {
       age: {
         gte: parseInt(jsonObj[FilterFormInputs.UserAgeMin]) || 18,
@@ -107,4 +107,6 @@ export const buildUserFilter = (jsonObj: any) => {
       }),
     },
   };
+
+  return queryObj;
 };

@@ -1,57 +1,65 @@
 import { auth } from "@/auth";
-import prisma from '@/lib/prisma';
-import Users from '../../components/users/Users';
-import { Prisma } from '@prisma/client';
+import prisma from "@/lib/prisma";
+import Users from "../../components/users/Users";
+import { Prisma } from "@prisma/client";
 import { cleanObject } from "@/helper";
-
+import { buildUserFilter } from "@/helper/filter";
+import UserClient from "./UserClient";
 
 async function UsersPage() {
+  const session = await auth();
 
-    const session = await auth();
+  const filter = await prisma.filter.findFirst({
+    where: {
+      userId: session?.user?.id!,
+    },
+  });
 
-    const filter = await prisma.filter.findFirst({
-        where: {
-            userId: session?.user?.id!
-        },
-    });
+  let users = null;
 
-    let users = null;
+  const userQuery: Prisma.UserWhereInput = buildUserFilter(filter!.filterJson);
 
-    if(filter) {
-        const cleanedFilter = cleanObject(filter, ["id", "userId", "postId", "filtersId"]);
+  console.log("uuuuuuuuuuuuuuuuuuuuu");
+  console.log("qqqqqqqqqqqqqqqqqqq");
+  console.log("sean_log userQuery: " + JSON.stringify(userQuery));
+  console.log("sean_log filter: " + JSON.stringify(filter));
 
-        const userQueryObj: Prisma.UserWhereInput = {
-            posts: { // Find users who made posts satisfying the following attribute 
-                some: {
-                    filterablePostAttributes: {
-                        AND: cleanedFilter.filterablePostAttributes,
-                    }
-                }
-            },
-            filterableUserAttributes: cleanedFilter.filterableUserAttributes
-        }
-    
-        users = await prisma.user.findMany({
-            where: userQueryObj,
-            include: {
-                filterableUserAttributes: true
-            }
-        });
-    }
-
+  if (filter?.filterOff || !filter || !filter?.filterJson) {
+    console.log("vvvvvvvvvvvvvvvvvvv");
 
     users = await prisma.user.findMany({
-        include: {
-            filterableUserAttributes: true
-        }
+      include: {
+        filterableUserAttributes: true,
+      },
     });
+  } else {
+    const cleanedFilter = cleanObject(filter, [
+      "id",
+      "userId",
+      "postId",
+      "filtersId",
+    ]);
 
-    return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">User List</h1>
-            <Users users={users}/>
-        </div>
-    );
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
+    users = await prisma.user.findMany({
+      where: userQuery,
+      include: {
+        filterableUserAttributes: true,
+      },
+    });
+  }
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">User List</h1>
+      {users ? (
+        <UserClient users={users} filter={filter} />
+      ) : (
+        <p>No users to display</p>
+      )}
+    </div>
+  );
 }
 
-export default UsersPage
+export default UsersPage;
