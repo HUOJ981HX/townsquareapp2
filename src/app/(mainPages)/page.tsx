@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
-import { cleanObject } from "@/helper";
 import HomeClient from "./HomeClient";
 import { buildPostFilter } from "@/helper/filter";
 

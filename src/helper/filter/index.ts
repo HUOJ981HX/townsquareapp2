@@ -44,7 +44,6 @@ import { Prisma } from "@prisma/client";
 //   return queryObj;
 // };
 
-
 export const buildPostFilter = (jsonObj: any) => {
   const queryObj = {
     filterablePostAttributes: {
@@ -62,15 +61,10 @@ export const buildPostFilter = (jsonObj: any) => {
           gte: parseInt(jsonObj[FilterFormInputs.UserAgeMin]) || 18,
           lte: parseInt(jsonObj[FilterFormInputs.UserAgeMax]) || 100,
         },
-        // gender: {
-        //   in: JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.UserGender]))
-        //     .length
-        //     ? JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.UserGender]))
-        //     : [Gender.Female, Gender.Male, Gender.NonBinary],
-        // },
         ...(jsonObj[FilterFormInputs.UserGender] && {
           gender: {
-            in: JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.UserGender])).length
+            in: JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.UserGender]))
+              .length
               ? JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.UserGender]))
               : [Gender.Female, Gender.Male, Gender.NonBinary],
           },
@@ -79,4 +73,38 @@ export const buildPostFilter = (jsonObj: any) => {
     },
   };
   return queryObj;
+};
+
+export const buildUserFilter = (jsonObj: any) => {
+  const queryObj = {
+    posts: {
+      some: {
+        filterablePostAttributes: {
+          ...(jsonObj[FilterFormInputs.PostMood] && {
+            mood: jsonObj[FilterFormInputs.PostMood],
+          }),
+          ...(JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.PostPurpose]))
+            .length && {
+            OR: JSON.parse(
+              JSON.stringify(jsonObj[FilterFormInputs.PostPurpose])
+            ),
+          }),
+        },
+      },
+    },
+    filterableUserAttributes: {
+      age: {
+        gte: parseInt(jsonObj[FilterFormInputs.UserAgeMin]) || 18,
+        lte: parseInt(jsonObj[FilterFormInputs.UserAgeMax]) || 100,
+      },
+      ...(jsonObj[FilterFormInputs.UserGender] && {
+        gender: {
+          in: JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.UserGender]))
+            .length
+            ? JSON.parse(JSON.stringify(jsonObj[FilterFormInputs.UserGender]))
+            : [Gender.Female, Gender.Male, Gender.NonBinary],
+        },
+      }),
+    },
+  };
 };
