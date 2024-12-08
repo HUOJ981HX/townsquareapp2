@@ -100,6 +100,7 @@ const PostCriteria = ({ setPostFilter, purpose, setIsOpen, isOpen }: any) => {
     setPostFilter((prev: any) => [
       ...prev,
       {
+        postFilterId: postFilterArrayString + postFilterQueryRole,
         postFilterDisplay: postFilterArrayString,
         postFilterQueryRole: postFilterQueryRole,
       },

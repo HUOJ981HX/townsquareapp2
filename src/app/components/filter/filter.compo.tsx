@@ -62,9 +62,9 @@ function Filter({ purpose, filterJson, filterOff }: any) {
     }
   }, [state]);
 
-  console.log('ddddddddddddddddddddddd');
-  console.log('vvvvvvvvvvvvvvvvvvv');
-  console.log('sean_log filterOff: ' + filterOff);
+  console.log("ddddddddddddddddddddddd");
+  console.log("vvvvvvvvvvvvvvvvvvv");
+  console.log("sean_log filterOff: " + filterOff);
 
   return (
     <>
@@ -74,7 +74,11 @@ function Filter({ purpose, filterJson, filterOff }: any) {
         <div>
           <form action={formAction}>
             <div className="flex items-center space-x-2">
-              <Switch id="filterOff" name="filterOff" defaultChecked={filterOff} />
+              <Switch
+                id="filterOff"
+                name="filterOff"
+                defaultChecked={filterOff}
+              />
               <Label htmlFor="filterOff">Turn off filter</Label>
             </div>
 
@@ -114,7 +118,9 @@ function Filter({ purpose, filterJson, filterOff }: any) {
                   name={FilterFormInputs.UserGender}
                   id={`${FilterFormInputs.UserGender}${Gender.Female}`}
                   value={Gender.Female}
-                  defaultChecked={filterJson.UserGender.includes(Gender.Female) ? true : false}
+                  defaultChecked={
+                    filterJson.UserGender.includes(Gender.Female) ? true : false
+                  }
                 />
                 <label htmlFor="UserAttributesFemale">Female</label>
                 <input
@@ -122,7 +128,9 @@ function Filter({ purpose, filterJson, filterOff }: any) {
                   name={FilterFormInputs.UserGender}
                   id={`${FilterFormInputs.UserGender}${Gender.Male}`}
                   value={Gender.Male}
-                  defaultChecked={filterJson.UserGender.includes(Gender.Male) ? true : false}
+                  defaultChecked={
+                    filterJson.UserGender.includes(Gender.Male) ? true : false
+                  }
                 />
                 <label htmlFor="UserAttributesFemale">Male</label>
                 <input
@@ -130,7 +138,11 @@ function Filter({ purpose, filterJson, filterOff }: any) {
                   name={FilterFormInputs.UserGender}
                   id={`${FilterFormInputs.UserGender}${Gender.NonBinary}`}
                   value={Gender.NonBinary}
-                  defaultChecked={filterJson.UserGender.includes(Gender.NonBinary) ? true : false}
+                  defaultChecked={
+                    filterJson.UserGender.includes(Gender.NonBinary)
+                      ? true
+                      : false
+                  }
                 />
                 <label htmlFor="UserAttributesNonBinary">Non binary</label>
               </div>
@@ -144,8 +156,21 @@ function Filter({ purpose, filterJson, filterOff }: any) {
                 {postFilter.map((filter) => {
                   return (
                     <>
-                      <p>{filter?.postFilterDisplay}</p>
-                      <p>{filter?.postFilterQueryRole}</p>
+                      <div
+                        onClick={() =>
+                          setPostFilter(
+                            postFilter.filter(
+                              (item: any) =>
+                                item.postFilterDisplay !== filter.postFilterDisplay ||
+                                item.postFilterQueryRole !== filter.postFilterQueryRole
+                            )
+                          )
+                        }
+                        className="flex"
+                      >
+                        <p>{filter?.postFilterDisplay}</p>
+                        <p>{filter?.postFilterQueryRole}</p>
+                      </div>
                     </>
                   );
                 })}

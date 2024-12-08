@@ -6,6 +6,7 @@ function MoodInput({PostMood}: any) {
     <div>
       <label htmlFor={FilterFormInputs.PostMood}>Mood</label>
       <select id={FilterFormInputs.PostMood} name={FilterFormInputs.PostMood} defaultValue={PostMood}>
+        <option value="">All</option>
         <option value={Mood.Happy}>{Mood.Happy}</option>
         <option value={Mood.Laugh}>{Mood.Laugh}</option>
         <option value={Mood.Surprised}>{Mood.Surprised}</option>
