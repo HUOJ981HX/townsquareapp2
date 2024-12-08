@@ -5,6 +5,7 @@ export enum FilterFormInputs {
     UserAgeMin = "UserAgeMin",
     UserAgeMax = "UserAgeMax",
     UserGender = "UserGender",
+    GroupsUsers = "GroupsUsers"
 }
 
 

@@ -16,6 +16,7 @@ import MoodInput from "../sharedFormInputs/MoodInput";
 function Filter({ purpose, filterJson, filterOff }: any) {
   const [ageMin, setAgeMin] = useState(filterJson.UserAgeMin);
   const [ageMax, setAgeMax] = useState(filterJson.UserAgeMax);
+  const [groupsUsers, setGroupsUsers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [postFilter, setPostFilter] = useState<
     {

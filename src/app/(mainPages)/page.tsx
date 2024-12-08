@@ -16,23 +16,23 @@ export default async function Home() {
     },
   });
 
+
   let posts = null;
 
-    posts = await prisma.post.findMany({
-      include: {
-        filterablePostAttributes: true,
-        user: {
-          include: {
-            filterableUserAttributes: true,
-          },
+  posts = await prisma.post.findMany({
+    include: {
+      filterablePostAttributes: true,
+      user: {
+        include: {
+          filterableUserAttributes: true,
         },
       },
-    });
+    },
+  });
 
   if (filter?.filterOff || !filter || !filter?.filterJson) {
-
-    console.log('ttttttttttttttttttt');
-    console.log('ttttttttttttttttttt');
+    console.log("ttttttttttttttttttt");
+    console.log("ttttttttttttttttttt");
     posts = await prisma.post.findMany({
       include: {
         filterablePostAttributes: true,
@@ -43,15 +43,32 @@ export default async function Home() {
         },
       },
     });
-
   } else {
-    const postQuery: Prisma.PostWhereInput = buildPostFilter(filter!.filterJson);
+    const postQuery: Prisma.PostWhereInput = buildPostFilter(
+      filter!.filterJson
+    );
 
     console.log("pppppppppppppppppp");
     console.log("qqqqqqqqqqqqqqqqqqq");
     console.log("sean_log postQuery: " + JSON.stringify(postQuery));
     posts = await prisma.post.findMany({
       where: postQuery,
+      // where: {
+      //   filterablePostAttributes: {},
+      //   user: {
+      //     filterableUserAttributes: {
+      //       age: { gte: 18, lte: 100 },
+      //       gender: { in: ["Male", "Non-binary"] },
+      //     },
+      //     userGroups: {
+      //       some: {
+      //         groupId: {
+      //           in: ["5d37edb0-eb62-4b5f-80a8-94133e3299ee"],
+      //         },
+      //       },
+      //     },
+      //   },
+      // },
       include: {
         filterablePostAttributes: true,
         user: {
