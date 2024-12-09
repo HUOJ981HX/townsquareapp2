@@ -7,7 +7,7 @@ import ImagePicker from "../ImagePicker";
 import { useToast } from "@/hooks/use-toast";
 import MoodInput from "../sharedFormInputs/MoodInput";
 
-export default function PostForm({ action, setIsOpen }: any) {
+export default function PostForm({ action, setModalName }: any) {
   const [state, formAction] = useActionState(action, {
     status: "",
     message: "",
@@ -20,7 +20,7 @@ export default function PostForm({ action, setIsOpen }: any) {
       toast({
         description: state.message,
       });
-      setIsOpen(false);
+      setModalName("");
     } else if (state.status === "error") {
       toast({
         variant: "destructive",

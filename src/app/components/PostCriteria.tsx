@@ -50,15 +50,6 @@ const PostCriteria = ({ setPostFilter, purpose, setIsOpen, isOpen }: any) => {
     }
   };
 
-  // const handleNext = () => {
-  //     if(!skipAdding) {
-  //         setResponses([...responses, currentResponse]);
-  //         setSkipAdding(false);
-  //     }
-  //     setCurrentStep(currentStep + 1);
-  //     setCurrentResponse(null);
-  // };
-
   const handleNext = useCallback(() => {
 
     if (!skipAdding) {
@@ -90,10 +81,6 @@ const PostCriteria = ({ setPostFilter, purpose, setIsOpen, isOpen }: any) => {
     const finalResponses = [...responses, currentResponse];
     const postFilterArrayString = concatenatePostFilterArray(finalResponses);
     const postFilterQueryRole = getFilterQueryRole({ category, purpose, role });
-    // setIsOpen(false);
-    // setCurrentStep(0);
-    // setResponses([]);
-    // setCurrentResponse(null);
 
     handleModalClose();
     
