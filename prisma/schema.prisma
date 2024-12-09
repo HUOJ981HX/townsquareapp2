@@ -45,7 +45,6 @@ model Filter {
   // filterUserJson              Json?
   filterJson               Json?
   filterOff                Boolean?
-
 }
 
 model FilterableUserAttributes {

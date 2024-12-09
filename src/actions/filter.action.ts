@@ -28,21 +28,21 @@ export const filterSubmitAction = async (
 
     let filterOff = false;
 
-    console.log("bbbbbbbbbbbbbbbbbb");
-    console.log("bbbbbbbbbbbbbbbbbb");
-    console.log("fffffffffffffffffffffff");
-    console.log("fffffffffffffffffffffff");
+    // console.log("bbbbbbbbbbbbbbbbbb");
+    // console.log("bbbbbbbbbbbbbbbbbb");
+    // console.log("fffffffffffffffffffffff");
+    // console.log("fffffffffffffffffffffff");
 
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
+    // for (var pair of formData.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
 
     let objToSave = convertFormDataToObject(formData);
 
-    console.log("sean_log objToSave: " + JSON.stringify(objToSave));
-    console.log(
-      "sean_log buildPostFilter: " + JSON.stringify(buildPostFilter(objToSave))
-    );
+    // console.log("sean_log objToSave: " + JSON.stringify(objToSave));
+    // console.log(
+    //   "sean_log buildPostFilter: " + JSON.stringify(buildPostFilter(objToSave))
+    // );
 
     // const filterJson = buildPostFilter(objToSave);
 

@@ -7,14 +7,14 @@ import Filter from '../components/filter/filter.compo';
 import { postCriteriaIntentType } from '@/helper/post';
 import { Gender } from '@/types/filter';
 
-function HomeClient({ posts, filter }: any) {
+function HomeClient({ posts, filter, groups }: any) {
   const { openFilter } = useGlobalContext();
 
   return (
     <div>
       {openFilter 
         ?
-        <Filter purpose={postCriteriaIntentType.FILTER} filterOff={filter?.filterOff} filterJson={filter?.filterJson || {
+        <Filter groups={groups} purpose={postCriteriaIntentType.FILTER} filterOff={filter?.filterOff} filterJson={filter?.filterJson || {
           "PostMood": "Happy",
           "UserAgeMin": 18,
           "UserAgeMax": 100,

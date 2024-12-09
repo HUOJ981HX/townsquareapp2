@@ -15,6 +15,12 @@ async function UsersPage() {
     },
   });
 
+  const groups = await prisma.group.findMany({
+    where: {
+      userId: session?.user?.id!,
+    },
+  });
+
   let users = null;
 
   const userQuery: Prisma.UserWhereInput = buildUserFilter(filter!.filterJson);
@@ -33,13 +39,6 @@ async function UsersPage() {
       },
     });
   } else {
-    const cleanedFilter = cleanObject(filter, [
-      "id",
-      "userId",
-      "postId",
-      "filtersId",
-    ]);
-
     console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
     console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
     console.log("sean_log userQuery: " + JSON.stringify(userQuery));
@@ -68,7 +67,7 @@ async function UsersPage() {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">User List</h1>
       {users ? (
-        <UserClient users={users} filter={filter} />
+        <UserClient users={users} filter={filter} groups={groups} />
       ) : (
         <p>No users to display</p>
       )}

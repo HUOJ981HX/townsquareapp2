@@ -63,7 +63,7 @@ export function cleanObject(obj: any, keysToRemove: any) {
 export function convertFormDataToObject(formData: FormData): Record<string, any> {
     const result: Record<string, any> = {};
 
-    const arrayInputs = [FilterFormInputs.UserGender];
+    const arrayInputs = [FilterFormInputs.UserGender, FilterFormInputs.GroupsUsers];
 
     for (const [key, value] of formData.entries()) {
         // If the key corresponds to checkbox inputs (multi-value)

@@ -12,8 +12,9 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { FilterFormInputs, Gender } from "@/types/filter";
 import MoodInput from "../sharedFormInputs/MoodInput";
+import GroupCheckboxInput from "../sharedFormInputs/GroupCheckboxInput";
 
-function Filter({ purpose, filterJson, filterOff }: any) {
+function Filter({ purpose, filterJson, filterOff, groups }: any) {
   const [ageMin, setAgeMin] = useState(filterJson.UserAgeMin);
   const [ageMax, setAgeMax] = useState(filterJson.UserAgeMax);
   const [groupsUsers, setGroupsUsers] = useState([]);
@@ -65,7 +66,8 @@ function Filter({ purpose, filterJson, filterOff }: any) {
 
   console.log("ddddddddddddddddddddddd");
   console.log("vvvvvvvvvvvvvvvvvvv");
-  console.log("sean_log filterOff: " + filterOff);
+  console.log('sean_log groups: ' + JSON.stringify(groups));
+  console.log('sean_log filterJson: ' + JSON.stringify(filterJson));
 
   return (
     <>
@@ -147,6 +149,7 @@ function Filter({ purpose, filterJson, filterOff }: any) {
                 />
                 <label htmlFor="UserAttributesNonBinary">Non binary</label>
               </div>
+              <GroupCheckboxInput groups={groups} groupIds={filterJson[FilterFormInputs.GroupsUsers] || []} />
             </div>
 
             <div>

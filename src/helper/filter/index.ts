@@ -2,9 +2,14 @@ import { FilterFormInputs, Gender } from "@/types/filter";
 import { Prisma } from "@prisma/client";
 
 const getGroupQuery = (idArray: string[]) => {
+  console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+  console.log('rrrrrrrrrrrrrrrrrrr');
+  console.log('sean_log idArray: ' + JSON.stringify(idArray));
   if (!idArray || idArray.length === 0) {
+    console.log('000000000000000000000');
     return {};
   }
+  console.log('999999999999999999999');
   return {
     some: {
       groupId: {
@@ -15,6 +20,8 @@ const getGroupQuery = (idArray: string[]) => {
 };
 
 export const buildPostFilter = (jsonObj: any) => {
+
+
 
   const queryObj = {
     filterablePostAttributes: {
@@ -41,7 +48,7 @@ export const buildPostFilter = (jsonObj: any) => {
           },
         }),
       },
-      ...(Object.keys(getGroupQuery(jsonObj[FilterFormInputs.GroupsUsers])) && {userGroups: getGroupQuery(jsonObj.userGroupsArray)}),
+      ...(Object.keys(getGroupQuery(jsonObj[FilterFormInputs.GroupsUsers])) && {userGroups: getGroupQuery(jsonObj[FilterFormInputs.GroupsUsers])}),
     },
   };
 
@@ -49,8 +56,15 @@ export const buildPostFilter = (jsonObj: any) => {
 };
 
 export const buildUserFilter = (jsonObj: any) => {
+
+  console.log('bbbbbbbbbbbbbbbbbb');
+  console.log('uuuuuuuuuuuuuuuuuuuuu');
+  console.log('jjjjjjjjjjjjjjjjjjj');
+  console.log('sean_log jsonObj: ' + JSON.stringify(jsonObj));
+
+
   const queryObj = {
-    ...(Object.keys(getGroupQuery(jsonObj[FilterFormInputs.GroupsUsers])) && {userGroups: getGroupQuery(jsonObj.userGroupsArray)}),
+    ...(Object.keys(getGroupQuery(jsonObj[FilterFormInputs.GroupsUsers])) && {userGroups: getGroupQuery(jsonObj[FilterFormInputs.GroupsUsers])}),
     posts: {
       some: {
         filterablePostAttributes: {

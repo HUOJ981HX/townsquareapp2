@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Filter from "@/app/components/filter/filter.compo";
 import Users from "@/app/components/users/Users";
@@ -8,13 +8,14 @@ import { Gender } from "@/types/filter";
 import Link from "next/link";
 import React from "react";
 
-function UserClient({ users, filter }: any) {
+function UserClient({ users, filter, groups }: any) {
   const { openFilter } = useGlobalContext();
 
   return (
     <div>
       {openFilter ? (
         <Filter
+          groups={groups}
           purpose={postCriteriaIntentType.FILTER}
           filterOff={filter?.filterOff}
           filterJson={
@@ -30,13 +31,13 @@ function UserClient({ users, filter }: any) {
       ) : (
         // <Users users={users} />
         <div>
-        {users.map((user: any, index: number) => (
+          {users.map((user: any, index: number) => (
             <Link href={`/users/${user.id}`} key={index}>
-                <p>{user.username}</p>
-                <p>{user.filterableUserAttributes.age}</p>
-            </Link> 
-        ))}
-    </div>
+              <p>{user.username}</p>
+              <p>{user.filterableUserAttributes.age}</p>
+            </Link>
+          ))}
+        </div>
       )}
     </div>
   );

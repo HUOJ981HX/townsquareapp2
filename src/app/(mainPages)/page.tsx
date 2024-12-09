@@ -16,6 +16,11 @@ export default async function Home() {
     },
   });
 
+  const groups = await prisma.group.findMany({
+    where: {
+      userId: session?.user?.id!,
+    },
+  });
 
   let posts = null;
 
@@ -31,8 +36,6 @@ export default async function Home() {
   });
 
   if (filter?.filterOff || !filter || !filter?.filterJson) {
-    console.log("ttttttttttttttttttt");
-    console.log("ttttttttttttttttttt");
     posts = await prisma.post.findMany({
       include: {
         filterablePostAttributes: true,
@@ -47,10 +50,7 @@ export default async function Home() {
     const postQuery: Prisma.PostWhereInput = buildPostFilter(
       filter!.filterJson
     );
-
-    console.log("pppppppppppppppppp");
-    console.log("qqqqqqqqqqqqqqqqqqq");
-    console.log("sean_log postQuery: " + JSON.stringify(postQuery));
+    
     posts = await prisma.post.findMany({
       where: postQuery,
       // where: {
@@ -83,7 +83,7 @@ export default async function Home() {
   return (
     <>
       {posts ? (
-        <HomeClient posts={posts} filter={filter} />
+        <HomeClient posts={posts} filter={filter} groups={groups} />
       ) : (
         <p>No post to display</p>
       )}
