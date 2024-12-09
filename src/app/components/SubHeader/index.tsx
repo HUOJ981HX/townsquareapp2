@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button';
 import ButtonsContainer from './ButtonsContainer';
@@ -7,14 +7,56 @@ import PostDialog from '../posts/PostDialog';
 import Link from 'next/link';
 import { useGlobalContext } from '@/context/GlobalContext';
 import GroupChatDialog from '@/app/(mainPages)/chat/components/GroupChatDialog';
+import prisma from '@/lib/prisma';
+import { useSession } from "next-auth/react";
 
 function SubHeader() {
   const { setOpenFilter } = useGlobalContext();
-
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [modalName, setModalName] = useState("");
+  const [groups, setGroups] = useState([]);
 
   const pathname = usePathname();
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      const response = await fetch('/api/groups')
+      const data = await response.json()
+      setGroups(data)
+    }
+
+    if (pathname.startsWith('/chat')) {
+      fetchGroups()
+    };
+
+  }, [pathname])
+
+  // useEffect(() => {
+
+  //   console.log('uuuuuuuuuuuuuuuuuuuuu');
+  //   console.log('uuuuuuuuuuuuuuuuuuuuu');
+  //   console.log('uuuuuuuuuuuuuuuuuuuuu');
+  //   const fetchGroup = async () => {
+  //     const groups = await prisma.group.findMany({
+  //       where: {
+  //         userId: session?.user?.id,
+  //       },
+  //       include: {
+  //         userGroups: true, 
+  //       },
+  //     });
+
+  //     console.log('ggggggggggggggggggggggg');
+  //     console.log('ggggggggggggggggggggggg');
+  //     console.log('ggggggggggggggggggggggg');
+  //     console.log('sean_log groups: ' + JSON.stringify(groups));
+  //   }
+
+  //   fetchGroup();
+  // }, [])
+  
+
   const termsButton = <Button>Term</Button>;
   const filtersButton = <Button onClick={() => setOpenFilter(true)}>Filter</Button>;
   const createPostButton = <Button onClick={() => {
@@ -85,7 +127,7 @@ function SubHeader() {
     }
 
     if (modalName === "groupChatDialog") {
-      return <GroupChatDialog modalName={modalName} setModalName={setModalName} />
+      return <GroupChatDialog modalName={modalName} setModalName={setModalName} groups={groups} />
     }
 
     return null;
