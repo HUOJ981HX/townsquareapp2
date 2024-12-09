@@ -2,6 +2,7 @@
 
 import { updateGroupsAction } from "@/actions/group.action";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import React, { useState, useActionState, useEffect } from "react";
 
 function GroupForm({ userSlug, groups }: any) {
@@ -10,16 +11,16 @@ function GroupForm({ userSlug, groups }: any) {
     message: "",
   });
 
-  const oldGroupIds = groups.map((item: any) => item.id);
+  const router = useRouter();
 
-  console.log("cccccccccccccccccccc");
-  console.log("sean_log arrayGroupIds: " + oldGroupIds);
-  console.log('sean_log arrayGroupIds_json: ' + JSON.stringify(oldGroupIds));
+  const oldGroupIds = groups.map((item: any) => item.id);
 
   useEffect(() => {
     if (state.status === "success") {
       console.log('sssssssssssssssssssssssss');
       console.log('sean_log state.message: ' + state.message);
+      window.alert(state.message);
+      router.refresh();
     } else if (state.status === "error") {
       console.log("eeeeeeeeeeeeeeeeeeeeee");
       console.log("sean_log error: " + JSON.stringify(state.message));

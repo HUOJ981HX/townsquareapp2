@@ -50,7 +50,11 @@ export default async function Home() {
     const postQuery: Prisma.PostWhereInput = buildPostFilter(
       filter!.filterJson
     );
-    
+
+    console.log('pppppppppppppppppp');
+    console.log('qqqqqqqqqqqqqqqqqqq');
+    console.log('sean_log postQuery: ' + JSON.stringify(postQuery));
+
     posts = await prisma.post.findMany({
       where: postQuery,
       // where: {
@@ -63,7 +67,7 @@ export default async function Home() {
       //     userGroups: {
       //       some: {
       //         groupId: {
-      //           in: ["5d37edb0-eb62-4b5f-80a8-94133e3299ee"],
+      //           in: ["028e5436-fcff-4196-b48a-f267fc0fe30b"],
       //         },
       //       },
       //     },

@@ -43,20 +43,17 @@ async function UsersPage() {
     console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
     console.log("sean_log userQuery: " + JSON.stringify(userQuery));
     users = await prisma.user.findMany({
-        where: userQuery,
-    //   where: {
-    //     userGroups: {
-    //         some: {
-    //           groupId: {
-    //             in: ["5d37edb0-eb62-4b5f-80a8-94133e3299ee"]
-    //           }
-    //         }
-    //       },
-    //     filterableUserAttributes: {
-    //       age: { gte: 18, lte: 100 },
-    //       gender: { in: ["Male", "Non-binary"] },
-    //     },
-    //   },
+      where: userQuery,
+      // where: {
+      //   userGroups: {
+      //     some: { groupId: { in: ["028e5436-fcff-4196-b48a-f267fc0fe30b"] } },
+      //   },
+      //   posts: { some: { filterablePostAttributes: {} } },
+      //   filterableUserAttributes: {
+      //     age: { gte: 18, lte: 100 },
+      //     gender: { in: ["Female", "Male", "Non-binary"] },
+      //   },
+      // },
       include: {
         filterableUserAttributes: true,
       },
