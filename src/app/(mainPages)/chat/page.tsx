@@ -69,10 +69,10 @@ async function Chat() {
   return (
     <div>
       <h2>Your chat</h2>
-      <div className="flex">
+      {/* <div className="flex">
         <p>test buttons</p>
         <TestButton groups={groups} />
-      </div>
+      </div> */}
       {convos.map((convo: any, index: number) => (
         <div className="p-4 border-[solid]" id={convo.id}>
           <Link href={`/chat/${convo.id}`}>{convo.messages[0].text}</Link>

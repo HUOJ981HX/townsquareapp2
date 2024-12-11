@@ -55,6 +55,7 @@ model FilterableUserAttributes {
   personalityType String?
   userId          String?  @unique
   user            User?    @relation(fields: [userId], references: [id])
+  image           String?
   // filtersId       Int?     @unique
   // filters         Filters? @relation(fields: [filtersId], references: [id])
 }
