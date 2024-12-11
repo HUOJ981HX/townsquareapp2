@@ -3,6 +3,94 @@
 import prisma from "@/lib/prisma";
 import { pusherServer } from "@/lib/pusher";
 
+
+export async function createOrFindChatAndSendMessage(
+  userIds: string[], 
+  messageText: string,
+  senderUserId: string
+) {
+
+  if (!userIds.includes(senderUserId)) {
+    userIds.push(senderUserId);
+  }
+  // Sort user IDs to ensure consistent chat matching
+  const sortedUserIds = userIds.sort();
+  console.log('sssssssssssssssssssssssss');
+  console.log('uuuuuuuuuuuuuuuuuuuuu');
+  console.log('iiiiiiiiiiiiiiiiiii');
+  console.log('sean_log sortedUserIds: ' + JSON.stringify(sortedUserIds));
+
+  // Transaction to ensure atomic operations
+  return prisma.$transaction(async (tx) => {
+    // Find existing chat with exactly these users
+    const existingChat = await tx.chat.findMany({
+      where: {
+        userChats: {
+          every: {
+            userId: { in: sortedUserIds }
+          },
+          // Ensure the number of users matches exactly
+          some: {
+            userId: { in: sortedUserIds }
+          },
+        }
+      },
+      include: {
+        userChats: true
+      }
+    });
+
+    console.log('eeeeeeeeeeeeeeeeeeeeee');
+    console.log('eeeeeeeeeeeeeeeeeeeeee');
+    console.log('sean_log existingChat: ' + JSON.stringify(existingChat));
+
+    // let chatId: string;
+
+    // if (existingChat) {
+
+    //   console.log('eeeeeeeeeeeeeeeeeeeeee');
+    //   console.log('eeeeeeeeeeeeeeeeeeeeee');
+    //   console.log('cccccccccccccccccccc');
+    //   // Use existing chat
+    //   chatId = existingChat.id;
+    // } else {
+
+    //   console.log('nnnnnnnnnnnnnnnnnnnnnnnnn');
+    //   console.log('nnnnnnnnnnnnnnnnnnnnnnnnn');
+    //   console.log('cccccccccccccccccccc');
+    //   // Create new chat
+    //   const newChat = await tx.chat.create({
+    //     data: {
+    //       name: `Group Chat (${new Date().toLocaleString()})`,
+    //       userChats: {
+    //         create: sortedUserIds.map(userId => ({
+    //           user: { connect: { id: userId } }
+    //         }))
+    //       }
+    //     }
+    //   });
+    //   chatId = newChat.id;
+    // }
+
+    // // Create message in the chat
+    // const message = await tx.message.create({
+    //   data: {
+    //     text: messageText,
+    //     userId: senderUserId,
+    //     userName: (await tx.user.findUnique({ 
+    //       where: { id: senderUserId }, 
+    //       select: { username: true } 
+    //     }))?.username || 'Unknown User',
+    //     chatId: chatId
+    //   }
+    // });
+
+    // return { chat: { id: chatId }, message };
+
+    return { chat: { id: "test"}}
+  });
+}
+
 export const sendMessage = async ({ messageObj, chatId, channel }: any) => {
   try {
     console.log('jjjjjjjjjjjjjjjjjjj');

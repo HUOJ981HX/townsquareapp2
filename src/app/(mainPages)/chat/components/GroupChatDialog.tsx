@@ -16,16 +16,20 @@ import Users from "@/app/components/users/Users";
 import { Button } from "@/components/ui/button";
 import { groupMessageAction } from "@/actions/groupMessage.action";
 import { MassChatType } from "@/types";
+import { useRouter } from "next/navigation";
 
 function GroupChatDialog({ modalName, setModalName, groups }: any) {
   const [currentStep, setCurrentStep] = useState(0);
   const [groupIds, setGroupIds] = useState<any>([]);
   const [messageType, setMessageType] = useState("");
+  const [createdGroupId, setCreatedGroupId] = useState("");
   const [allGroupUsers, setAllGroupUsers] = useState<any>([]);
+
+  const router = useRouter();
 
   const groupMessageActionWithData = groupMessageAction.bind(null, {
     allGroupUsers,
-    messageType
+    messageType,
   });
 
   const [state, formAction] = useActionState(groupMessageActionWithData, {
@@ -33,24 +37,7 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
     message: "",
   });
 
-  const { data: session } = useSession();
-  //   {
-  //     "user": { "name": "Bob", "email": "bob@bob.bob", "id": "2" },
-  //     "expires": "2025-01-08T20:50:40.547Z"
-  //   }
-
-
-  //   const username = session?.user?.name;
-
   const ids = groups.map((group: any) => group.id);
-
-  // const uniqueUserIds = [
-  //   ...new Set(
-  //     groups.flatMap((group: any) =>
-  //       group.userGroups.map((userGroup: any) => userGroup.userId)
-  //     )
-  //   ),
-  // ];
 
   const handleGroupAdd = (groupId: string) => {
     const updatedValues = groupIds.includes(groupId)
@@ -60,13 +47,12 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
     setGroupIds(updatedValues);
   };
 
-  const handleNext = useCallback(() => {
-    setCurrentStep(currentStep + 1);
-  }, [setCurrentStep]);
+  const handleNext = () => {
+    setCurrentStep((prev) => prev + 1);
+  };
 
   useEffect(() => {
     const fetchGroups = async () => {
-
       const response = await fetch(
         "/api/groupsUsers?groupIds=" + groupIds.join(",")
       );
@@ -78,6 +64,21 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
     fetchGroups();
     // call async here
   }, [groupIds]);
+
+  useEffect(() => {
+    if (state.status === "success") {
+      console.log("vvvvvvvvvvvvvvvvvvv");
+      console.log("sssssssssssssssssssssssss");
+      console.log("sean_log state: " + JSON.stringify(state.groupChat));
+      handleNext();
+      if (messageType === MassChatType.Group) {
+        setCreatedGroupId(state?.groupChat?.chat?.id!);
+      }
+    } else if (state.status === "error") {
+      console.log("eeeeeeeeeeeeeeeeeeeeee");
+      console.log("sean_log error: " + JSON.stringify(state.message));
+    }
+  }, [state]);
 
   const getPanel = () => {
     if (currentStep === 0) {
@@ -103,12 +104,7 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
               <p>Select one or more group to view users</p>
             )}
           </div>
-          <Button
-            onClick={() => {
-              setCurrentStep((prev) => prev + 1);
-            }}
-            disabled={!allGroupUsers.length}
-          >
+          <Button onClick={() => handleNext()} disabled={!allGroupUsers.length}>
             Next
           </Button>
         </>
@@ -140,20 +136,15 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
               </div>
             </RadioGroup>
           </div>
-          <p>
+          <div>
             {messageType &&
               (messageType === MassChatType.Individual ? (
                 <p>Send the same individual message to each group member</p>
               ) : (
                 <p>Send message in the group chat</p>
               ))}
-          </p>
-          <Button
-            onClick={() => {
-              setCurrentStep((prev) => prev + 1);
-            }}
-            disabled={!messageType}
-          >
+          </div>
+          <Button onClick={() => handleNext()} disabled={!messageType}>
             Next
           </Button>
         </>
@@ -166,6 +157,29 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
             <input type="text" id="msg" name="msg" />
             <Button>Submit</Button>
           </form>
+        </>
+      );
+    }
+    if (currentStep === 3) {
+      return (
+        <>
+          <p>Submission successful!</p>
+          <Button
+            onClick={() => {
+              setModalName("");
+              router.push("/chat/" + createdGroupId);
+            }}
+          >
+            Go to chat
+          </Button>
+          <Button
+            onClick={() => {
+              setModalName("");
+              router.refresh();
+            }}
+          >
+            Close
+          </Button>
         </>
       );
     }

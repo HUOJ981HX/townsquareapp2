@@ -1,6 +1,6 @@
 "use server";
 
-import { sendMessageToGroupChat } from "@/helper/realtime/chat";
+import { createOrFindChatAndSendMessage, sendMessageToGroupChat } from "@/helper/realtime/chat";
 import { MassChatType } from "@/types";
 import { auth } from "@/auth";
 
@@ -28,7 +28,7 @@ export const groupMessageAction = async (
 
   if (userId && message) {
     if (context.messageType === MassChatType.Group) {
-      const groupChat = sendMessageToGroupChat(userId, users, message);
+      const groupChat = await createOrFindChatAndSendMessage(users, message, userId );
 
       console.log('ggggggggggggggggggggggg');
       console.log('cccccccccccccccccccc');
@@ -38,6 +38,7 @@ export const groupMessageAction = async (
         return {
           status: "success",
           message: "Message sent successfully!",
+          groupChat,
         };
       } catch (error) {
         return {
