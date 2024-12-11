@@ -15,7 +15,11 @@ async function ConvoPage({ params }: any) {
     },
     include: {
       messages: true,
-      userChats: true
+      userChats: {
+        include: {
+          user: true
+        }
+      }
     },
   });
 

@@ -1,5 +1,3 @@
-
-
 // export interface PostDto {
 //     userId: number;
 //     title: string | undefined;
@@ -21,30 +19,35 @@
 //     filterableUserAttributes?: UserAttributesFilter;
 // }
 
+export enum MassChatType {
+  Individual = "Individual",
+  Group = "Group",
+}
+
 export interface IRelationship {
-    AND: {
-        description?: string;
-        openTo?: string;
-    }[];
+  AND: {
+    description?: string;
+    openTo?: string;
+  }[];
 }
 
 export interface IUserAttribute {
-    AND: {
-        gender?: string;
-        age?: number;
-        relationship?: IRelationship;
-        postFilterDisplay?: string;
-        postFilterQueryRole?: string;
-    }[];
+  AND: {
+    gender?: string;
+    age?: number;
+    relationship?: IRelationship;
+    postFilterDisplay?: string;
+    postFilterQueryRole?: string;
+  }[];
 }
 
 export interface IPostTable {
-    title?: string;
-    description?: string;
-    image?: string;
-    postFilterDisplay?: string;
-    postFilterQueryRole?: string;
-    mood?: string;
+  title?: string;
+  description?: string;
+  image?: string;
+  postFilterDisplay?: string;
+  postFilterQueryRole?: string;
+  mood?: string;
 }
 
 // export interface IPost {
@@ -58,15 +61,15 @@ export interface IPostTable {
 // }
 
 export interface IUserTable {
-    username: string;
-    accountType: string;
-    filterableUserAttributes: IUserAttribute;
+  username: string;
+  accountType: string;
+  filterableUserAttributes: IUserAttribute;
 }
 
 export interface IUserQuery extends IUserTable {
-    posts: {
-        some: {
-            AND: IPostTable[]
-        }
+  posts: {
+    some: {
+      AND: IPostTable[];
     };
+  };
 }

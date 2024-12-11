@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -5,36 +7,42 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useActionState } from "react";
 import { useSession } from "next-auth/react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import Users from "@/app/components/users/Users";
+import { Button } from "@/components/ui/button";
+import { groupMessageAction } from "@/actions/groupMessage.action";
+import { MassChatType } from "@/types";
 
 function GroupChatDialog({ modalName, setModalName, groups }: any) {
   const [currentStep, setCurrentStep] = useState(0);
   const [groupIds, setGroupIds] = useState<any>([]);
+  const [messageType, setMessageType] = useState("");
   const [allGroupUsers, setAllGroupUsers] = useState<any>([]);
+
+  const groupMessageActionWithData = groupMessageAction.bind(null, {
+    allGroupUsers,
+    messageType
+  });
+
+  const [state, formAction] = useActionState(groupMessageActionWithData, {
+    status: "",
+    message: "",
+  });
 
   const { data: session } = useSession();
   //   {
   //     "user": { "name": "Bob", "email": "bob@bob.bob", "id": "2" },
   //     "expires": "2025-01-08T20:50:40.547Z"
   //   }
-  const [messageType, setMessageType] = useState("");
 
-  enum MassChatType {
-    Individual = "Individual",
-  }
 
   //   const username = session?.user?.name;
 
   const ids = groups.map((group: any) => group.id);
-
-  console.log("sssssssssssssssssssssssss");
-  console.log("sssssssssssssssssssssssss");
-  console.log("sssssssssssssssssssssssss");
-  console.log("sean_log ids: " + JSON.stringify(ids));
 
   // const uniqueUserIds = [
   //   ...new Set(
@@ -46,11 +54,11 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
 
   const handleGroupAdd = (groupId: string) => {
     const updatedValues = groupIds.includes(groupId)
-    ? groupIds.filter((item: any) => item !== groupId)
-    : [...groupIds, groupId];
+      ? groupIds.filter((item: any) => item !== groupId)
+      : [...groupIds, groupId];
 
     setGroupIds(updatedValues);
-  }
+  };
 
   const handleNext = useCallback(() => {
     setCurrentStep(currentStep + 1);
@@ -58,36 +66,51 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
 
   useEffect(() => {
     const fetchGroups = async () => {
-      console.log('fffffffffffffffffffffff');
-      console.log('fffffffffffffffffffffff');
 
-      const response = await fetch('/api/groupsUsers?groupIds=' + groupIds.join(','));
+      const response = await fetch(
+        "/api/groupsUsers?groupIds=" + groupIds.join(",")
+      );
       const data = await response.json();
 
-      console.log('ddddddddddddddddddddddd');
-      console.log('sean_log data: ' + JSON.stringify(data));
       setAllGroupUsers(data);
-    }
+    };
 
     fetchGroups();
     // call async here
-  }, [groupIds])
-  
+  }, [groupIds]);
 
   const getPanel = () => {
     if (currentStep === 0) {
       return (
         <>
-          {groups.map((group: any) => {
-            return (
-              <div key={group.id}>
-                <Checkbox id={group.id} onCheckedChange={() => {
-                  handleGroupAdd(group.id);
-                }} />
-                <Label htmlFor={group.id}>{group.name}</Label>
-              </div>
-            );
-          })}
+          <div>
+            {groups.map((group: any) => {
+              return (
+                <div key={group.id}>
+                  <Checkbox
+                    id={group.id}
+                    onCheckedChange={() => {
+                      handleGroupAdd(group.id);
+                    }}
+                  />
+                  <Label htmlFor={group.id}>{group.name}</Label>
+                </div>
+              );
+            })}
+            {allGroupUsers.length ? (
+              <Users users={allGroupUsers} />
+            ) : (
+              <p>Select one or more group to view users</p>
+            )}
+          </div>
+          <Button
+            onClick={() => {
+              setCurrentStep((prev) => prev + 1);
+            }}
+            disabled={!allGroupUsers.length}
+          >
+            Next
+          </Button>
         </>
       );
     }
@@ -99,13 +122,22 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
             <RadioGroup
               onValueChange={(messageType) => setMessageType(messageType)}
             >
-              <RadioGroupItem
-                value={MassChatType.Individual}
-                id={MassChatType.Individual}
-              />
-              <Label htmlFor={MassChatType.Individual}>
-                {MassChatType.Individual}
-              </Label>
+              <div className="mt-2">
+                <RadioGroupItem
+                  value={MassChatType.Individual}
+                  id={MassChatType.Individual}
+                />
+                <Label htmlFor={MassChatType.Individual}>
+                  {MassChatType.Individual}
+                </Label>
+              </div>
+              <div className="mt-2">
+                <RadioGroupItem
+                  value={MassChatType.Group}
+                  id={MassChatType.Group}
+                />
+                <Label htmlFor={MassChatType.Group}>{MassChatType.Group}</Label>
+              </div>
             </RadioGroup>
           </div>
           <p>
@@ -116,6 +148,24 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
                 <p>Send message in the group chat</p>
               ))}
           </p>
+          <Button
+            onClick={() => {
+              setCurrentStep((prev) => prev + 1);
+            }}
+            disabled={!messageType}
+          >
+            Next
+          </Button>
+        </>
+      );
+    }
+    if (currentStep === 2) {
+      return (
+        <>
+          <form action={formAction}>
+            <input type="text" id="msg" name="msg" />
+            <Button>Submit</Button>
+          </form>
         </>
       );
     }

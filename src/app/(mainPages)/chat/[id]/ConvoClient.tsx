@@ -14,7 +14,6 @@ function ConvoClient({ convo, session }: any) {
     message: "",
   });
 
-
   const [messages, setMessages] = useState(convo?.messages);
 
   useEffect(() => {
@@ -44,8 +43,8 @@ function ConvoClient({ convo, session }: any) {
       // });
 
       const userIds = convo.userChats
-      .map((chat: any) => chat.userId)
-      .filter((userId: string) => userId !== session?.user?.id);
+        .map((chat: any) => chat.userId)
+        .filter((userId: string) => userId !== session?.user?.id);
 
       sendChatNotification({
         noticeObj: {
@@ -62,8 +61,22 @@ function ConvoClient({ convo, session }: any) {
     }
   }, [state]);
 
+  console.log("cccccccccccccccccccc");
+  console.log("cccccccccccccccccccc");
+  console.log("sean_log convo: " + JSON.stringify(convo));
+
   return (
     <>
+      <div>
+        <p>Participants</p>
+        <div className="flex">
+          {convo.userChats.map((chat: any) => (
+            <p>{chat.user.username}, </p>
+          ))}
+        </div>
+        <p>--------</p>
+      </div>
+
       <div>
         {messages.map((msg: any) => (
           <div key={msg.id}>
@@ -73,6 +86,7 @@ function ConvoClient({ convo, session }: any) {
           </div>
         ))}
       </div>
+
       <form action={formAction}>
         <input type="hidden" id="convoId" name="convoId" value={convo!.id} />
         <input
