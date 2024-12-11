@@ -29,15 +29,15 @@ function UserClient({ users, filter, groups }: any) {
           }
         />
       ) : (
-        // <Users users={users} />
-        <div>
-          {users.map((user: any, index: number) => (
-            <Link href={`/users/${user.id}`} key={index}>
-              <p>{user.username}</p>
-              <p>{user.filterableUserAttributes.age}</p>
-            </Link>
-          ))}
-        </div>
+        <Users users={users} />
+        // <div>
+        //   {users.map((user: any, index: number) => (
+        //     <Link href={`/users/${user.id}`} key={index}>
+        //       <p>{user.username}</p>
+        //       <p>{user.filterableUserAttributes.age}</p>
+        //     </Link>
+        //   ))}
+        // </div>
       )}
     </div>
   );

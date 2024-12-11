@@ -1,8 +1,9 @@
-import prisma from '@/lib/prisma'
+"use client";
+
 import Link from 'next/link';
 import React from 'react'
 
-async function Users({ users }: any) {
+function Users({ users }: any) {
     return (
         <div>
             {users.map((user: any, index: number) => (
@@ -14,5 +15,13 @@ async function Users({ users }: any) {
         </div>
     )
 }
+
+// function Users() {
+//     return (
+//         <div>
+//             <p>WHYYYYY</p>
+//         </div>
+//     )
+// }
 
 export default Users
