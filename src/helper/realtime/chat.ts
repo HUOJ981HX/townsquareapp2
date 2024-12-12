@@ -3,33 +3,31 @@
 import prisma from "@/lib/prisma";
 import { pusherServer } from "@/lib/pusher";
 
+export const getPrivateChatId = async (userIdsArray: number[]) => {
+  userIdsArray.sort();
+  const privateIds = userIdsArray.map((userId) => {
+    return userId.toString() + ",";
+  });
+  // sort array,
+  // string with ,
 
-// export const getPrivateChatId = (userIdsArray: number[]) => {
-//   userIdsArray.sort();
-//   const privateIds = userIdsArray.map((userId) => {
-//     return userId.toString() + ","
-//   })
-//   // sort array,
-//   // string with ,
-
-//   return privateIds;
-// }
+  return privateIds;
+};
 
 export async function createOrFindChatAndSendMessage(
-  userIds: string[], 
+  userIds: string[],
   messageText: string,
   senderUserId: string
 ) {
-
   if (!userIds.includes(senderUserId)) {
     userIds.push(senderUserId);
   }
   // Sort user IDs to ensure consistent chat matching
   const sortedUserIds = userIds.sort();
-  console.log('sssssssssssssssssssssssss');
-  console.log('uuuuuuuuuuuuuuuuuuuuu');
-  console.log('iiiiiiiiiiiiiiiiiii');
-  console.log('sean_log sortedUserIds: ' + JSON.stringify(sortedUserIds));
+  console.log("sssssssssssssssssssssssss");
+  console.log("uuuuuuuuuuuuuuuuuuuuu");
+  console.log("iiiiiiiiiiiiiiiiiii");
+  console.log("sean_log sortedUserIds: " + JSON.stringify(sortedUserIds));
 
   // Transaction to ensure atomic operations
   return prisma.$transaction(async (tx) => {
@@ -38,22 +36,22 @@ export async function createOrFindChatAndSendMessage(
       where: {
         userChats: {
           every: {
-            userId: { in: sortedUserIds }
+            userId: { in: sortedUserIds },
           },
           // Ensure the number of users matches exactly
           some: {
-            userId: { in: sortedUserIds }
+            userId: { in: sortedUserIds },
           },
-        }
+        },
       },
       include: {
-        userChats: true
-      }
+        userChats: true,
+      },
     });
 
-    console.log('eeeeeeeeeeeeeeeeeeeeee');
-    console.log('eeeeeeeeeeeeeeeeeeeeee');
-    console.log('sean_log existingChat: ' + JSON.stringify(existingChat));
+    console.log("eeeeeeeeeeeeeeeeeeeeee");
+    console.log("eeeeeeeeeeeeeeeeeeeeee");
+    console.log("sean_log existingChat: " + JSON.stringify(existingChat));
 
     // let chatId: string;
 
@@ -88,9 +86,9 @@ export async function createOrFindChatAndSendMessage(
     //   data: {
     //     text: messageText,
     //     userId: senderUserId,
-    //     userName: (await tx.user.findUnique({ 
-    //       where: { id: senderUserId }, 
-    //       select: { username: true } 
+    //     userName: (await tx.user.findUnique({
+    //       where: { id: senderUserId },
+    //       select: { username: true }
     //     }))?.username || 'Unknown User',
     //     chatId: chatId
     //   }
@@ -98,14 +96,14 @@ export async function createOrFindChatAndSendMessage(
 
     // return { chat: { id: chatId }, message };
 
-    return { chat: { id: "test"}}
+    return { chat: { id: "test" } };
   });
 }
 
 export const sendMessage = async ({ messageObj, chatId, channel }: any) => {
   try {
-    console.log('jjjjjjjjjjjjjjjjjjj');
-    console.log('sean_log messageObj: ' + JSON.stringify(messageObj));
+    console.log("jjjjjjjjjjjjjjjjjjj");
+    console.log("sean_log messageObj: " + JSON.stringify(messageObj));
     await pusherServer.trigger(chatId, channel, messageObj);
   } catch (error: any) {
     throw new Error(error.message);

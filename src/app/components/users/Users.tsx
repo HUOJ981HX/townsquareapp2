@@ -11,7 +11,7 @@ function Users({ users }: any) {
           <p>{user.username}</p>
           {user.filterableUserAttributes && (
             <>
-              <p>{user.filterableUserAttributes.age}</p>
+              <p>{user.filterableUserAttributes.age || null}</p>
             </>
           )}
         </Link>

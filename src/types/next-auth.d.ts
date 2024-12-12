@@ -6,18 +6,18 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      privateId?: string; // Make it optional with ?
+      privateId?: number; // Make it optional with ?
     } & DefaultSession["user"]
   }
 
   interface User {
-    privateId?: string;
+    privateId?: number;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     id: string;
-    privateId?: string;
+    privateId?: number;
   }
 }
