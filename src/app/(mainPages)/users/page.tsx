@@ -23,15 +23,8 @@ async function UsersPage() {
 
   let users = null;
 
-  const userQuery: Prisma.UserWhereInput = buildUserFilter(filter!.filterJson);
-
-  console.log("uuuuuuuuuuuuuuuuuuuuu");
-  console.log("qqqqqqqqqqqqqqqqqqq");
-  console.log("sean_log userQuery: " + JSON.stringify(userQuery));
-  console.log("sean_log filter: " + JSON.stringify(filter));
 
   if (filter?.filterOff || !filter || !filter?.filterJson) {
-    console.log("vvvvvvvvvvvvvvvvvvv");
 
     users = await prisma.user.findMany({
       include: {
@@ -39,9 +32,8 @@ async function UsersPage() {
       },
     });
   } else {
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-    console.log("sean_log userQuery: " + JSON.stringify(userQuery));
+    const userQuery: Prisma.UserWhereInput = buildUserFilter(filter!.filterJson);
+
     users = await prisma.user.findMany({
       where: userQuery,
       // where: {
@@ -60,6 +52,11 @@ async function UsersPage() {
     });
   }
 
+  console.log('uuuuuuuuuuuuuuuuuuuuu');
+  console.log('uuuuuuuuuuuuuuuuuuuuu');
+  console.log('sssssssssssssssssssssssss');
+  console.log('sean_log users: ' + JSON.stringify(users));
+  
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">User List</h1>
