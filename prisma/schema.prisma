@@ -19,6 +19,7 @@ datasource db {
 
 model User {
   id                       String                    @id @default(uuid())
+  privateId                Int                       @unique @default(autoincrement())
   username                 String
   email                    String
   password                 String?
@@ -122,6 +123,7 @@ model Chat {
   // user          User     @relation(fields: [userId], references: [id])
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  privateId String
 }
 
 model Group {

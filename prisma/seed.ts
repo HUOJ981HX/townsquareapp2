@@ -1,6 +1,7 @@
 import { filterPostRoles } from "@/helper/post";
 import { AccountType, Gender, Mood  } from "@/types/filter";
 import { PrismaClient } from "@prisma/client";
+import { v4 as uuidv4 } from 'uuid';
 // import { PrismaClient } from "../../node_modules/.prisma/client";
 
 const prisma = new PrismaClient();
@@ -75,8 +76,16 @@ async function main() {
     }
   })
  
+  const uuidTest = uuidv4();
+
+  console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+  console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+  console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+  console.log('sean_log uuidTest: ' + uuidTest);
+  
   const chat1 = await prisma.chat.create({
     data: {
+      id: uuidTest,
       // userId: user1.id,
       name: 'John and Jane Chat',
       userChats: {
@@ -84,7 +93,8 @@ async function main() {
           { userId: user1.id },
           { userId: user2.id }
         ]
-      }
+      },
+      privateId: `${user1.id},${user2.id},`
     }
   })
 
@@ -116,7 +126,8 @@ async function main() {
           { userId: user1.id },
           { userId: user3.id }
         ]
-      }
+      },
+      privateId: `${user1.id},${user3.id},`
     }
   })
 
@@ -148,7 +159,8 @@ async function main() {
           { userId: user2.id },
           { userId: user3.id }
         ]
-      }
+      },
+      privateId: `${user2.id},${user3.id},`
     }
   })
 
@@ -181,7 +193,8 @@ async function main() {
           { userId: user2.id },
           { userId: user3.id }
         ]
-      }
+      },
+      privateId: `${user1.id},${user2.id},${user3.id},`
     }
   })
 

@@ -4,6 +4,17 @@ import prisma from "@/lib/prisma";
 import { pusherServer } from "@/lib/pusher";
 
 
+// export const getPrivateChatId = (userIdsArray: number[]) => {
+//   userIdsArray.sort();
+//   const privateIds = userIdsArray.map((userId) => {
+//     return userId.toString() + ","
+//   })
+//   // sort array,
+//   // string with ,
+
+//   return privateIds;
+// }
+
 export async function createOrFindChatAndSendMessage(
   userIds: string[], 
   messageText: string,
