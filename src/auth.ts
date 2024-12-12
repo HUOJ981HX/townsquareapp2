@@ -17,10 +17,11 @@ export const {
   callbacks: {
     // Augment JWT token with user ID
     async jwt({ token, user, account, profile }: any) {
-    //   console.log("jjjjjjjjjjjjjjjjjjj");
-    //   console.log("jjjjjjjjjjjjjjjjjjj");
-    //   console.log("jjjjjjjjjjjjjjjjjjj");
-    //   console.log("jjjjjjjjjjjjjjjjjjj");
+      console.log("jjjjjjjjjjjjjjjjjjj");
+      console.log("jjjjjjjjjjjjjjjjjjj");
+      console.log("jjjjjjjjjjjjjjjjjjj");
+      console.log("jjjjjjjjjjjjjjjjjjj");
+      console.log('sean_log user: ' + JSON.stringify(user));
 
     //   console.log("sean_log user: " + JSON.stringify(user)); // {"email":"alice@alice.alice","username":"Alice","id":"1","privateId":1}
     //   console.log("sean_log account: " + JSON.stringify(account)); // {"providerAccountId":"1","type":"credentials","provider":"credentials"}
@@ -50,7 +51,7 @@ export const {
           if (dbUser) {
             token.id = dbUser.id;
             token.name = dbUser.username;
-            token.privateId = dbUser.privateId;
+            // token.privateId = dbUser.privateId;
           } else {
             const newUser = await prisma.user.create({
               data: {
@@ -62,17 +63,22 @@ export const {
 
             token.id = newUser.id;
             token.name = newUser.username;
-            token.privateId = newUser.privateId;
+            // token.privateId = newUser.privateId;
           }
         }
       }
       return token;
     },
     // Add ID to the session object
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (session.user) {
-        session.user.id = token.id as any;
-        session.user.privateId = token.privateId;
+        console.log('ttttttttttttttttttt');
+        console.log('ttttttttttttttttttt');
+        console.log('sean_log token.id: ' + JSON.stringify(token.id));
+        console.log('sean_log token.id: ' + token.id);
+        session.user.id = parseInt(token.id);
+        // session.user.id = 8;
+        // session.user.privateId = token.privateId;
       }
       return session;
     },
@@ -107,7 +113,7 @@ export const {
             email: user.email,
             username: user.username,
             id: user.id,
-            privateId: user.privateId,
+            // privateId: user.privateId,
           } as any;
         }
 

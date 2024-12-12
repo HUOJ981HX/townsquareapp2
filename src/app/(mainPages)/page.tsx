@@ -8,17 +8,23 @@ import { buildPostFilter } from "@/helper/filter";
 export default async function Home() {
   const session = await auth();
 
+  console.log('hhhhhhhhhhhhhhhhhhhhh');
+  console.log('hhhhhhhhhhhhhhhhhhhhh');
+  console.log('sean_log session: ' + JSON.stringify(session));
+
   if (!session?.user) redirect("/authenticate");
+
+  const sessionUserId = parseInt(session?.user?.id!);
 
   const filter = await prisma.filter.findFirst({
     where: {
-      userId: session?.user?.id!,
+      userId: sessionUserId,
     },
   });
 
   const groups = await prisma.group.findMany({
     where: {
-      userId: session?.user?.id!,
+      userId: sessionUserId,
     },
   });
 

@@ -15,7 +15,7 @@ export default async function UserPage({ params }: any) {
   console.log("sean_log SESSION: " + JSON.stringify(session));
   // const privateUserId = session?.user?.privateId;
 
-  const userSlug = (await params).userSlug;
+  const userSlug = parseInt((await params).userSlug);
 
   const user = await prisma.user.findFirst({
     where: {
@@ -37,15 +37,15 @@ export default async function UserPage({ params }: any) {
 
   const handleChat = async () => {
     if (user && session) {
-      const privateChatId = getPrivateChatId([
-        session!.user!.privateId!,
-        user?.privateId,
-      ]);
+      // const privateChatId = getPrivateChatId([
+      //   session!.user!.privateId!,
+      //   user?.privateId,
+      // ]);
 
-      console.log('cccccccccccccccccccc');
-      console.log('mmmmmmmmmmmmmmmmmm');
-      console.log('sean_log privateChatId: ' + JSON.stringify(privateChatId));
-      
+      // console.log('cccccccccccccccccccc');
+      // console.log('mmmmmmmmmmmmmmmmmm');
+      // console.log('sean_log privateChatId: ' + JSON.stringify(privateChatId));
+
       // const existingChat = await prisma.chat.findFirst({
       //   where: {
       //     privateId: privateChatId,

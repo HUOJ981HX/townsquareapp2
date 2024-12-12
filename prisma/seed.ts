@@ -10,7 +10,7 @@ async function main() {
 
   const user1 = await prisma.user.create({
     data: {
-      id: '1',
+      id: 1,
       username: 'Alice',
       email: 'alice@alice.alice',
       password: 'alice@alice.alice',
@@ -19,21 +19,21 @@ async function main() {
   });
 
   const user2 = await prisma.user.create({
-    data: {id: '2', username: 'Bob', email: 'bob@bob.bob', password: 'bob@bob.bob', accountType: AccountType.Email },
+    data: {id: 2, username: 'Bob', email: 'bob@bob.bob', password: 'bob@bob.bob', accountType: AccountType.Email },
   });
 
   const user3 = await prisma.user.create({
-    data: {id: '3', username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Email },
+    data: {id: 3, username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Email },
   });
 
   const user4 = await prisma.user.create({
-    data: {id: '4', username: 'Dave', email: 'dave@dave.dave', password: 'dave@dave.dave', accountType: AccountType.Email },
+    data: {id: 4, username: 'Dave', email: 'dave@dave.dave', password: 'dave@dave.dave', accountType: AccountType.Email },
   });
 
   await prisma.group.create({
     data: {
       name: 'group alice, cindy',
-      userId: '2',
+      userId: 2,
       userGroups: {
         create: [
           { userId: user1.id },
@@ -46,14 +46,14 @@ async function main() {
   await prisma.group.create({
     data: {
       name: 'group empty',
-      userId: '2',
+      userId: 2,
     }
   })
 
   await prisma.group.create({
     data: {
       name: 'group bob, cindy',
-      userId: '1',
+      userId: 1,
       userGroups: {
         create: [
           { userId: user2.id },
@@ -66,7 +66,7 @@ async function main() {
   await prisma.group.create({
     data: {
       name: 'group bob, alice',
-      userId: '3',
+      userId: 3,
       userGroups: {
         create: [
           { userId: user1.id },
@@ -75,17 +75,10 @@ async function main() {
       }
     }
   })
- 
-  const uuidTest = uuidv4();
-
-  console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
-  console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
-  console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
-  console.log('sean_log uuidTest: ' + uuidTest);
   
   const chat1 = await prisma.chat.create({
     data: {
-      id: uuidTest,
+      id: `${user1.id},${user2.id}`,
       // userId: user1.id,
       name: 'John and Jane Chat',
       userChats: {
@@ -94,7 +87,6 @@ async function main() {
           { userId: user2.id }
         ]
       },
-      privateId: `${user1.id},${user2.id},`
     }
   })
 
@@ -119,6 +111,7 @@ async function main() {
   // Conversation 2: Between user 1 and user 3
   const chat2 = await prisma.chat.create({
     data: {
+      id: `${user1.id},${user3.id}`,
       // userId: user1.id,
       name: 'John and Bob Chat',
       userChats: {
@@ -127,7 +120,7 @@ async function main() {
           { userId: user3.id }
         ]
       },
-      privateId: `${user1.id},${user3.id},`
+      // privateId: `${user1.id},${user3.id},`
     }
   })
 
@@ -153,6 +146,7 @@ async function main() {
   const chat3 = await prisma.chat.create({
     data: {
       // userId: user2.id,
+      id: `${user2.id},${user3.id}`,
       name: 'Jane and Bob Chat',
       userChats: {
         create: [
@@ -160,7 +154,7 @@ async function main() {
           { userId: user3.id }
         ]
       },
-      privateId: `${user2.id},${user3.id},`
+      // privateId: `${user2.id},${user3.id},`
     }
   })
 
@@ -186,6 +180,7 @@ async function main() {
   const chat4 = await prisma.chat.create({
     data: {
       // userId: user1.id,
+      id: `${user1.id},${user2.id},${user3.id}`,
       name: 'Group Chat',
       userChats: {
         create: [
@@ -194,7 +189,7 @@ async function main() {
           { userId: user3.id }
         ]
       },
-      privateId: `${user1.id},${user2.id},${user3.id},`
+      // privateId: `${user1.id},${user2.id},${user3.id},`
     }
   })
 
@@ -227,7 +222,7 @@ async function main() {
     data: [
       {
         id: 1,
-        userId: "1",
+        userId: 1,
         filterOff: false,
         filterJson: {
           "UserAgeMin": 27,
@@ -264,7 +259,7 @@ async function main() {
       },
       {
         id: 2,
-        userId: "2",
+        userId: 2,
         filterOff: false,
         filterJson: {
           "UserAgeMin": 27,
@@ -306,22 +301,22 @@ async function main() {
   await prisma.filterableUserAttributes.createMany({
     data: [
       {
-        userId: "1", 
+        userId: 1, 
         age: 80,
         gender: Gender.Female
       },
       {
-        userId: "2", 
+        userId: 2, 
         age: 39,
         gender: Gender.Male
       },
       {
-        userId: "3", 
+        userId: 3, 
         age: 45,
         gender: Gender.NonBinary
       },
       {
-        userId: "4", 
+        userId: 4, 
         age: 65,
         gender: Gender.Male
       },
@@ -332,25 +327,25 @@ async function main() {
     data: [
       {
         id: 1,
-        userId: '1',
+        userId: 1,
         title: 'tech opportunities',
         description: "Exploring new opportunities in tech.",
       },
       {
         id: 2,
-        userId: '1',
+        userId: 1,
         title: 'Web3 projects',
         description: "Excited about Web3 projects.",
 
       },
       {
         id: 3,
-        userId: '2',
+        userId: 2,
         title: 'teach programming',
       },
       {
         id: 4,
-        userId: '3',
+        userId: 3,
         title: 'founder',
         description: "Sharing my journey as a startup founder.",
       },

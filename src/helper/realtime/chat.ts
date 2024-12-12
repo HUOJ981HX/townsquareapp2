@@ -149,7 +149,7 @@ export async function sendPrivateMessageToUsers(
           const newChat = await prisma.chat.create({
             data: {
               userChats: {
-                create: [{ userId: senderId }, { userId: recipientId }],
+                create: [{ userId: parseInt(senderId) }, { userId: parseInt(recipientId) }],
               },
             },
           });

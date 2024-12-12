@@ -15,7 +15,7 @@ function Header({ session }: any) {
     console.log(
       "sean_log session?.user?.id!: " + JSON.stringify(session?.user?.id!)
     );
-    pusherClient.subscribe(session?.user?.id!);
+    pusherClient.subscribe((session?.user?.id!).toString());
 
     pusherClient.bind("notification", (data: any) => {
       // update state to show notification here.d

@@ -9,11 +9,17 @@ import UserClient from "./UserClient";
 async function UsersPage() {
   const session = await auth();
 
+  console.log('sssssssssssssssssssssssss');
+console.log('sssssssssssssssssssssssss');
+console.log('sssssssssssssssssssssssss');
+console.log('sean_log session: ' + JSON.stringify(session));
+
   const filter = await prisma.filter.findFirst({
     where: {
       userId: session?.user?.id!,
     },
   });
+
 
   const groups = await prisma.group.findMany({
     where: {
@@ -56,7 +62,7 @@ async function UsersPage() {
   console.log('uuuuuuuuuuuuuuuuuuuuu');
   console.log('sssssssssssssssssssssssss');
   console.log('sean_log users: ' + JSON.stringify(users));
-  
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">User List</h1>

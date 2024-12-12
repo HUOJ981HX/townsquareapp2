@@ -18,8 +18,9 @@ datasource db {
 }
 
 model User {
-  id                       String                    @id @default(uuid())
-  privateId                Int                       @unique @default(autoincrement())
+  id                       Int                       @id @default(autoincrement())
+  // id                       String                    @id @default(uuid())
+  // privateId                Int                       @unique @default(autoincrement())
   username                 String
   email                    String
   password                 String?
@@ -29,7 +30,7 @@ model User {
   posts                    Post[]
   accountType              String
   filterableUserAttributes FilterableUserAttributes?
-  filter                  Filter?
+  filter                   Filter?
   // filterOff                Boolean?
   userChats                UserChat[]
   userGroups               UserGroup[]
@@ -37,34 +38,33 @@ model User {
 }
 
 model Filter {
-  id                       Int                        @id @default(autoincrement())
-  userId                   String @unique
-  user                     User                       @relation(fields: [userId], references: [id])
+  id         Int      @id @default(autoincrement())
+  userId     Int      @unique
+  user       User     @relation(fields: [userId], references: [id])
   // filterableUserAttributes FilterableUserAttributes?
   // filterablePostAttributes FilterablePostAttributes?
   // filterPostJson              Json?
   // filterUserJson              Json?
-  filterJson               Json?
-  filterOff                Boolean?
+  filterJson Json?
+  filterOff  Boolean?
 }
 
 model FilterableUserAttributes {
-  id              Int      @id @default(autoincrement())
+  id              Int     @id @default(autoincrement())
   age             Int?
   gender          String?
   ethnicity       String?
   personalityType String?
-  userId          String?  @unique
-  user            User?    @relation(fields: [userId], references: [id])
+  userId          Int?    @unique
+  user            User?   @relation(fields: [userId], references: [id])
   image           String?
   // filtersId       Int?     @unique
   // filters         Filters? @relation(fields: [filtersId], references: [id])
 }
 
-
 model Post {
   id                       Int                       @id @default(autoincrement())
-  userId                   String
+  userId                   Int
   user                     User                      @relation(fields: [userId], references: [id])
   title                    String
   description              String?
@@ -74,12 +74,12 @@ model Post {
 }
 
 model FilterablePostAttributes {
-  id                  Int      @id @default(autoincrement())
+  id                  Int     @id @default(autoincrement())
   postFilterDisplay   String?
   postFilterQueryRole String?
   mood                String?
-  postId              Int?     @unique
-  post                Post?    @relation(fields: [postId], references: [id])
+  postId              Int?    @unique
+  post                Post?   @relation(fields: [postId], references: [id])
   // filtersId           Int?     @unique
   // filters             Filters? @relation(fields: [filtersId], references: [id])
   // filterablePostAttributesFilters   FilterablePostAttributesFilters[]
@@ -98,7 +98,7 @@ model Message {
   text      String
   createdAt DateTime @default(now())
   userName  String
-  userId    String
+  userId    Int
   chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId    String
 }
@@ -106,7 +106,7 @@ model Message {
 model UserChat {
   id       String   @id @default(uuid())
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String
+  userId   Int
   chat     Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId   String
   joinedAt DateTime @default(now())
@@ -115,7 +115,8 @@ model UserChat {
 }
 
 model Chat {
-  id        String     @id @default(uuid())
+  // id        String     @id @default(uuid())
+  id        String     @id
   name      String?
   // userId        String
   userChats UserChat[]
@@ -123,23 +124,23 @@ model Chat {
   // user          User     @relation(fields: [userId], references: [id])
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  privateId String
+  // privateId String
 }
 
 model Group {
-  id        String      @id @default(uuid())
-  name      String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  userId    String
-  user      User        @relation(fields: [userId], references: [id])
+  id         String      @id @default(uuid())
+  name       String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  userId     Int
+  user       User        @relation(fields: [userId], references: [id])
   userGroups UserGroup[]
 }
 
 model UserGroup {
   id      Int    @id @default(autoincrement())
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String
+  userId  Int
   group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId String
 }
