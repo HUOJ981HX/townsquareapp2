@@ -6,20 +6,21 @@ import { Button } from "@/components/ui/button";
 import { auth } from "@/auth";
 import GroupForm from "./GroupFormClient";
 import { getPrivateChatId } from "@/helper/realtime/chat";
+import ChatButtonClient from "./ChatButtonClient";
 
 export default async function UserPage({ params }: any) {
   const session = await auth();
-  const sessionUserId = session?.user?.id;
+  const sessionUserId = parseInt(session!.user!.id as string);
   console.log("uuuuuuuuuuuuuuuuuuuuu");
   console.log("iiiiiiiiiiiiiiiiiii");
   console.log("sean_log SESSION: " + JSON.stringify(session));
   // const privateUserId = session?.user?.privateId;
 
-  const userSlug = parseInt((await params).userSlug);
+  const profileId = parseInt((await params).userSlug);
 
   const user = await prisma.user.findFirst({
     where: {
-      id: userSlug,
+      id: profileId,
     },
     include: {
       filterableUserAttributes: true, // Join and include FilterableUserAttributes
@@ -35,6 +36,16 @@ export default async function UserPage({ params }: any) {
     },
   });
 
+    const privateChatId = getPrivateChatId([
+        session!.user!.id,
+        profileId
+    ]);
+
+
+    console.log('yyyyyyyyyyyyyyyyyyyyy');
+    console.log('yyyyyyyyyyyyyyyyyyyyy');
+    console.log('yyyyyyyyyyyyyyyyyyyyy');
+    console.log('sean_log privateChatId: ' + privateChatId);
   const handleChat = async () => {
     if (user && session) {
       // const privateChatId = getPrivateChatId([
@@ -62,8 +73,9 @@ export default async function UserPage({ params }: any) {
           <p>{user?.filterableUserAttributes?.age}</p>
           <p>{user?.filterableUserAttributes?.gender}</p>
         </div>
-        <Button onClick={() => handleChat()}>Chat</Button>
-        <GroupForm userSlug={userSlug} groups={groups} />
+        {/* <Button onClick={() => handleChat()}>Chat</Button> */}
+        <ChatButtonClient privateChatId={privateChatId} />
+        <GroupForm profileId={profileId} groups={groups} />
       </div>
     </>
   );

@@ -1,8 +1,14 @@
+
+import Link from 'next/link'
 import React from 'react'
 
-function ChatButtonClient() {
+function ChatButtonClient({privateChatId}: any) {
   return (
-    <div>ChatButtonClient</div>
+    <div>
+        <p>ChatButtonClient</p>    
+        <p>{privateChatId}</p>
+        <Link href={`/chat/${privateChatId}`}>Chat</Link>
+    </div>
   )
 }
 

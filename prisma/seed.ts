@@ -78,7 +78,7 @@ async function main() {
   
   const chat1 = await prisma.chat.create({
     data: {
-      id: `${user1.id},${user2.id}`,
+      id: `${user1.id}${user2.id}`,
       // userId: user1.id,
       name: 'John and Jane Chat',
       userChats: {
@@ -111,7 +111,7 @@ async function main() {
   // Conversation 2: Between user 1 and user 3
   const chat2 = await prisma.chat.create({
     data: {
-      id: `${user1.id},${user3.id}`,
+      id: `${user1.id}${user3.id}`,
       // userId: user1.id,
       name: 'John and Bob Chat',
       userChats: {
@@ -146,7 +146,7 @@ async function main() {
   const chat3 = await prisma.chat.create({
     data: {
       // userId: user2.id,
-      id: `${user2.id},${user3.id}`,
+      id: `${user2.id}${user3.id}`,
       name: 'Jane and Bob Chat',
       userChats: {
         create: [
@@ -180,7 +180,7 @@ async function main() {
   const chat4 = await prisma.chat.create({
     data: {
       // userId: user1.id,
-      id: `${user1.id},${user2.id},${user3.id}`,
+      id: `${user1.id}${user2.id}${user3.id}`,
       name: 'Group Chat',
       userChats: {
         create: [

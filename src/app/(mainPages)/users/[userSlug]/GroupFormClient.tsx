@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import React, { useState, useActionState, useEffect } from "react";
 
-function GroupForm({ userSlug, groups }: any) {
+function GroupForm({ profileId, groups }: any) {
   const [state, formAction] = useActionState(updateGroupsAction, {
     status: "",
     message: "",
@@ -34,7 +34,7 @@ function GroupForm({ userSlug, groups }: any) {
           type="hidden"
           id="targetUserId"
           name="targetUserId"
-          value={userSlug}
+          value={profileId}
         />
 
         <input
@@ -46,7 +46,7 @@ function GroupForm({ userSlug, groups }: any) {
 
         {groups.map((group: any) => {
           const isChecked = group.userGroups.some(
-            (userGroup: any) => userGroup.userId === userSlug.toString()
+            (userGroup: any) => userGroup.userId === profileId.toString()
           );
 
           return (
