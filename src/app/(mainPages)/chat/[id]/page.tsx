@@ -12,7 +12,7 @@ async function ConvoPage({ params }: any) {
   let convo = null;
   convo = await prisma.chat.findFirst({
     where: {
-      id,
+      id: decodeURIComponent(id),
     },
     include: {
       messages: true,

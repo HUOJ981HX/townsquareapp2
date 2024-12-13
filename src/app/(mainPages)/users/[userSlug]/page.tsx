@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/auth";
 import GroupForm from "./GroupFormClient";
-import { getPrivateChatId } from "@/helper/realtime/chat";
+import { getPrivateChatId } from "@/helper/chat";
 import ChatButtonClient from "./ChatButtonClient";
 
 export default async function UserPage({ params }: any) {

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   sendMessageToGroupChat,
   sendPrivateMessageToUsers,
-} from "@/helper/realtime/chat";
+} from "@/helper/chat";
 
 function TestButton({groups}: any) {
 

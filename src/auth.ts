@@ -17,11 +17,11 @@ export const {
   callbacks: {
     // Augment JWT token with user ID
     async jwt({ token, user, account, profile }: any) {
-      console.log("jjjjjjjjjjjjjjjjjjj");
-      console.log("jjjjjjjjjjjjjjjjjjj");
-      console.log("jjjjjjjjjjjjjjjjjjj");
-      console.log("jjjjjjjjjjjjjjjjjjj");
-      console.log('sean_log user: ' + JSON.stringify(user));
+      // console.log("jjjjjjjjjjjjjjjjjjj");
+      // console.log("jjjjjjjjjjjjjjjjjjj");
+      // console.log("jjjjjjjjjjjjjjjjjjj");
+      // console.log("jjjjjjjjjjjjjjjjjjj");
+      // console.log('sean_log user: ' + JSON.stringify(user));
 
     //   console.log("sean_log user: " + JSON.stringify(user)); // {"email":"alice@alice.alice","username":"Alice","id":"1","privateId":1}
     //   console.log("sean_log account: " + JSON.stringify(account)); // {"providerAccountId":"1","type":"credentials","provider":"credentials"}

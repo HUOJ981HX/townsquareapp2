@@ -34,36 +34,32 @@ export const createMessageAction = async (
     console.log("mmmmmmmmmmmmmmmmmm");
     console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
     console.log('sean_log convo: ' + JSON.stringify(convo));
-    console.log('sean_log convoId: ' + JSON.stringify(convoId));
-    console.log('sean_log sessionUserId: ' + JSON.stringify(sessionUserId));
-    console.log('sean_log sessionUserName: ' + JSON.stringify(sessionUserName));
-    console.log('sean_log text: ' + JSON.stringify(text));
 
     let messageResult = null;
 
-    if (convo) {
-      console.log("sean_log haveConvo sendExistingChatMessage: ");
-      messageResult = await sendExistingChatMessage({
+    const messageObj = {
         messageText: text,
         chatId: convoId,
         userId: sessionUserId,
         userName: sessionUserName,
-      });
+    }
+
+    console.log('sean_log messageObj: ' + JSON.stringify(messageObj));
+
+    if (convo) {
+      console.log("sean_log haveConvo sendExistingChatMessage: ");
+      messageResult = await sendExistingChatMessage(messageObj);
     } else {
       console.log("sean_log no Convo createChatSendMessage: ");
 
-      messageResult = await createChatSendMessage({
-        chatId: convoId,
-        userId: sessionUserId,
-        messageText: text,
-        userName: sessionUserName,
-      });
+      messageResult = await createChatSendMessage(messageObj);
     }
 
     return {
       status: "success",
       message: "Message sent successfully!",
       result: messageResult,
+      chatId: convoId
     };
   } catch (error) {
     return {

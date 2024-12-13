@@ -1,8 +1,9 @@
 "use server";
 
-import { createOrFindChatAndSendMessage, sendMessageToGroupChat } from "@/helper/realtime/chat";
+// import { createOrFindChatAndSendMessage, sendMessageToGroupChat } from "@/helper/chat";
 import { MassChatType } from "@/types";
 import { auth } from "@/auth";
+import { createOrFindChatAndSendMessage } from "@/lib/prisma/chat";
 
 export const groupMessageAction = async (
   context: any,

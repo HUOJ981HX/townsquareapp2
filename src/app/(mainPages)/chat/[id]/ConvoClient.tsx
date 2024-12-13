@@ -5,15 +5,18 @@ import prisma from "@/lib/prisma";
 import { createMessageAction } from "@/actions/message.action";
 import { Button } from "@/components/ui/button";
 import { pusherClient } from "@/lib/pusher";
-import { sendLiveMessage } from "@/helper/realtime/chat";
-import { sendChatNotification } from "@/helper/realtime/notification";
+// import { sendLiveMessage } from "@/helper/chat";
+import { sendChatNotification } from "@/lib/notification";
+import { sendLiveMessage } from "@/lib/prisma/chat";
 
 
 function ConvoClient({ convo, convoParamId, session }: any) {
 
+  const decodedConvoParamId = decodeURIComponent(convoParamId);
+
   const createMessageActionWithData = createMessageAction.bind(null, {
     convo,
-    convoId: convoParamId,
+    convoId: decodedConvoParamId,
     sessionUserId: session?.user?.id!,
     sessionUserName: session?.user?.name!
   });
@@ -23,17 +26,21 @@ function ConvoClient({ convo, convoParamId, session }: any) {
     message: "",
   });
 
+
+  console.log('cccccccccccccccccccc');
+  console.log('mmmmmmmmmmmmmmmmmm');
+  console.log('sean_log convo?.messages: ' + JSON.stringify(convo?.messages));
   const [messages, setMessages] = useState(convo?.messages);
 
   useEffect(() => {
-    pusherClient.subscribe(convoParamId);
+    pusherClient.subscribe(decodedConvoParamId);
     // pusherClient.subscribe("8cd435e1-6190-4553-b965-512d37bdac0c");
 
     pusherClient.bind("convo-message", (data: any) => {
       setMessages((prev: any) => [...prev, data]);
     });
 
-    return () => pusherClient.unsubscribe(convoParamId);
+    return () => pusherClient.unsubscribe(decodedConvoParamId);
     // return () => pusherClient.unsubscribe("8cd435e1-6190-4553-b965-512d37bdac0c");
   }, []);
 
@@ -45,15 +52,21 @@ function ConvoClient({ convo, convoParamId, session }: any) {
       console.log('oooooooooooooooo');
       console.log('sean_log result: ' + JSON.stringify(state.result));
       
-      // sendLiveMessage({
-      //   messageObj: state.convoMessage,
-      //   chatId: state.convoMessage?.chatId,
-      //   channel: "convo-message",
-      // });
+      sendLiveMessage({
+        // messageObj: state.convoMessage,
+        // chatId: state.convoMessage?.chatId,
+        messageObj: state.result,
+        chatId: state.chatId,
+        channel: "convo-message",
+      });
 
-      const userIds = convo?.userChats
-        .map((chat: any) => chat.userId)
-        .filter((userId: string) => userId !== session?.user?.id);
+      // const userIds = convo?.userChats
+      //   .map((chat: any) => chat.userId)
+      //   .filter((userId: string) => userId !== session?.user?.id);
+
+      const userIds = decodedConvoParamId.split(",").filter((userId: string) => userId !== session?.user?.id);
+
+      console.log('sean_log userIds: ' + JSON.stringify(userIds));
 
       sendChatNotification({
         noticeObj: {
@@ -70,17 +83,13 @@ function ConvoClient({ convo, convoParamId, session }: any) {
     }
   }, [state]);
 
-  console.log("cccccccccccccccccccc");
-  console.log("cccccccccccccccccccc");
-  console.log("sean_log convo: " + JSON.stringify(convo));
-
   return (
     <>
       <div>
         <p>Participants</p>
         <div className="flex">
           {convo?.userChats.map((chat: any) => (
-            <p>{chat.user.username}, </p>
+            <p key={chat.user.username}>{chat.user.username}, </p>
           ))}
         </div>
         <p>--------</p>
