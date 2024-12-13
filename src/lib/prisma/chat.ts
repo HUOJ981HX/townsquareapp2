@@ -3,6 +3,26 @@
 import { pusherServer } from "../pusher";
 import prisma from "./index";
 
+export async function createOrSendChatMessage(chatObj: {
+  chatId: any;
+  userId: any;
+  messageText: any;
+  userName: any;
+}) {
+  const chat = await prisma.chat.findUnique({
+    where: {
+      id: chatObj.chatId,
+    },
+  });
+
+  if (chat) {
+    // console.log(`Chat found: ${chat.name}`);
+    sendExistingChatMessage(chatObj);
+  } else {
+    createChatSendMessage(chatObj);
+  }
+}
+
 export async function sendExistingChatMessage({
   messageText,
   userId,
@@ -10,14 +30,13 @@ export async function sendExistingChatMessage({
   chatId,
   tx,
 }: any) {
-
-  console.log('wwwwwwwwwwwwwwwwwwwwwww');
-  console.log('ttttttttttttttttttt');
-  console.log('fffffffffffffffffffffff');
-  console.log('sean_log messageText: ' + JSON.stringify(messageText));
-  console.log('sean_log userId: ' + JSON.stringify(userId));
-  console.log('sean_log userName: ' + JSON.stringify(userName));
-  console.log('sean_log chatId: ' + JSON.stringify(chatId));
+  console.log("wwwwwwwwwwwwwwwwwwwwwww");
+  console.log("ttttttttttttttttttt");
+  console.log("fffffffffffffffffffffff");
+  console.log("sean_log messageText: " + JSON.stringify(messageText));
+  console.log("sean_log userId: " + JSON.stringify(userId));
+  console.log("sean_log userName: " + JSON.stringify(userName));
+  console.log("sean_log chatId: " + JSON.stringify(chatId));
   const prismaClient = tx || prisma;
 
   const message = await prismaClient.message.create({
@@ -99,7 +118,7 @@ export async function createChatSendMessage({
         chatId,
         userId,
         userName,
-        tx
+        tx,
       });
 
       // console.log("3333333333333333");

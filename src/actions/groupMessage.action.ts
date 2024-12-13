@@ -3,7 +3,7 @@
 // import { createOrFindChatAndSendMessage, sendMessageToGroupChat } from "@/helper/chat";
 import { MassChatType } from "@/types";
 import { auth } from "@/auth";
-import { createChatSendMessage, createOrFindChatAndSendMessage, sendExistingChatMessage } from "@/lib/prisma/chat";
+import { createChatSendMessage, createOrFindChatAndSendMessage, createOrSendChatMessage, sendExistingChatMessage } from "@/lib/prisma/chat";
 import { getPrivateChatId } from "@/helper/chat";
 import prisma from "@/lib/prisma";
 
@@ -37,24 +37,26 @@ export const groupMessageAction = async (
 
   if (sessionUserId && message) {
     if (context.messageType === MassChatType.Group) {
-      const groupChat = await createOrFindChatAndSendMessage(users, message, sessionUserId );
 
-      console.log('ggggggggggggggggggggggg');
-      console.log('cccccccccccccccccccc');
-      console.log('sean_log groupChat: ' + JSON.stringify(groupChat));
+      const chatId = getPrivateChatId(userIdsArray);
+      // const groupChat = await createOrFindChatAndSendMessage(users, message, sessionUserId );
 
-      try {
-        return {
-          status: "success",
-          message: "Group message sent successfully!",
-          groupChat,
-        };
-      } catch (error) {
-        return {
-          status: "error",
-          message: "Failed to add to group. Please try again later. " + error,
-        };
-      }
+      // console.log('ggggggggggggggggggggggg');
+      // console.log('cccccccccccccccccccc');
+      // console.log('sean_log groupChat: ' + JSON.stringify(groupChat));
+
+      // try {
+      //   return {
+      //     status: "success",
+      //     message: "Group message sent successfully!",
+      //     groupChat,
+      //   };
+      // } catch (error) {
+      //   return {
+      //     status: "error",
+      //     message: "Failed to add to group. Please try again later. " + error,
+      //   };
+      // }
     }
     else {
       const chatIdsArray = userIdsArray.flatMap((id: number) => {
@@ -67,6 +69,7 @@ export const groupMessageAction = async (
 
       for (const chatId of chatIdsArray) {
 
+
         const chatObj = {
           chatId,
           userId: sessionUserId,
@@ -74,18 +77,20 @@ export const groupMessageAction = async (
           userName: session?.user?.name
         };
 
-        const chat = await prisma.chat.findUnique({
-            where: {
-                id: chatId,
-            },
-        });
+        createOrSendChatMessage(chatObj);
 
-        if (chat) {
-            // console.log(`Chat found: ${chat.name}`);
-            sendExistingChatMessage(chatObj);
-        } else {
-            createChatSendMessage(chatObj);
-        }
+        // const chat = await prisma.chat.findUnique({
+        //     where: {
+        //         id: chatId,
+        //     },
+        // });
+
+        // if (chat) {
+        //     // console.log(`Chat found: ${chat.name}`);
+        //     sendExistingChatMessage(chatObj);
+        // } else {
+        //     createChatSendMessage(chatObj);
+        // }
       }
 
       console.log('cccccccccccccccccccc');
