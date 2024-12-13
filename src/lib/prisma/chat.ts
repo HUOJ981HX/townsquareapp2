@@ -8,8 +8,19 @@ export async function sendExistingChatMessage({
   userId,
   userName,
   chatId,
+  tx,
 }: any) {
-  const message = await prisma.message.create({
+
+  console.log('wwwwwwwwwwwwwwwwwwwwwww');
+  console.log('ttttttttttttttttttt');
+  console.log('fffffffffffffffffffffff');
+  console.log('sean_log messageText: ' + JSON.stringify(messageText));
+  console.log('sean_log userId: ' + JSON.stringify(userId));
+  console.log('sean_log userName: ' + JSON.stringify(userName));
+  console.log('sean_log chatId: ' + JSON.stringify(chatId));
+  const prismaClient = tx || prisma;
+
+  const message = await prismaClient.message.create({
     data: {
       text: messageText,
       userId,
@@ -33,10 +44,10 @@ export async function createChatSendMessage({
       // If chat doesn't exist, create it and add user associations
       // Create the chat
 
-      console.log('cccccccccccccccccccc');
-      console.log('cccccccccccccccccccc');
-      console.log('sssssssssssssssssssssssss');
-      console.log('mmmmmmmmmmmmmmmmmm');
+      console.log("cccccccccccccccccccc");
+      console.log("cccccccccccccccccccc");
+      console.log("sssssssssssssssssssssssss");
+      console.log("mmmmmmmmmmmmmmmmmm");
 
       await tx.chat.create({
         data: {
@@ -46,12 +57,15 @@ export async function createChatSendMessage({
 
       const participantsArrays = chatId.split(",");
 
-      console.log('sean_log participantsArrays: ' + JSON.stringify(participantsArrays));
+      console.log("1111111111111111111111");
+      console.log(
+        "sean_log participantsArrays: " + JSON.stringify(participantsArrays)
+      );
 
       // Create UserChat entries for all provided users
-      await tx.userChat.createMany({
+      const userChatResult = await tx.userChat.createMany({
         data: participantsArrays.map((userId: string) => ({
-          userId,
+          userId: parseInt(userId),
           chatId,
         })),
       });
@@ -67,27 +81,40 @@ export async function createChatSendMessage({
       //     },
       //   });
 
+      console.log("2222222222222222");
+      console.log("sean_log userChatResult: " + JSON.stringify(userChatResult));
+      console.log(
+        "sean_log All parems for null: " +
+          JSON.stringify({
+            messageText,
+            chatId,
+            userId,
+            userName,
+          })
+      );
 
       // Try this again
       const message = await sendExistingChatMessage({
-        data: {
-          messageText,
-          chatId,
-          userId,
-          userName,
-        },
+        messageText,
+        chatId,
+        userId,
+        userName,
+        tx
       });
+
+      // console.log("3333333333333333");
+      // console.log("sean_log message: " + JSON.stringify(message));
 
       return message;
     });
 
-    console.log('rrrrrrrrrrrrrrrrrrr');
-    console.log('rrrrrrrrrrrrrrrrrrr');
-    console.log('sean_log result: ' + JSON.stringify(result));
+    console.log("rrrrrrrrrrrrrrrrrrr");
+    console.log("rrrrrrrrrrrrrrrrrrr");
+    console.log("sean_log result: " + JSON.stringify(result));
 
     return result;
   } catch (error) {
-    console.error("Error sending group message:", error);
+    console.error("Error creating/sending message message:", error);
     throw error;
   }
 }
@@ -146,7 +173,6 @@ export async function sendIfNewChatMessage({
     await prisma.$disconnect();
   }
 }
-
 
 export async function createOrFindChatAndSendMessage(
   userIds: string[],

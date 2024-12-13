@@ -30,7 +30,7 @@ function ConvoClient({ convo, convoParamId, session }: any) {
   console.log('cccccccccccccccccccc');
   console.log('mmmmmmmmmmmmmmmmmm');
   console.log('sean_log convo?.messages: ' + JSON.stringify(convo?.messages));
-  const [messages, setMessages] = useState(convo?.messages);
+  const [messages, setMessages] = useState(convo?.messages || []);
 
   useEffect(() => {
     pusherClient.subscribe(decodedConvoParamId);
