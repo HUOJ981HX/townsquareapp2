@@ -11,11 +11,12 @@ import { sendLiveMessage } from "@/lib/prisma/chat";
 
 
 function ConvoClient({ convo, convoParamId, session }: any) {
+  const [chatExist, setChatExist] = useState(convo ? true : false);
 
   const decodedConvoParamId = decodeURIComponent(convoParamId);
 
   const createMessageActionWithData = createMessageAction.bind(null, {
-    convo,
+    chatExist,
     convoId: decodedConvoParamId,
     sessionUserId: session?.user?.id!,
     sessionUserName: session?.user?.name!
@@ -75,6 +76,8 @@ function ConvoClient({ convo, convoParamId, session }: any) {
         channel: "notification",
         userIdArray: userIds,
       });
+
+      setChatExist(true);
 
       // await sendLiveMessage(state.convoMessage.text)
     } else if (state.status === "error") {

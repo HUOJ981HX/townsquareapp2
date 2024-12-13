@@ -12,7 +12,7 @@ export const createMessageAction = async (
   prevState: any,
   formData: FormData
 ) => {
-  const { convo, convoId, sessionUserId, sessionUserName } = context;
+  const { chatExist, convoId, sessionUserId, sessionUserName } = context;
   // const session = await auth();
   for (var pair of formData.entries()) {
     console.log(pair[0] + ", " + pair[1]);
@@ -31,9 +31,10 @@ export const createMessageAction = async (
     // })
 
     console.log("cccccccccccccccccccc");
-    console.log("mmmmmmmmmmmmmmmmmm");
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-    console.log('sean_log convo: ' + JSON.stringify(convo));
+console.log('cccccccccccccccccccc');
+console.log('eeeeeeeeeeeeeeeeeeeeee');
+console.log('eeeeeeeeeeeeeeeeeeeeee');
+    console.log('sean_log convo: ' + JSON.stringify(chatExist));
 
     let messageResult = null;
 
@@ -46,7 +47,7 @@ export const createMessageAction = async (
 
     console.log('sean_log messageObj: ' + JSON.stringify(messageObj));
 
-    if (convo) {
+    if (chatExist) {
       console.log("sean_log haveConvo sendExistingChatMessage: ");
       messageResult = await sendExistingChatMessage(messageObj);
     } else {
