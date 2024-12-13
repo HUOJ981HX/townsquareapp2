@@ -34,7 +34,7 @@ export const sendChatNotification = async ({
 };
 
 
-// export const sendMessage = async ({ messageObj, chatId, channel }: any) => {
+// export const sendLiveMessage = async ({ messageObj, chatId, channel }: any) => {
 //     console.log('ttttttttttttttttttt');
 //     try {
 //       await pusherServer.trigger(chatId, channel, messageObj);

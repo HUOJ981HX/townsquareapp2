@@ -43,7 +43,7 @@ export const groupMessageAction = async (
       } catch (error) {
         return {
           status: "error",
-          message: "Failed to send message. Please try again later. " + error,
+          message: "Failed to add to group. Please try again later. " + error,
         };
       }
     }
@@ -51,6 +51,6 @@ export const groupMessageAction = async (
 
   return {
     status: "error",
-    message: "Failed to send message. Please try again later. ",
+    message: "Failed to add to group. Please try again later. ",
   };
 };

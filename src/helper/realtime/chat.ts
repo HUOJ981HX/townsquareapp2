@@ -10,23 +10,21 @@ export const getPrivateChatId = (userIdsArray: number[]) => {
   console.log("pppppppppppppppppp");
 
   userIdsArray.sort();
-  const privateIds = userIdsArray.map((userId, index) => {
-    console.log("iiiiiiiiiiiiiiiiiii");
-    console.log("sean_log index: " + index);
-    // if(index < userIdsArray.length - 1) {
-    //   return userId.toString() + ",";
-    // }
-    // else {
-    return userId.toString();
-    // }
-  });
+  // const privateIds = userIdsArray.map((userId, index) => {
+  //   console.log("iiiiiiiiiiiiiiiiiii");
+  //   console.log("sean_log index: " + index);
+  //   // if(index < userIdsArray.length - 1) {
+  //   //   return userId.toString() + ",";
+  //   // }
+  //   // else {
+  //   return userId.toString();
+  //   // }
+  // });
   // sort array,
   // string with ,
 
-  console.log('sean_log privateIds: ' + JSON.stringify(privateIds));
-  console.log('sean_log privateIds: ' + privateIds);
 
-  return userIdsArray.join('');
+  return userIdsArray.join(',');
 };
 
 export async function createOrFindChatAndSendMessage(
@@ -115,7 +113,7 @@ export async function createOrFindChatAndSendMessage(
   });
 }
 
-export const sendMessage = async ({ messageObj, chatId, channel }: any) => {
+export const sendLiveMessage = async ({ messageObj, chatId, channel }: any) => {
   try {
     console.log("jjjjjjjjjjjjjjjjjjj");
     console.log("sean_log messageObj: " + JSON.stringify(messageObj));

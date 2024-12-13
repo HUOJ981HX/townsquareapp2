@@ -9,7 +9,8 @@ async function ConvoPage({ params }: any) {
 
   const { id } = await params;
 
-  const convo = await prisma.chat.findFirst({
+  let convo = null;
+  convo = await prisma.chat.findFirst({
     where: {
       id,
     },
@@ -23,6 +24,10 @@ async function ConvoPage({ params }: any) {
     },
   });
 
+  console.log('cccccccccccccccccccc');
+  console.log('vvvvvvvvvvvvvvvvvvv');
+  console.log('sean_log convo: ' + convo);
+
   return (
     <>
       {/* <div>
@@ -34,7 +39,7 @@ async function ConvoPage({ params }: any) {
           </div>
         ))}
       </div> */}
-      <ConvoClient convo={convo} session={session}/>
+      <ConvoClient convo={convo} convoParamId={id} session={session}/>
     </>
   );
 }
