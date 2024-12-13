@@ -17,8 +17,11 @@ import { Button } from "@/components/ui/button";
 import { groupMessageAction } from "@/actions/groupMessage.action";
 import { MassChatType } from "@/types";
 import { useRouter } from "next/navigation";
+import { getPrivateChatId } from "@/helper/chat";
 
 function GroupChatDialog({ modalName, setModalName, groups }: any) {
+  const { data: session } = useSession();
+
   const [currentStep, setCurrentStep] = useState(0);
   const [groupIds, setGroupIds] = useState<any>([]);
   const [messageType, setMessageType] = useState("");
@@ -26,6 +29,24 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
   const [allGroupUsers, setAllGroupUsers] = useState<any>([]);
 
   const router = useRouter();
+
+  // console.log("ggggggggggggggggggggggg");
+  // console.log("ggggggggggggggggggggggg");
+  // console.log("ggggggggggggggggggggggg");
+  // console.log("sean_log session: " + JSON.stringify(session));
+
+  // const userIdsArray = allGroupUsers.map((user: any) => user.id); // [1,2,3]
+
+  // console.log("sean_log userIdsArray: " + JSON.stringify(userIdsArray));
+
+  // const chatIdsArray = userIdsArray.flatMap((id: number) => {
+  //   if (id !== 2) {
+  //     return [getPrivateChatId([2, id])];
+  //   }
+  //   return [];
+  // }); // ["1,2", "2,4"]
+
+  // console.log("sean_log chatIdsArray: " + JSON.stringify(chatIdsArray));
 
   const groupMessageActionWithData = groupMessageAction.bind(null, {
     allGroupUsers,
@@ -58,6 +79,10 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
       );
       const data = await response.json();
 
+      console.log("ddddddddddddddddddddddd");
+      console.log("ddddddddddddddddddddddd");
+      console.log("ddddddddddddddddddddddd");
+      console.log("sean_log data: " + JSON.stringify(data));
       setAllGroupUsers(data);
     };
 
@@ -67,9 +92,6 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
 
   useEffect(() => {
     if (state.status === "success") {
-      console.log("vvvvvvvvvvvvvvvvvvv");
-      console.log("sssssssssssssssssssssssss");
-      console.log("sean_log state: " + JSON.stringify(state.groupChat));
       handleNext();
       if (messageType === MassChatType.Group) {
         setCreatedGroupId(state?.groupChat?.chat?.id!);
@@ -164,14 +186,18 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
       return (
         <>
           <p>Submission successful!</p>
-          <Button
-            onClick={() => {
-              setModalName("");
-              router.push("/chat/" + createdGroupId);
-            }}
-          >
-            Go to chat
-          </Button>
+
+          {messageType === MassChatType.Group && (
+            <Button
+              onClick={() => {
+                setModalName("");
+                router.push("/chat/" + createdGroupId);
+              }}
+            >
+              Go to chat
+            </Button>
+          )}
+
           <Button
             onClick={() => {
               setModalName("");

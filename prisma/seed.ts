@@ -30,14 +30,20 @@ async function main() {
     data: {id: 4, username: 'Dave', email: 'dave@dave.dave', password: 'dave@dave.dave', accountType: AccountType.Email },
   });
 
+  const user5 = await prisma.user.create({
+    data: {id: 5, username: 'Eve', email: 'eve@eve.eve', password: 'eve@eve.eve', accountType: AccountType.Email },
+  });
+
   await prisma.group.create({
     data: {
-      name: 'group alice, cindy',
+      name: 'group alice, cindy, dave, eve',
       userId: 2,
       userGroups: {
         create: [
           { userId: user1.id },
-          { userId: user3.id }
+          { userId: user3.id },
+          { userId: user4.id },
+          { userId: user5.id },
         ]
       }
     }
@@ -58,6 +64,19 @@ async function main() {
         create: [
           { userId: user2.id },
           { userId: user3.id }
+        ]
+      }
+    }
+  })
+
+  await prisma.group.create({
+    data: {
+      name: 'group dave, eve',
+      userId: 1,
+      userGroups: {
+        create: [
+          { userId: user4.id },
+          { userId: user5.id }
         ]
       }
     }
