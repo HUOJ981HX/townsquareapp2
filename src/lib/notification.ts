@@ -7,8 +7,16 @@ export const sendChatNotification = async ({
   noticeObj,
   userIdArray,
   channel,
+  noticeMsg
 }: any) => {
   try {
+
+
+    // save to all.
+    // noticeObj.chatId
+    // noticeMsg
+
+
     await Promise.all(
       userIdArray.map((userId: string) => {
       // ["2"].map((userId: string) => {

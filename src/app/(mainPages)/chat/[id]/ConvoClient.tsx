@@ -16,11 +16,13 @@ function ConvoClient({ convo, convoParamId, session }: any) {
 
   const decodedConvoParamId = decodeURIComponent(convoParamId);
 
+  const sessionUserName = session?.user?.name!;
+
   const createMessageActionWithData = createMessageAction.bind(null, {
     chatExist,
     convoId: decodedConvoParamId,
     sessionUserId: session?.user?.id!,
-    sessionUserName: session?.user?.name!
+    sessionUserName
   });
 
   const [state, formAction] = useActionState(createMessageActionWithData, {
@@ -70,11 +72,14 @@ function ConvoClient({ convo, convoParamId, session }: any) {
 
       console.log('sean_log userIds: ' + JSON.stringify(userIds));
 
+      const noticeMsg = convo.name ? `${sessionUserName} messaged in ${convo.name}` : `${sessionUserName} messaged you.`
+
       sendChatNotification({
         noticeObj: {
           // text: `${session?.user?.name!} sent a message in chat`,
           chatId: state.chatId,
         },
+        noticeMsg,
         channel: PusherChannel.Notification,
         userIdArray: userIds,
       });
