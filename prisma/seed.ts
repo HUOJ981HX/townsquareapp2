@@ -1,42 +1,65 @@
 import { filterPostRoles } from "@/helper/post";
-import { AccountType, Gender, Mood  } from "@/types/filter";
+import { AccountType, Gender, Mood } from "@/types/filter";
 import { PrismaClient } from "@prisma/client";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 // import { PrismaClient } from "../../node_modules/.prisma/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
-
   const user1 = await prisma.user.create({
     data: {
       id: 1,
-      username: 'Alice',
-      email: 'alice@alice.alice',
-      password: 'alice@alice.alice',
+      username: "Alice",
+      email: "alice@alice.alice",
+      password: "alice@alice.alice",
       accountType: AccountType.Email,
-    }
+    },
   });
 
   const user2 = await prisma.user.create({
-    data: {id: 2, username: 'Bob', email: 'bob@bob.bob', password: 'bob@bob.bob', accountType: AccountType.Email },
+    data: {
+      id: 2,
+      username: "Bob",
+      email: "bob@bob.bob",
+      password: "bob@bob.bob",
+      accountType: AccountType.Email,
+    },
   });
 
   const user3 = await prisma.user.create({
-    data: {id: 3, username: 'Cindy', email: 'cindy@cindy.cindy', password: 'cindy@cindy.cindy', accountType: AccountType.Email },
+    data: {
+      id: 3,
+      username: "Cindy",
+      email: "cindy@cindy.cindy",
+      password: "cindy@cindy.cindy",
+      accountType: AccountType.Email,
+    },
   });
 
   const user4 = await prisma.user.create({
-    data: {id: 4, username: 'Dave', email: 'dave@dave.dave', password: 'dave@dave.dave', accountType: AccountType.Email },
+    data: {
+      id: 4,
+      username: "Dave",
+      email: "dave@dave.dave",
+      password: "dave@dave.dave",
+      accountType: AccountType.Email,
+    },
   });
 
   const user5 = await prisma.user.create({
-    data: {id: 5, username: 'Eve', email: 'eve@eve.eve', password: 'eve@eve.eve', accountType: AccountType.Email },
+    data: {
+      id: 5,
+      username: "Eve",
+      email: "eve@eve.eve",
+      password: "eve@eve.eve",
+      accountType: AccountType.Email,
+    },
   });
 
   await prisma.group.create({
     data: {
-      name: 'group alice, cindy, dave, eve',
+      name: "group alice, cindy, dave, eve",
       userId: 2,
       userGroups: {
         create: [
@@ -44,198 +67,194 @@ async function main() {
           { userId: user3.id },
           { userId: user4.id },
           { userId: user5.id },
-        ]
-      }
-    }
-  })
+        ],
+      },
+    },
+  });
 
   await prisma.group.create({
     data: {
-      name: 'group empty',
+      name: "group empty",
       userId: 2,
-    }
-  })
+    },
+  });
 
   await prisma.group.create({
     data: {
-      name: 'group bob, cindy',
+      name: "group bob, cindy",
       userId: 1,
       userGroups: {
-        create: [
-          { userId: user2.id },
-          { userId: user3.id }
-        ]
-      }
-    }
-  })
+        create: [{ userId: user2.id }, { userId: user3.id }],
+      },
+    },
+  });
 
   await prisma.group.create({
     data: {
-      name: 'group dave, eve',
+      name: "group dave, eve",
       userId: 1,
       userGroups: {
-        create: [
-          { userId: user4.id },
-          { userId: user5.id }
-        ]
-      }
-    }
-  })
+        create: [{ userId: user4.id }, { userId: user5.id }],
+      },
+    },
+  });
 
   await prisma.group.create({
     data: {
-      name: 'group bob, alice',
+      name: "group bob, alice",
       userId: 3,
       userGroups: {
-        create: [
-          { userId: user1.id },
-          { userId: user2.id }
-        ]
-      }
-    }
-  })
-  
+        create: [{ userId: user1.id }, { userId: user2.id }],
+      },
+    },
+  });
+
   const chat1 = await prisma.chat.create({
     data: {
       id: `${user1.id},${user2.id}`,
       // userId: user1.id,
-      name: 'John and Jane Chat',
+      name: "John and Jane Chat",
       userChats: {
-        create: [
-          { userId: user1.id },
-          { userId: user2.id }
-        ]
+        create: [{ userId: user1.id }, { userId: user2.id }],
       },
-    }
-  })
+    },
+  });
 
   // Create messages for chat1
   await prisma.message.createMany({
     data: [
       {
-        text: 'Hey Jane, how are you?',
+        text: "Hey Jane, how are you?",
         userId: user1.id,
         userName: user1.username,
         chatId: chat1.id,
       },
       {
-        text: 'Hi John, I\'m good! How about you?',
+        text: "Hi John, I'm good! How about you?",
         userId: user2.id,
         userName: user2.username,
         chatId: chat1.id,
-      }
-    ]
-  })
+      },
+    ],
+  });
 
   // Conversation 2: Between user 1 and user 3
   const chat2 = await prisma.chat.create({
     data: {
       id: `${user1.id},${user3.id}`,
       // userId: user1.id,
-      name: 'John and Bob Chat',
+      name: "John and Bob Chat",
       userChats: {
-        create: [
-          { userId: user1.id },
-          { userId: user3.id }
-        ]
+        create: [{ userId: user1.id }, { userId: user3.id }],
       },
       // privateId: `${user1.id},${user3.id},`
-    }
-  })
+    },
+  });
 
   // Create messages for chat2
   await prisma.message.createMany({
     data: [
       {
-        text: 'Hey Bob, what\'s up?',
+        text: "Hey Bob, what's up?",
         userId: user1.id,
         userName: user1.username,
         chatId: chat2.id,
       },
       {
-        text: 'Not much, John. Just working on some projects.',
+        text: "Not much, John. Just working on some projects.",
         userId: user3.id,
         userName: user3.username,
         chatId: chat2.id,
-      }
-    ]
-  })
+      },
+    ],
+  });
 
   // Conversation 3: Between user 2 and user 3
   const chat3 = await prisma.chat.create({
     data: {
       // userId: user2.id,
       id: `${user2.id},${user3.id}`,
-      name: 'Jane and Bob Chat',
+      name: "Jane and Bob Chat",
       userChats: {
-        create: [
-          { userId: user2.id },
-          { userId: user3.id }
-        ]
+        create: [{ userId: user2.id }, { userId: user3.id }],
       },
       // privateId: `${user2.id},${user3.id},`
-    }
-  })
+    },
+  });
 
   // Create messages for chat3
   await prisma.message.createMany({
     data: [
       {
-        text: 'Hi Bob, do you want to collaborate on a project?',
+        text: "Hi Bob, do you want to collaborate on a project?",
         userId: user2.id,
         userName: user2.username,
         chatId: chat3.id,
       },
       {
-        text: 'Sure, Jane! What did you have in mind?',
+        text: "Sure, Jane! What did you have in mind?",
         userId: user3.id,
         userName: user3.username,
         chatId: chat3.id,
-      }
-    ]
-  })
+      },
+    ],
+  });
 
   // Conversation 4: Between user 1, user 2, and user 3
   const chat4 = await prisma.chat.create({
     data: {
       // userId: user1.id,
       id: `${user1.id},${user2.id},${user3.id}`,
-      name: 'Group Chat',
+      name: "Group Chat",
       userChats: {
         create: [
           { userId: user1.id },
           { userId: user2.id },
-          { userId: user3.id }
-        ]
+          { userId: user3.id },
+        ],
       },
       // privateId: `${user1.id},${user2.id},${user3.id},`
-    }
-  })
+    },
+  });
+
+  const chatNotice1 = await prisma.chatNotice.createMany({
+    data: [
+      {
+        message: "Alice messaged you",
+        chatId: "1,2",
+        userId: 2,
+      },
+      {
+        message: "Cindy messaged in Group Chat",
+        chatId: "1,2,3",
+        userId: 2,
+      },
+    ],
+  });
 
   // Create messages for chat4
   await prisma.message.createMany({
     data: [
       {
-        text: 'Hey everyone, let\'s have a group discussion!',
+        text: "Hey everyone, let's have a group discussion!",
         userId: user1.id,
         userName: user1.username,
         chatId: chat4.id,
       },
       {
-        text: 'Great idea, John!',
+        text: "Great idea, John!",
         userId: user2.id,
         userName: user2.username,
         chatId: chat4.id,
       },
       {
-        text: 'Count me in!',
+        text: "Count me in!",
         userId: user3.id,
         userName: user3.username,
         chatId: chat4.id,
-      }
-    ]
-  })
-  
+      },
+    ],
+  });
 
   await prisma.filter.createMany({
     data: [
@@ -244,17 +263,18 @@ async function main() {
         userId: 1,
         filterOff: false,
         filterJson: {
-          "UserAgeMin": 27,
-          "UserAgeMax": 80,
-          "UserGender": ["Non-binary"],
-          "PostMood": "Surprised",
-          "PostPurpose": [
+          UserAgeMin: 27,
+          UserAgeMax: 80,
+          UserGender: ["Non-binary"],
+          PostMood: "Surprised",
+          PostPurpose: [
             {
-              "postFilterDisplay": "work > Accounting, Manufacturing, Service, Tech > over 100k",
-              "postFilterQueryRole": "seeker"
-            }
-          ]
-        }
+              postFilterDisplay:
+                "work > Accounting, Manufacturing, Service, Tech > over 100k",
+              postFilterQueryRole: "seeker",
+            },
+          ],
+        },
         // filterPostJson: {
         //   filterablePostAttributes: {
         //     mood: "Surprised",
@@ -271,7 +291,7 @@ async function main() {
         //       age: { gte: 27, lte: 80 },
         //       gender: {
         //         in: ["Non-binary"]
-        //       } 
+        //       }
         //     },
         //   },
         // }
@@ -281,17 +301,18 @@ async function main() {
         userId: 2,
         filterOff: false,
         filterJson: {
-          "UserAgeMin": 27,
-          "UserAgeMax": 50,
-          "UserGender": ["Male","Non-binary"],
-          "PostMood": "Happy",
-          "PostPurpose": [
+          UserAgeMin: 27,
+          UserAgeMax: 50,
+          UserGender: ["Male", "Non-binary"],
+          PostMood: "Happy",
+          PostPurpose: [
             {
-              "postFilterDisplay": "personals > Casual, Friends, Relationship > Female, Male, nonBinary",
-              "postFilterQueryRole": "both"
-            }
-          ]
-        }
+              postFilterDisplay:
+                "personals > Casual, Friends, Relationship > Female, Male, nonBinary",
+              postFilterQueryRole: "both",
+            },
+          ],
+        },
         // filterPostJson: {
         //   filterablePostAttributes: {
         //     mood: "Happy",
@@ -308,99 +329,97 @@ async function main() {
         //       age: { gte: 27, lte: 50 },
         //       gender: {
         //         in: ["Male","Non-binary"]
-        //       } 
+        //       }
         //     },
         //   },
         // }
-
       },
-    ]
-  })
+    ],
+  });
 
   await prisma.filterableUserAttributes.createMany({
     data: [
       {
-        userId: 1, 
+        userId: 1,
         age: 80,
-        gender: Gender.Female
+        gender: Gender.Female,
       },
       {
-        userId: 2, 
+        userId: 2,
         age: 39,
-        gender: Gender.Male
+        gender: Gender.Male,
       },
       {
-        userId: 3, 
+        userId: 3,
         age: 45,
-        gender: Gender.NonBinary
+        gender: Gender.NonBinary,
       },
       {
-        userId: 4, 
+        userId: 4,
         age: 65,
-        gender: Gender.Male
+        gender: Gender.Male,
       },
-    ]
-  })
+    ],
+  });
 
   await prisma.post.createMany({
     data: [
       {
         id: 1,
         userId: 1,
-        title: 'tech opportunities',
+        title: "tech opportunities",
         description: "Exploring new opportunities in tech.",
       },
       {
         id: 2,
         userId: 1,
-        title: 'Web3 projects',
+        title: "Web3 projects",
         description: "Excited about Web3 projects.",
-
       },
       {
         id: 3,
         userId: 2,
-        title: 'teach programming',
+        title: "teach programming",
       },
       {
         id: 4,
         userId: 3,
-        title: 'founder',
+        title: "founder",
         description: "Sharing my journey as a startup founder.",
       },
     ],
   });
 
-
   await prisma.filterablePostAttributes.createMany({
     data: [
       {
-        postId: 1, 
+        postId: 1,
         mood: Mood.Angry,
         postFilterQueryRole: filterPostRoles.PROVIDER,
-        postFilterDisplay: 'work > Manufacturing, Service > 50-75k',
+        postFilterDisplay: "work > Manufacturing, Service > 50-75k",
       },
       {
         postId: 2,
         mood: Mood.Desperate,
         postFilterQueryRole: filterPostRoles.BOTH,
-        postFilterDisplay: 'personals > Friends > Female'
+        postFilterDisplay: "personals > Friends > Female",
       },
       {
         postId: 3,
         mood: Mood.Happy,
         postFilterQueryRole: filterPostRoles.BOTH,
-        postFilterDisplay: 'personals > Casual, Friends, Relationship > Female, Male, nonBinary'
+        postFilterDisplay:
+          "personals > Casual, Friends, Relationship > Female, Male, nonBinary",
       },
       {
         postId: 4,
         mood: Mood.Surprised,
         postFilterQueryRole: filterPostRoles.SEEKER,
-        postFilterDisplay: 'work > Accounting, Manufacturing, Service, Tech > over 100k'
+        postFilterDisplay:
+          "work > Accounting, Manufacturing, Service, Tech > over 100k",
       },
-
-    ]
-  })
+    ],
+  });
 
   // await prisma.filterablePostAttributesFilters.createMany({
   //   data: [
@@ -448,15 +467,12 @@ async function main() {
   // })
 }
 
-
-
-
 main()
   .then(() => {
-    console.log('Data seeded successfully');
+    console.log("Data seeded successfully");
   })
   .catch((error) => {
-    console.error('Error seeding data:', error);
+    console.error("Error seeding data:", error);
   })
   .finally(async () => {
     await prisma.$disconnect();

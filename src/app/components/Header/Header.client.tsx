@@ -6,47 +6,50 @@ import { pusherClient } from "@/lib/pusher";
 import { PusherChannel } from "@/types";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 
 function Header({ session }: any) {
-  const [notification, setNotification] = useState(0);
+  const [notifications, setNotifications] = useState([]);
+  const router = useRouter();
+
+
+  const fetchNotices = async () => {
+    const response = await fetch("/api/notification/chat");
+    const data = await response.json();
+
+    console.log("fffffffffffffffffffffff");
+    console.log("nnnnnnnnnnnnnnnnnnnnnnnnn");
+    console.log("sean_log data: " + JSON.stringify(data));
+
+    setNotifications(data);
+  };
+
 
   useEffect(() => {
-    console.log("uuuuuuuuuuuuuuuuuuuuu");
-    console.log("sssssssssssssssssssssssss___binded");
-    console.log(
-      "sean_log session?.user?.id!: " + JSON.stringify(session?.user?.id!)
-    );
-    pusherClient.subscribe((session?.user?.id!).toString());
+
+    fetchNotices();
+
+    pusherClient.subscribe(session?.user?.id!.toString());
 
     pusherClient.bind(PusherChannel.Notification, (data: any) => {
       // update state to show notification here.d
-      console.log("vvvvvvvvvvvvvvvvvvv");
-      console.log("nnnnnnnnnnnnnnnnnnnnnnnnn");
-      console.log("sean_log data: " + JSON.stringify(data));
 
       const parsedUrl = new URL(window.location.href);
-      const paths = parsedUrl.pathname.split('/').filter(segment => segment); // ["chat","1,2,3,4,5"]
+      const paths = parsedUrl.pathname.split("/").filter((segment) => segment); // ["chat","1,2,3,4,5"]
 
-      console.log('sean_log paths: ' + JSON.stringify(paths));
-      console.log('sean_log data.chatId: ' + JSON.stringify(data.chatId));
-      console.log('sean_log typeof : ' + typeof data.chatId);
-
-      console.log('sean_log paths[0]: ' + JSON.stringify(paths[0]));
-      console.log('sean_log typeof : ' + typeof paths[0]);
-
-      console.log('sean_log paths[1]: ' + JSON.stringify(paths[1]));
-      console.log('sean_log typeof : ' + typeof paths[1]);
- 
-
-      console.log(paths[0] !== "chat");
-      console.log(paths[1] !== data.chatId);
-
-      if(paths[0] !== "chat" || paths[1] !== data.chatId) {
-        console.log('nnnnnnnnnnnnnnnnnnnnnnnnn');
-        console.log('nnnnnnnnnnnnnnnnnnnnnnnnn');
-        setNotification((prev) => prev + 1);
+      if (paths[0] !== "chat" || paths[1] !== data.chatId) {
+        // setNotification((prev) => prev + 1);
+        // setNotifications(data);
+        fetchNotices()
       }
-
     });
 
     return () => pusherClient.unsubscribe(session?.user?.id!);
@@ -65,6 +68,29 @@ function Header({ session }: any) {
   //   // return () => pusherClient.unsubscribe(convo!.id);
   //   return () => pusherClient.unsubscribe("8cd435e1-6190-4553-b965-512d37bdac0c");
   // }, []);
+
+  const handleChatNoticeClick = async ({ noticeId, chatId }: any) => {
+    try {
+      const response = await fetch(
+        `/api/notification/chat?id=${noticeId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete notification");
+      }
+
+      console.log('vvvvvvvvvvvvvvvvvvv');
+      console.log('vvvvvvvvvvvvvvvvvvv');
+      fetchNotices();
+      router.push("/chat/" + chatId);
+    } catch (error) {
+      throw error;
+    }
+  };
 
   return (
     <div className="flex w-full justify-evenly">
@@ -92,7 +118,58 @@ function Header({ session }: any) {
         >
           Chat
         </Link>
-        <p>{notification}</p>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>{notifications.length}</DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            {notifications.map((notice: any, index) => {
+              return (
+                <>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      handleChatNoticeClick({
+                        noticeId: notice.id,
+                        chatId: notice.chatId,
+                      })
+                    }
+                    key={notice.id}
+                  >
+                    {notice.message}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                </>
+              );
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* <DropdownMenu>
+          <DropdownMenuTrigger>
+            {notifications.length}
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {notifications.map((notice: any, index) => {
+              return (
+                <DropdownMenuItem asChild key={notice.chatId}>
+                  <Button
+                    onClick={() =>
+                      handleChatNoticeClick({
+                        noticeId: notice.id,
+                        chatId: notice.chatId,
+                      })
+                    }
+                  >
+                    {notice.message}
+                  </Button>
+                  {index < notifications.length - 1 && (
+                    <DropdownMenuSeparator />
+                  )}
+                </DropdownMenuItem>
+              );
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu> */}
       </div>
 
       <Link

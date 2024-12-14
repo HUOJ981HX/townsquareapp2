@@ -14,10 +14,6 @@ export async function GET(request: NextRequest) {
 
     const groupIds = searchParams.get("groupIds")?.split(",") || [];
 
-    console.log('ggggggggggggggggggggggg');
-    console.log('iiiiiiiiiiiiiiiiiii');
-    console.log('sean_log groupIds: ' + JSON.stringify(groupIds));
-
     const users = await prisma.user.findMany({
       where: {
         OR: groupIds.map((groupId) => ({
@@ -33,11 +29,6 @@ export async function GET(request: NextRequest) {
       },
       distinct: ["id"], // Remove duplicate users
     });
-
-    console.log("vvvvvvvvvvvvvvvvvvv");
-    console.log("vvvvvvvvvvvvvvvvvvv");
-    console.log("vvvvvvvvvvvvvvvvvvv");
-    console.log("sean_log users: " + JSON.stringify(users));
 
     return NextResponse.json(users);
   } catch (error) {

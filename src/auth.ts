@@ -72,10 +72,6 @@ export const {
     // Add ID to the session object
     async session({ session, token }: any) {
       if (session.user) {
-        console.log('ttttttttttttttttttt');
-        console.log('ttttttttttttttttttt');
-        console.log('sean_log token.id: ' + JSON.stringify(token.id));
-        console.log('sean_log token.id: ' + token.id);
         session.user.id = parseInt(token.id);
         // session.user.id = 8;
         // session.user.privateId = token.privateId;

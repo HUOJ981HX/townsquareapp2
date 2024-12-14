@@ -4,12 +4,7 @@ import prisma from "@/lib/prisma";
 import { pusherServer } from "@/lib/pusher";
 
 export const getPrivateChatId = (userIdsArray: number[]) => {
-  console.log("ggggggggggggggggggggggg");
-  console.log("ggggggggggggggggggggggg");
-  console.log("pppppppppppppppppp");
-  console.log("pppppppppppppppppp");
 
-  console.log('sean_log userIdsArray post: ' + JSON.stringify(userIdsArray));
 
   userIdsArray.sort();
   // const privateIds = userIdsArray.map((userId, index) => {

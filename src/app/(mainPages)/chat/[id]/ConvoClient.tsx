@@ -72,7 +72,7 @@ function ConvoClient({ convo, convoParamId, session }: any) {
 
       sendChatNotification({
         noticeObj: {
-          text: `${session?.user?.name!} sent a message in chat`,
+          // text: `${session?.user?.name!} sent a message in chat`,
           chatId: state.chatId,
         },
         channel: PusherChannel.Notification,
