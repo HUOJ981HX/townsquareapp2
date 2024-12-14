@@ -9,6 +9,8 @@ export const getPrivateChatId = (userIdsArray: number[]) => {
   console.log("pppppppppppppppppp");
   console.log("pppppppppppppppppp");
 
+  console.log('sean_log userIdsArray post: ' + JSON.stringify(userIdsArray));
+
   userIdsArray.sort();
   // const privateIds = userIdsArray.map((userId, index) => {
   //   console.log("iiiiiiiiiiiiiiiiiii");

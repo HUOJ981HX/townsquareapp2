@@ -94,7 +94,7 @@ function GroupChatDialog({ modalName, setModalName, groups }: any) {
     if (state.status === "success") {
       handleNext();
       if (messageType === MassChatType.Group) {
-        setCreatedGroupId(state?.groupChat?.chat?.id!);
+        setCreatedGroupId(state?.groupChat!);
       }
     } else if (state.status === "error") {
       console.log("eeeeeeeeeeeeeeeeeeeeee");

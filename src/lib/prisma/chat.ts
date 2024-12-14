@@ -30,13 +30,6 @@ export async function sendExistingChatMessage({
   chatId,
   tx,
 }: any) {
-  console.log("wwwwwwwwwwwwwwwwwwwwwww");
-  console.log("ttttttttttttttttttt");
-  console.log("fffffffffffffffffffffff");
-  console.log("sean_log messageText: " + JSON.stringify(messageText));
-  console.log("sean_log userId: " + JSON.stringify(userId));
-  console.log("sean_log userName: " + JSON.stringify(userName));
-  console.log("sean_log chatId: " + JSON.stringify(chatId));
   const prismaClient = tx || prisma;
 
   const message = await prismaClient.message.create({
@@ -63,11 +56,6 @@ export async function createChatSendMessage({
       // If chat doesn't exist, create it and add user associations
       // Create the chat
 
-      console.log("cccccccccccccccccccc");
-      console.log("cccccccccccccccccccc");
-      console.log("sssssssssssssssssssssssss");
-      console.log("mmmmmmmmmmmmmmmmmm");
-
       await tx.chat.create({
         data: {
           id: chatId,
@@ -75,11 +63,6 @@ export async function createChatSendMessage({
       });
 
       const participantsArrays = chatId.split(",");
-
-      console.log("1111111111111111111111");
-      console.log(
-        "sean_log participantsArrays: " + JSON.stringify(participantsArrays)
-      );
 
       // Create UserChat entries for all provided users
       const userChatResult = await tx.userChat.createMany({
@@ -100,18 +83,6 @@ export async function createChatSendMessage({
       //     },
       //   });
 
-      console.log("2222222222222222");
-      console.log("sean_log userChatResult: " + JSON.stringify(userChatResult));
-      console.log(
-        "sean_log All parems for null: " +
-          JSON.stringify({
-            messageText,
-            chatId,
-            userId,
-            userName,
-          })
-      );
-
       // Try this again
       const message = await sendExistingChatMessage({
         messageText,
@@ -126,10 +97,6 @@ export async function createChatSendMessage({
 
       return message;
     });
-
-    console.log("rrrrrrrrrrrrrrrrrrr");
-    console.log("rrrrrrrrrrrrrrrrrrr");
-    console.log("sean_log result: " + JSON.stringify(result));
 
     return result;
   } catch (error) {
