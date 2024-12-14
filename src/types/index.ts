@@ -19,6 +19,11 @@
 //     filterableUserAttributes?: UserAttributesFilter;
 // }
 
+export enum PusherChannel {
+  Notification = "Notification",
+  ConvoMessage = "ConvoMessage"
+}
+
 export enum MassChatType {
   Individual = "Individual",
   Group = "Group",

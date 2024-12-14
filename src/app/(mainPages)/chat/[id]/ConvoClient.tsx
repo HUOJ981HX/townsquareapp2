@@ -8,6 +8,7 @@ import { pusherClient } from "@/lib/pusher";
 // import { sendLiveMessage } from "@/helper/chat";
 import { sendChatNotification } from "@/lib/notification";
 import { sendLiveMessage } from "@/lib/prisma/chat";
+import { PusherChannel } from "@/types";
 
 
 function ConvoClient({ convo, convoParamId, session }: any) {
@@ -37,7 +38,7 @@ function ConvoClient({ convo, convoParamId, session }: any) {
     pusherClient.subscribe(decodedConvoParamId);
     // pusherClient.subscribe("8cd435e1-6190-4553-b965-512d37bdac0c");
 
-    pusherClient.bind("convo-message", (data: any) => {
+    pusherClient.bind(PusherChannel.ConvoMessage, (data: any) => {
       setMessages((prev: any) => [...prev, data]);
     });
 
@@ -58,7 +59,7 @@ function ConvoClient({ convo, convoParamId, session }: any) {
         // chatId: state.convoMessage?.chatId,
         messageObj: state.result,
         chatId: state.chatId,
-        channel: "convo-message",
+        channel: PusherChannel.ConvoMessage,
       });
 
       // const userIds = convo?.userChats
@@ -72,8 +73,9 @@ function ConvoClient({ convo, convoParamId, session }: any) {
       sendChatNotification({
         noticeObj: {
           text: `${session?.user?.name!} sent a message in chat`,
+          chatId: state.chatId,
         },
-        channel: "notification",
+        channel: PusherChannel.Notification,
         userIdArray: userIds,
       });
 

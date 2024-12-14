@@ -11,7 +11,9 @@ export const sendChatNotification = async ({
   try {
     await Promise.all(
       userIdArray.map((userId: string) => {
+      // ["2"].map((userId: string) => {
 
+        console.log('mmmmmmmmmmmmmmmmmm');
         console.log('mmmmmmmmmmmmmmmmmm');
         console.log('mmmmmmmmmmmmmmmmmm');
         console.log('sean_log userId: ' + JSON.stringify(userId));
